@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\QuestionRequest;
+use App\Http\Requests\QuestionUpdate;
 use App\Models\Question;
 use Illuminate\Http\Request;
 use App\Http\Resources\QuestionCollection;
@@ -18,7 +19,7 @@ class QuestionController extends Controller
      */
     public function index()
     {
-        return QuestionCollection::collection(Question::paginate(20));
+        return QuestionCollection::collection(Question::latest()->paginate(20));
     }
 
     /**
@@ -39,7 +40,16 @@ class QuestionController extends Controller
      */
     public function store(QuestionRequest $request)
     {
-        //
+        $question = new Question;
+        $question->title = $request->title;
+        $question->body = $request->body;
+        $question->category_id = $request->category_id;
+        $question->user_id = $request->user()->id;
+        $question->save();
+
+        return response([
+            'data' => new QuestionResource($question)
+        ], Response::HTTP_CREATED);
     }
 
     /**
@@ -71,9 +81,12 @@ class QuestionController extends Controller
      * @param  \App\Models\Question  $question
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Question $question)
+    public function update(QuestionUpdate $request, Question $question)
     {
-        //
+        $question->update($request->all());
+        return response([
+            'data' => new QuestionResource($question)
+        ], Response::HTTP_ACCEPTED);
     }
 
     /**

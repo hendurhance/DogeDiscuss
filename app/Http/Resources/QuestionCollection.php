@@ -18,6 +18,7 @@ class QuestionCollection extends JsonResource
             'title' => $this->title,
             'body' => $this->body,
             'slug' => $this->slug,
+            'created_at' => $this->created_at->diffForHumans(),
         ];
     }
 }
