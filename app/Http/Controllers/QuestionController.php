@@ -8,6 +8,7 @@ use App\Models\Question;
 use Illuminate\Http\Request;
 use App\Http\Resources\QuestionCollection;
 use App\Http\Resources\QuestionResource;
+use App\Models\Category;
 use Symfony\Component\HttpFoundation\Response;
 
 class QuestionController extends Controller

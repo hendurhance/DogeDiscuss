@@ -4,10 +4,10 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class QuestionCollection extends JsonResource
+class CategoryResource extends JsonResource
 {
     /**
-     * Transform the resource collection into an array.
+     * Transform the resource into an array.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return array|\Illuminate\Contracts\Support\Arrayable|\JsonSerializable
@@ -15,11 +15,9 @@ class QuestionCollection extends JsonResource
     public function toArray($request)
     {
         return [
-            'title' => $this->title,
-            'body' => $this->body,
+            'name' => $this->name,
             'slug' => $this->slug,
-            'category' => $this->category->name,
-            'created_at' => $this->created_at->diffForHumans(),
+            'questions' => $this->questions->count() > 0 ?  QuestionCollection::collection($this->questions) : "No Questions Available"
         ];
     }
 }

@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\CategoryRequest;
+use App\Http\Resources\CategoryCollection;
+use App\Http\Resources\CategoryResource;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -16,7 +18,7 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        //
+         return CategoryCollection::collection(Category::latest()->paginate(20));
     }
 
     /**
@@ -42,7 +44,7 @@ class CategoryController extends Controller
         $category->save();
 
         return response()->json([
-            'data' => $category,   
+            'data' => new CategoryResource($category)  
         ], Response::HTTP_CREATED);
     }
 
@@ -54,7 +56,7 @@ class CategoryController extends Controller
      */
     public function show(Category $category)
     {
-        //
+        return new CategoryResource($category);
     }
 
     /**
@@ -89,5 +91,7 @@ class CategoryController extends Controller
     public function destroy(Category $category)
     {
         //
+        $category->delete();
+        return response(null, Response::HTTP_NO_CONTENT);
     }
 }

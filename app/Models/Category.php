@@ -10,7 +10,7 @@ class Category extends Model
 {
     use HasFactory;
 
-    public function question()
+    public function questions()
     {
         return $this->hasMany(Question::class);
     }
@@ -23,5 +23,11 @@ class Category extends Model
         static::creating(function ($category) {
             $category->slug = Str::slug($category->name);
         });
+    }
+    
+    // route model binding
+    public function getRouteKeyName()
+    {
+        return 'slug';
     }
 }
