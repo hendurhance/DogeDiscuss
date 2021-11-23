@@ -3,6 +3,7 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+use App\Http\Resources\ReplyResource;
 
 class QuestionResource extends JsonResource
 {
@@ -22,7 +23,7 @@ class QuestionResource extends JsonResource
             'created_at' => $this->created_at->diffForHumans(),
             'user' => $this->user->name,
             // 'path' => $this->getPathAttribute(),
-            // 'replies' => ReplyResource::collection($this->replies),
+            'replies' => ReplyResource::collection($this->replies),
         ];
     }
 }
