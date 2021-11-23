@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\LikeController;
 use App\Http\Controllers\QuestionController;
 use App\Http\Controllers\ReplyController;
 use Illuminate\Http\Request;
@@ -28,3 +29,8 @@ Route::apiResource('category', CategoryController::class)->except('update');
 
 /*============================ REPLIES ============================*/
 Route::apiResource('/question/{question}/reply', ReplyController::class)->except('show');
+
+/*======================== LIKE ========================*/
+Route::post('/like/{reply}', [LikeController::class, 'likeIt']);
+Route::delete('/like/{reply}', [LikeController::class, 'unlikeIt']);
+

@@ -9,6 +9,11 @@ class Like extends Model
 {
     use HasFactory;
 
+    protected $table = 'likes';
+
+    protected $guarded = [];
+
+
     public function reply()
     {
         return $this->belongsTo(Reply::class);

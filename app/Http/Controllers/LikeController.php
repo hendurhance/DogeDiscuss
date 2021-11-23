@@ -2,84 +2,59 @@
 
 namespace App\Http\Controllers;
 
+use App\Exceptions\ReplyLiked;
 use App\Models\Like;
+use App\Models\Reply;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class LikeController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
+     * Like a reply.
+     * 
      */
-    public function index()
+    public function likeIt(Reply $reply)
     {
-        //
+        $hasLiked = $this->hasLiked($reply);
+        if($hasLiked) {
+            throw new ReplyLiked;
+        }else{
+            $reply->likes()->create([
+                'user_id' => auth()->id()
+            ]);
+
+            return response([
+                'message' => 'Reply liked.'
+            ], Response::HTTP_OK);
+        }
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
+     * Unlike a reply.
+     * 
      */
-    public function create()
+    public function unLikeIt(Reply $reply)
     {
-        //
+        $hasLiked = $this->hasLiked($reply);
+        if($hasLiked) {
+            $reply->likes()->where('user_id', auth()->id())->delete();
+            return response([
+                'message' => 'You have unliked this reply.'
+            ], Response::HTTP_OK);
+        }else{
+            return response([
+                'error' => 'You have not liked this reply.'
+            ], Response::HTTP_OK);
+        }
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * Check if the user has liked a reply.
      */
-    public function store(Request $request)
+    public function hasLiked(Reply $reply)
     {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Like  $like
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Like $like)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Like  $like
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Like $like)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Like  $like
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Like $like)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Like  $like
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Like $like)
-    {
-        //
+        $like = $reply->likes()->where('user_id', auth()->id())->first();
+        return $like ? true : false;
     }
 }
