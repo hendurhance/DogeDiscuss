@@ -9,8 +9,11 @@ require('./bootstrap');
 window.Vue = require('vue').default;
 import Vue from 'vue'
 import vuetify from './plugins/vuetify.js';
+import VueRouter from 'vue-router'
+
 
 Vue.use(vuetify);
+Vue.use(VueRouter);
 
 /**
  * The following block of code may be used to automatically register your
@@ -33,4 +36,5 @@ Vue.component('app-home', require('./components/AppHome.vue').default);
 
  new Vue({
     vuetify,
+    VueRouter,
   }).$mount('#app')
