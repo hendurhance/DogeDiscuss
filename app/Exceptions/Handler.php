@@ -5,8 +5,13 @@ namespace App\Exceptions;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Auth\AuthenticationException;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Throwable;
+use Tymon\JWTAuth\Exceptions\JWTException;
+use Tymon\JWTAuth\Exceptions\TokenBlacklistedException;
+use Tymon\JWTAuth\Exceptions\TokenExpiredException;
+use Tymon\JWTAuth\Exceptions\TokenInvalidException;
 
 class Handler extends ExceptionHandler
 {
@@ -57,26 +62,40 @@ class Handler extends ExceptionHandler
             
             if($e instanceof ModelNotFoundException) {
                 return response()->json([
-                    'message' => 'Resource not found'
-                ], 404);
+                    'error' => 'Resource not found'
+                ], Response::HTTP_NOT_FOUND);
             }
             if($e instanceof AuthenticationException) {
                 return response()->json([
-                    'message' => 'Unauthorized'
-                ], 401);
+                    'error' => 'Unauthorized'
+                ], Response::HTTP_UNAUTHORIZED);
             }
             if($e instanceof NotFoundHttpException) {
                 return response()->json([
-                    'message' => 'Route not found'
-                ], 404);
+                    'error' => 'Route not found'
+                ], Response::HTTP_NOT_FOUND);
             }
-            if($e instanceof \Tymon\JWTAuth\Exceptions\JWTException) {
+            // if($e instanceof JWTException) {
+            //     return response()->json([
+            //         'error' => 'Token is invalid'
+            //     ], Response::HTTP_UNAUTHORIZED);
+            // }
+            if($e instanceof TokenExpiredException) {
                 return response()->json([
-                    'message' => 'Unauthenticated'
-                ], 401);
+                    'error' => 'Token is expired'
+                ], Response::HTTP_UNAUTHORIZED);
             }
-            // Tymon\\JWTAuth\\Exceptions\\JWTException
+            if($e instanceof TokenBlacklistedException) {
+                return response()->json([
+                    'error' => 'Token can not be used, try to login again'
+                ], Response::HTTP_UNAUTHORIZED);
+            }
         
+            if($e instanceof TokenInvalidException) {
+                return response()->json([
+                    'error' => 'Token is invalid'
+                ], Response::HTTP_UNAUTHORIZED);
+            }
 
         }
 
