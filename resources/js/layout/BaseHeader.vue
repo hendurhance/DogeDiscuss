@@ -14,7 +14,7 @@
           </div>
           <div class="nav-item no-mobile">
             <a href="">Ask Question</a>
-            <a href="" class="filled">Login</a>
+            <router-link to="/login" class="filled">Login</router-link>
           </div>
           <div class="nav-item no-desktop">
             <a href="" class="a-flex"><img :src="user" alt="" /> Login</a>
@@ -29,7 +29,7 @@
                 <a href="" class="links">Forum</a>
                 <a href="" class="links">Category</a>
                 <a href="" class="links">Ask Question</a>
-                <a href="" class="links">Login</a>
+                <router-link to="/login" class="links">Login</router-link>
               </div>
             </div>
           </div>
@@ -40,10 +40,10 @@
 </template>
 
 <script>
-import Logo from "../../../../public/img/logo-green.svg";
-import Hamburger from "../../../../public/img/vuesax/bold/hamburger.svg";
-import User from "../../../../public/img/vuesax/bold/user.svg";
-import Cancel from "../../../../public/img/vuesax/bold/cancel.svg";
+import Logo from "../../../public/img/logo-green.svg";
+import Hamburger from "../../../public/img/vuesax/bold/hamburger.svg";
+import User from "../../../public/img/vuesax/bold/user.svg";
+import Cancel from "../../../public/img/vuesax/bold/cancel.svg";
 export default {
   data() {
     return {
@@ -163,7 +163,6 @@ nav {
     width: 100%;
     z-index: 999;
     height: 100vh;
-    border-left: 2px solid #0f4c5c;
   }
   .grid-sidebar {
     padding: 4em 2em;

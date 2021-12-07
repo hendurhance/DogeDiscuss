@@ -21,7 +21,7 @@
 </template>
 
 <script>
-import Heart from "../../../../public/img/vuesax/bold/heart.svg";
+import Heart from "../../../public/img/vuesax/bold/heart.svg";
 export default {
   data() {
     return {

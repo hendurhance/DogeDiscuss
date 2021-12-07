@@ -1,17 +1,18 @@
 <template>
   <div>
     <base-header></base-header>
+    <router-view></router-view>
     <base-footer></base-footer>
   </div>
 </template>
 
 <script>
-import BaseHeader from './layout/BaseHeader.vue'
-import BaseFooter from './layout/BaseFooter.vue'
+import BaseHeader from '../layout/BaseHeader.vue'
+import BaseFooter from '../layout/BaseFooter.vue'
 export default {
     components: {
         'base-header': BaseHeader,
-        'base-footer': BaseFooter
+        'base-footer': BaseFooter,
     }
 }
 </script>
