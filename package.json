@@ -10,7 +10,7 @@
         "production": "mix --production"
     },
     "devDependencies": {
-        "axios": "^0.21",
+        "axios": "^0.21.4",
         "bootstrap": "^4.6.0",
         "deepmerge": "^4.2.2",
         "jquery": "^3.6",
@@ -26,6 +26,7 @@
         "vue-template-compiler": "^2.6.12"
     },
     "dependencies": {
+        "vue-axios": "^3.4.0",
         "vue-router": "^3.5.3",
         "vuetify": "^2.6.0"
     }

@@ -10,10 +10,13 @@ window.Vue = require('vue').default;
 import Vue from 'vue'
 import vuetify from './plugins/vuetify.js';
 
+// Axios 
+import axios from 'axios'
+import VueAxios from 'vue-axios'
 
 
 Vue.use(vuetify);
-
+Vue.use(VueAxios, axios)
 
 /**
  * The following block of code may be used to automatically register your

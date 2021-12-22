@@ -12,6 +12,7 @@
     <link rel="icon" type="image/png" sizes="16x16" href="/img/favicon-16x16.png">
     <link rel="manifest" href="/site.webmanifest">
     <title>DogeDiscuss</title>
+    
 </head>
 
 <body>

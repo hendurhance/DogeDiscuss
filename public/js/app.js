@@ -2287,6 +2287,93 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var _public_img_hero_img_png__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../public/img/hero-img.png */ "./public/img/hero-img.png");
+/* harmony import */ var _public_img_create_svg__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../public/img/create.svg */ "./public/img/create.svg");
+/* harmony import */ var _public_img_chat_svg__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../public/img/chat.svg */ "./public/img/chat.svg");
+/* harmony import */ var _public_img_feedback_svg__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../public/img/feedback.svg */ "./public/img/feedback.svg");
+/* harmony import */ var _public_img_discuss_png__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../public/img/discuss.png */ "./public/img/discuss.png");
+/* harmony import */ var _public_img_doge_svg__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../../public/img/doge.svg */ "./public/img/doge.svg");
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -2318,12 +2405,52 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 
+
+
+
+
+
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
-      heroImg: _public_img_hero_img_png__WEBPACK_IMPORTED_MODULE_0__["default"]
+      heroImg: _public_img_hero_img_png__WEBPACK_IMPORTED_MODULE_0__["default"],
+      user: _public_img_create_svg__WEBPACK_IMPORTED_MODULE_1__["default"],
+      chat: _public_img_chat_svg__WEBPACK_IMPORTED_MODULE_2__["default"],
+      feedback: _public_img_feedback_svg__WEBPACK_IMPORTED_MODULE_3__["default"],
+      discuss: _public_img_discuss_png__WEBPACK_IMPORTED_MODULE_4__["default"],
+      doge: _public_img_doge_svg__WEBPACK_IMPORTED_MODULE_5__["default"],
+      data: [],
+      asset: []
     };
-  }
+  },
+  mounted: function mounted() {
+    var _this = this;
+
+    // use axios to call https://pro-api.coinmarketcap.com/v1/cryptocurrency/map
+    // and get the data
+    // setting headers of api key and accept
+    // then get the data
+    // and set the data to the state
+    axios.get("https://rest.coinapi.io/v1/exchangerate/DOGE/USD?apikey=DB057B64-B8D7-4448-810E-90D61FD3C819", {
+      headers: {
+        Accept: "application/json"
+      }
+    }).then(function (response) {
+      _this.data = response.data;
+    })["catch"](function (error) {
+      console.log(error);
+    });
+  },
+  computed: {
+    assetName: function assetName() {
+      return this.data.asset_id_base;
+    },
+    rate: function rate() {
+      // return rate at round 2
+      return '$' + " " + this.data.rate.toFixed(2) + " " + this.data.asset_id_quote;
+    }
+  } // toFixed function
+
 });
 
 /***/ }),
@@ -2336,9 +2463,12 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm.js");
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm.js");
 /* harmony import */ var _plugins_vuetify_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./plugins/vuetify.js */ "./resources/js/plugins/vuetify.js");
-/* harmony import */ var _router_router_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./router/router.js */ "./resources/js/router/router.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var vue_axios__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vue-axios */ "./node_modules/vue-axios/dist/vue-axios.esm.min.js");
+/* harmony import */ var _router_router_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./router/router.js */ "./resources/js/router/router.js");
 /**
  * First we will load all of this project's JavaScript dependencies which
  * includes Vue and other libraries. It is a great starting point when
@@ -2348,8 +2478,12 @@ __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 
 window.Vue = (__webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm.js")["default"]);
 
+ // Axios 
 
-vue__WEBPACK_IMPORTED_MODULE_1__["default"].use(_plugins_vuetify_js__WEBPACK_IMPORTED_MODULE_0__["default"]);
+
+
+vue__WEBPACK_IMPORTED_MODULE_3__["default"].use(_plugins_vuetify_js__WEBPACK_IMPORTED_MODULE_0__["default"]);
+vue__WEBPACK_IMPORTED_MODULE_3__["default"].use(vue_axios__WEBPACK_IMPORTED_MODULE_2__["default"], (axios__WEBPACK_IMPORTED_MODULE_1___default()));
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue
@@ -2360,8 +2494,8 @@ vue__WEBPACK_IMPORTED_MODULE_1__["default"].use(_plugins_vuetify_js__WEBPACK_IMP
 // const files = require.context('./', true, /\.vue$/i)
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
-vue__WEBPACK_IMPORTED_MODULE_1__["default"].component('app-home', (__webpack_require__(/*! ./components/AppHome.vue */ "./resources/js/components/AppHome.vue")["default"]));
-vue__WEBPACK_IMPORTED_MODULE_1__["default"].component('base-button', (__webpack_require__(/*! ./layout/BaseButton.vue */ "./resources/js/layout/BaseButton.vue")["default"]));
+vue__WEBPACK_IMPORTED_MODULE_3__["default"].component('app-home', (__webpack_require__(/*! ./components/AppHome.vue */ "./resources/js/components/AppHome.vue")["default"]));
+vue__WEBPACK_IMPORTED_MODULE_3__["default"].component('base-button', (__webpack_require__(/*! ./layout/BaseButton.vue */ "./resources/js/layout/BaseButton.vue")["default"]));
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -2369,9 +2503,9 @@ vue__WEBPACK_IMPORTED_MODULE_1__["default"].component('base-button', (__webpack_
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-new vue__WEBPACK_IMPORTED_MODULE_1__["default"]({
+new vue__WEBPACK_IMPORTED_MODULE_3__["default"]({
   vuetify: _plugins_vuetify_js__WEBPACK_IMPORTED_MODULE_0__["default"],
-  router: _router_router_js__WEBPACK_IMPORTED_MODULE_2__["default"]
+  router: _router_router_js__WEBPACK_IMPORTED_MODULE_4__["default"]
 }).$mount('#app');
 
 /***/ }),
@@ -6891,7 +7025,7 @@ __webpack_require__.r(__webpack_exports__);
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 ___CSS_LOADER_EXPORT___.push([module.id, "@import url(https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap);"]);
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n*{\n  background: #ededed;\n  font-family: 'Fira Sans', sans-serif;\n}\n\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n*{\n  font-family: 'Fira Sans', sans-serif;\n}\n\n\n\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -6987,7 +7121,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.hero-section__wrapper[data-v-b3c5cf30]{\n  position: relative;\n  background: #faf9b6;\n}\n.hero-grid[data-v-b3c5cf30]{\n  display: grid;\n  grid-template-columns: 50% 50%;\n  grid-gap: 1rem;\n  padding: 1rem;\n  align-items: center;\n}\n.hero-inner_wrapper img[data-v-b3c5cf30]{\n  width: 100%;\n}\n.hero-inner_wrapper h1[data-v-b3c5cf30]{\n  font-size: 3rem;\n  font-weight: 700;\n  color: #000;\n  margin-bottom: 1rem;\n  line-height: 1;\n}\n.hero-inner_wrapper p[data-v-b3c5cf30]{\n  font-size: .8rem;\n  color: #000;\n  opacity: .6;\n}\n\n/* Screen less than 767px */\n@media screen and (max-width: 767px) {\n.hero-grid[data-v-b3c5cf30]{\n    grid-template-columns: 100%;\n}\n}\n\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.hero-section__wrapper[data-v-b3c5cf30] {\n  position: relative;\n}\n.hero-grid[data-v-b3c5cf30] {\n  display: grid;\n  grid-template-columns: 50% 50%;\n  grid-gap: 1rem;\n  padding: 1rem;\n  align-items: center;\n}\n.hero-inner_wrapper img[data-v-b3c5cf30] {\n  width: 100%;\n}\n.hero-inner_wrapper h1[data-v-b3c5cf30] {\n  font-size: 3rem;\n  font-weight: 700;\n  color: #000;\n  margin-bottom: 1rem;\n  line-height: 1;\n}\n.hero-inner_wrapper p[data-v-b3c5cf30] {\n  font-size: 0.8rem;\n  color: #000;\n  opacity: 0.6;\n}\nsection.feature-section[data-v-b3c5cf30]{\n  background-color: rgb(15 76 92);\n  background-image: linear-gradient(180deg, rgba(15, 76, 92, 0.95), rgba(15, 76, 92, 0.95)), url(/images/wave.png?f3764c8…);\n  background-position: 0px 0px, 50% 50%;\n  border-radius: 25px;\n  margin: 5rem 0;\n}\n.feature-inner_wrapper[data-v-b3c5cf30]{\n  padding: 2em;\n}\n.feature-grids[data-v-b3c5cf30]{\n  display: grid;\n  grid-template-columns: repeat(3, 1fr);\n  grid-gap: 1rem;\n  padding: 1rem;\n  align-items: center;\n  color: #fff;\n}\n\n\n/* Feature Item Component */\n.feature-content h3[data-v-b3c5cf30]{\n  font-size: 1.5rem;\n  font-weight: 700;\n  margin-bottom: 1rem;\n  line-height: 1;\n}\n.feature-content p[data-v-b3c5cf30]{\n  font-size: 0.9rem;\n  color: #fff;\n  opacity: 0.8;\n}\n.feature-icon img[data-v-b3c5cf30]{\n  width: 50px;\n  margin-bottom: 1rem;\n}\n\n\n/* End */\n.justify-container[data-v-b3c5cf30]{\n  display: flex;\n  justify-content: center;\n}\n.horizontal-line[data-v-b3c5cf30]{\n  height: 5rem;\n  border-left: 5px solid #0f4c5c;\n  opacity: 50%;\n  padding: 0;\n  display: flex;\n}\n.showcase-grid[data-v-b3c5cf30]{\n  display: grid;\n  grid-template-columns: repeat(2, 1fr);\n  grid-gap: 1rem;\n  padding: 1rem;\n  align-items: center;\n}\n.showcase-inner_wrapper.__text[data-v-b3c5cf30]{\n  background: rgb(59, 59, 59);\n  color: #fff;\n  border: #000 solid 4px;\n  border-radius: 30px;\n  box-shadow: 0px 8px 30px rgb(64 64 64 / 37%)\n}\n.showcase-contain[data-v-b3c5cf30]{\n  padding: 2rem;\n}\n.showcase-contain h1[data-v-b3c5cf30]{\n  font-size: 3em;\n}\n.asset-title[data-v-b3c5cf30]{\n  display: flex;\n  border: 3px solid rgb(255, 114, 58);\n  border-radius: 100%;\n  padding: 5px 20px;\n  display: inline-block;\n  margin-left: 10px;\n}\n.asset-title h2[data-v-b3c5cf30]{\n  font-size: 1.5rem;\n  font-weight: 700;\n  line-height: 1;\n  margin-left: 1rem;\n}\n\n\n/* Screen less than 767px */\n@media screen and (max-width: 767px) {\n.hero-grid[data-v-b3c5cf30] {\n    grid-template-columns: 100%;\n}\n.feature-grids[data-v-b3c5cf30]{\n    grid-template-columns: 1fr;\n}\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -7067,6 +7201,81 @@ module.exports = function (cssWithMappingToString) {
 
   return list;
 };
+
+/***/ }),
+
+/***/ "./public/img/chat.svg":
+/*!*****************************!*\
+  !*** ./public/img/chat.svg ***!
+  \*****************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ("/images/chat.svg?5acb70e5c410457f245273c45195f68d");
+
+/***/ }),
+
+/***/ "./public/img/create.svg":
+/*!*******************************!*\
+  !*** ./public/img/create.svg ***!
+  \*******************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ("/images/create.svg?acd11f80360ea48f09a043b0c6d34a9e");
+
+/***/ }),
+
+/***/ "./public/img/discuss.png":
+/*!********************************!*\
+  !*** ./public/img/discuss.png ***!
+  \********************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ("/images/discuss.png?d1bd75a300c112fbd670340f0cfade3e");
+
+/***/ }),
+
+/***/ "./public/img/doge.svg":
+/*!*****************************!*\
+  !*** ./public/img/doge.svg ***!
+  \*****************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ("/images/doge.svg?2028d0b0de19e8509da541bdc1e5ae7d");
+
+/***/ }),
+
+/***/ "./public/img/feedback.svg":
+/*!*********************************!*\
+  !*** ./public/img/feedback.svg ***!
+  \*********************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ("/images/feedback.svg?8cce05ffbf3509e6c2ef11fb0233ff6c");
 
 /***/ }),
 
@@ -38561,6 +38770,22 @@ module.exports = function (list, options) {
 
 /***/ }),
 
+/***/ "./node_modules/vue-axios/dist/vue-axios.esm.min.js":
+/*!**********************************************************!*\
+  !*** ./node_modules/vue-axios/dist/vue-axios.esm.min.js ***!
+  \**********************************************************/
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ plugin)
+/* harmony export */ });
+/* module decorator */ module = __webpack_require__.hmd(module);
+function _typeof(e){return(_typeof="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(e){return typeof e}:function(e){return e&&"function"==typeof Symbol&&e.constructor===Symbol&&e!==Symbol.prototype?"symbol":typeof e})(e)}function plugin(e,n){if(!plugin.installed){var o=isAxiosLike(n)?migrateToMultipleInstances(n):n;if(isValidConfig(o)){plugin.installed=!0;var i=getVueVersion(e);if(i){var t=i<3?registerOnVue2:registerOnVue3;Object.keys(o).forEach((function(n){t(e,n,o[n])}))}else console.error("[vue-axios] unknown Vue version")}else console.error("[vue-axios] configuration is invalid, expected options are either <axios_instance> or { <registration_key>: <axios_instance> }")}}function registerOnVue2(e,n,o){Object.defineProperty(e.prototype,n,{get:function(){return o}}),e[n]=o}function registerOnVue3(e,n,o){e.config.globalProperties[n]=o,e[n]=o}function isAxiosLike(e){return e&&"function"==typeof e.get&&"function"==typeof e.post}function migrateToMultipleInstances(e){return{axios:e,$http:e}}function isValidConfig(e){return"object"===_typeof(e)&&Object.keys(e).every((function(n){return isAxiosLike(e[n])}))}function getVueVersion(e){return e&&e.version&&Number(e.version.split(".")[0])}"object"==("undefined"==typeof exports?"undefined":_typeof(exports))?module.exports=plugin:"function"==typeof define&&__webpack_require__.amdO?define([],(function(){return plugin})):window.Vue&&window.axios&&window.Vue.use&&Vue.use(plugin,window.axios);
+
+/***/ }),
+
 /***/ "./resources/js/auth/Login.vue":
 /*!*************************************!*\
   !*** ./resources/js/auth/Login.vue ***!
@@ -39352,37 +39577,139 @@ var render = function () {
   var _c = _vm._self._c || _h
   return _c(
     "div",
-    { staticClass: "hero-section" },
     [
+      _c(
+        "div",
+        { staticClass: "hero-section" },
+        [
+          _c("v-container", [
+            _c("div", { staticClass: "hero-section__wrapper" }, [
+              _c("div", { staticClass: "hero-grid" }, [
+                _c("div", { staticClass: "hero-item" }, [
+                  _c(
+                    "div",
+                    { staticClass: "hero-inner_wrapper" },
+                    [
+                      _c("h1", [
+                        _vm._v(
+                          "Dive into the world where your opinions are valid"
+                        ),
+                      ]),
+                      _vm._v(" "),
+                      _c("p", [
+                        _vm._v(
+                          "\n                DogeDiscuss is a platform for thousands of communities to\n                share opinions regarding trending crypto coin. Our goal is to\n                empower teams, communities with new insight into the web3\n                world as we approach the post-pandemic era.\n              "
+                        ),
+                      ]),
+                      _vm._v(" "),
+                      _c(
+                        "base-button",
+                        { attrs: { link: "", mode: "outline" } },
+                        [_vm._v(" Get Started ")]
+                      ),
+                    ],
+                    1
+                  ),
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "hero-item" }, [
+                  _c("div", { staticClass: "hero-inner_wrapper" }, [
+                    _c("img", { attrs: { src: _vm.heroImg, alt: "" } }),
+                  ]),
+                ]),
+              ]),
+            ]),
+          ]),
+        ],
+        1
+      ),
+      _vm._v(" "),
       _c("v-container", [
-        _c("div", { staticClass: "hero-section__wrapper" }, [
-          _c("div", { staticClass: "hero-grid" }, [
-            _c("div", { staticClass: "hero-item" }, [
-              _c(
-                "div",
-                { staticClass: "hero-inner_wrapper" },
-                [
-                  _c("h1", [
-                    _vm._v("Dive into the world where your opinions are valid"),
+        _c("section", { staticClass: "feature-section" }, [
+          _c("div", { staticClass: "feature-inner-wrapper" }, [
+            _c("div", { staticClass: "feature-grids" }, [
+              _c("div", { staticClass: "feature-item" }, [
+                _c("div", { staticClass: "feature-inner_wrapper" }, [
+                  _c("div", { staticClass: "feature-icon" }, [
+                    _c("img", { attrs: { src: _vm.user, alt: "" } }),
                   ]),
                   _vm._v(" "),
-                  _c("p", [
-                    _vm._v(
-                      "\n              DogeDiscuss is a platform for thousands of communities to share\n              opinions regarding trending crypto coin. Our goal is to empower\n              teams, communities with new insight into the web3 world as we\n              approach the post-pandemic era.\n            "
-                    ),
+                  _c("div", { staticClass: "feature-content" }, [
+                    _c("h3", [_vm._v("Create your account")]),
+                    _vm._v(" "),
+                    _c("p", [
+                      _vm._v(
+                        "Create your account and start sharing your opinions."
+                      ),
+                    ]),
+                  ]),
+                ]),
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "feature-item" }, [
+                _c("div", { staticClass: "feature-inner_wrapper" }, [
+                  _c("div", { staticClass: "feature-icon" }, [
+                    _c("img", { attrs: { src: _vm.chat, alt: "" } }),
                   ]),
                   _vm._v(" "),
-                  _c("base-button", { attrs: { link: "", mode: "outline" } }, [
-                    _vm._v("\n              Get Started\n            "),
+                  _c("div", { staticClass: "feature-content" }, [
+                    _c("h3", [_vm._v("Share your opinion")]),
+                    _vm._v(" "),
+                    _c("p", [
+                      _vm._v(
+                        "Share your opinion and get feedback from other users."
+                      ),
+                    ]),
                   ]),
-                ],
-                1
-              ),
+                ]),
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "feature-item" }, [
+                _c("div", { staticClass: "feature-inner_wrapper" }, [
+                  _c("div", { staticClass: "feature-icon" }, [
+                    _c("img", { attrs: { src: _vm.feedback, alt: "" } }),
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "feature-content" }, [
+                    _c("h3", [_vm._v("Get feedback")]),
+                    _vm._v(" "),
+                    _c("p", [
+                      _vm._v(
+                        "\n                  Get feedback from other users and help them to improve\n                  their opinions.\n                "
+                      ),
+                    ]),
+                  ]),
+                ]),
+              ]),
+            ]),
+          ]),
+        ]),
+      ]),
+      _vm._v(" "),
+      _c("v-container", [
+        _c("div", { staticClass: "showcase-wrapper" }, [
+          _c("div", { staticClass: "justify-container" }, [
+            _c("div", { staticClass: "horizontal-line" }),
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "showcase-grid" }, [
+            _c("div", { staticClass: "showcase-item" }, [
+              _c("div", { staticClass: "showcase-inner_wrapper" }, [
+                _c("img", { attrs: { src: _vm.discuss, alt: "" } }),
+              ]),
             ]),
             _vm._v(" "),
-            _c("div", { staticClass: "hero-item" }, [
-              _c("div", { staticClass: "hero-inner_wrapper" }, [
-                _c("img", { attrs: { src: _vm.heroImg, alt: "" } }),
+            _c("div", { staticClass: "showcase-item" }, [
+              _c("div", { staticClass: "showcase-inner_wrapper __text" }, [
+                _c("div", { staticClass: "showcase-contain" }, [
+                  _c("div", { staticClass: "asset-title" }, [
+                    _c("img", { attrs: { src: _vm.doge, alt: "" } }),
+                    _vm._v(" "),
+                    _c("h2", [_vm._v(_vm._s(_vm.assetName))]),
+                  ]),
+                  _vm._v(" "),
+                  _c("h1", [_vm._v(" " + _vm._s(_vm.rate) + " ")]),
+                ]),
               ]),
             ]),
           ]),
@@ -101014,6 +101341,11 @@ module.exports = JSON.parse('{"name":"axios","version":"0.21.4","description":"P
 /******/ 	__webpack_require__.m = __webpack_modules__;
 /******/ 	
 /************************************************************************/
+/******/ 	/* webpack/runtime/amd options */
+/******/ 	(() => {
+/******/ 		__webpack_require__.amdO = {};
+/******/ 	})();
+/******/ 	
 /******/ 	/* webpack/runtime/chunk loaded */
 /******/ 	(() => {
 /******/ 		var deferred = [];
@@ -101080,6 +101412,21 @@ module.exports = JSON.parse('{"name":"axios","version":"0.21.4","description":"P
 /******/ 				if (typeof window === 'object') return window;
 /******/ 			}
 /******/ 		})();
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/harmony module decorator */
+/******/ 	(() => {
+/******/ 		__webpack_require__.hmd = (module) => {
+/******/ 			module = Object.create(module);
+/******/ 			if (!module.children) module.children = [];
+/******/ 			Object.defineProperty(module, 'exports', {
+/******/ 				enumerable: true,
+/******/ 				set: () => {
+/******/ 					throw new Error('ES Modules may not assign module.exports or exports.*, Use ESM export syntax, instead: ' + module.id);
+/******/ 				}
+/******/ 			});
+/******/ 			return module;
+/******/ 		};
 /******/ 	})();
 /******/ 	
 /******/ 	/* webpack/runtime/hasOwnProperty shorthand */

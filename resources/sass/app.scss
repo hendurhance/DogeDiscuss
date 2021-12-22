@@ -3,3 +3,10 @@
 
 // Vuetify
 @import "~vuetify/dist/vuetify.min.css";
+
+// set application background color
+$app-primary-color: #fefefe;
+
+// use the following to set the primary color of the application
+$primary-color: $app-primary-color;
+
