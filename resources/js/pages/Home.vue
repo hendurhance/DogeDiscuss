@@ -156,7 +156,7 @@ export default {
     },
     rate() {
       // return rate at round 2
-      return '$' + " " + this.data.rate.toFixed(2) + " " + this.data.asset_id_quote;
+      return '$' + " " + this.data.rate + " " + this.data.asset_id_quote;
     }
   },
   // toFixed function
@@ -292,13 +292,24 @@ section.feature-section{
   margin-left: 1rem;
 }
 
+.showcase-grid{
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  
+}
+
+.showcase-inner_wrapper img{
+  width: 100%;
+}
+
+
 
 /* Screen less than 767px */
 @media screen and (max-width: 767px) {
   .hero-grid {
     grid-template-columns: 100%;
   }
-  .feature-grids{
+  .feature-grids, .showcase-grid{
     grid-template-columns: 1fr;
 
   }

@@ -163,6 +163,7 @@ nav {
     width: 100%;
     z-index: 999;
     height: 100vh;
+    background: #0f4c5c;
   }
   .grid-sidebar {
     padding: 4em 2em;
@@ -178,7 +179,7 @@ nav {
     margin-top: 6em;
   }
   .navigation a {
-    color: #0f4c5c;
+    color: #fff;
     text-decoration: none;
     font-size: 20px;
     font-weight: 700;
