@@ -7,6 +7,7 @@ use App\Http\Controllers\ReplyController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CryptoController;
 
 /*
 |--------------------------------------------------------------------------
@@ -50,3 +51,5 @@ Route::apiResource('/question/{question}/reply', ReplyController::class)->except
 Route::post('/like/{reply}', [LikeController::class, 'likeIt']);
 Route::delete('/like/{reply}', [LikeController::class, 'unlikeIt']);
 
+// Crypto currency API
+Route::get('/ticker/doge', [CryptoController::class, 'doge']);

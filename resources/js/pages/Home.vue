@@ -84,24 +84,69 @@
     <!-- Crypto SHowcase -->
     <v-container>
       <div class="showcase-wrapper">
-        <div class="justify-container">
-          <div class="horizontal-line"></div>
-        </div>
-        <div class="showcase-grid">
-          <div class="showcase-item">
-            <div class="showcase-inner_wrapper">
-              <img :src="discuss" alt="">
-            </div>
+        <div class="inner-showcase-wrapper">
+          <div class="justify-container">
+            <div class="middle-line"></div>
           </div>
-          <div class="showcase-item">
-            <div class="showcase-inner_wrapper __text">
-              <div class="showcase-contain">
-                <div class="asset-title">
-                  <img :src="doge" alt="">
-                  <h2>{{ assetName }}</h2>
-                </div>
-                <h1> {{rate}} </h1>
+          <!-- Content -->
+          <div class="header-grid-showcase">
+            <img :src="doge" alt="">
+            <h1>Doge Market Overview</h1>
+          </div>
+          <div class="asset-metadata">
+            <div class="asset-grid">
+              <div class="asset-item">
+                <h6>Asset Name</h6>
+                <p> {{ getAssetName }} </p>
               </div>
+              <div class="asset-item">
+                <h6>Symbol</h6>
+                <p> {{  getSym }} </p>
+              </div>
+              <div class="asset-item">
+                <h6>Asset Price</h6>
+                <p> {{ getPrice }} </p>
+              </div>
+              <div class="asset-item">
+                <h6>Percent Change in 1h</h6>
+                <!-- get percentage change for using param of 1h -->
+                <p :class="getPercentChange1hColor"> {{ getPercentChange1h }} </p>
+              </div>
+              <div class="asset-item">
+                <h6>Percent Change in 24h</h6>
+                <!-- get percentage change for using param of 24h -->
+                <p :class="getPercentChange24hColor"> {{ getPercentChange24h }} </p>
+              </div>
+              <div class="asset-item">
+                <h6>Percent Change in 7d</h6>
+                <!-- get percentage change for using param of 7d -->
+                <p :class="getPercentChange7dColor"> {{ getPercentChange7d }} </p>
+              </div>
+               <div class="asset-item">
+                <h6>Rank</h6>
+                <p> {{ getRank }} </p>
+              </div>
+              <div class="asset-item">
+                <h6>Price in BTC</h6>
+                <p> {{ getBTCEquivalent }} </p>
+              </div>
+              <div class="asset-item">
+                <h6>Circulating Supply</h6>
+                <p> {{ getCirculatingSupply }} </p>
+              </div>
+              <div class="asset-item">
+                <h6>Market Cap</h6>
+                <p> {{ getMarketCap }} </p>
+              </div>
+              <div class="asset-item">
+                <h6>24h Volume</h6>
+                <p> {{ getVolume24h }} </p>
+              </div>
+              <div class="asset-item">
+                <h6>Total Supply</h6>
+                <p> {{ getTotalSupply }} </p>
+              </div>
+             
             </div>
           </div>
         </div>
@@ -116,7 +161,7 @@ import User from "../../../public/img/create.svg"
 import Chat from "../../../public/img/chat.svg"
 import Feedback from "../../../public/img/feedback.svg"
 import Discuss from "../../../public/img/discuss.png"
-import Doge from "../../../public/img/doge.svg"
+import Doge from "../../../public/img/dogeicon.svg"
 
 export default {
   data() {
@@ -127,39 +172,121 @@ export default {
       feedback: Feedback,
       discuss: Discuss,
       doge: Doge,
-      data: [],
-      asset: []
+      data: null,
+      asset: null,
     };
   },
   mounted() {
-    // use axios to call https://pro-api.coinmarketcap.com/v1/cryptocurrency/map
-    // and get the data
-    // setting headers of api key and accept
-    // then get the data
+    // use axios to call https://api.coinlore.net/api/ticker/?id=2
     // and set the data to the state
     axios
-      .get("https://rest.coinapi.io/v1/exchangerate/DOGE/USD?apikey=DB057B64-B8D7-4448-810E-90D61FD3C819", {
+      .get("/api/ticker/doge", {
         headers: {
           Accept: "application/json",
         },
       })
       .then((response) => {
         this.data = response.data;
+        this.asset = this.data[0];
       })
       .catch((error) => {
         console.log(error);
       });
   },
   computed: {
-    assetName() {
-      return this.data.asset_id_base;
+    getAssetName() {
+      if (this.asset) {
+        return this.asset.name;
+      }
     },
-    rate() {
-      // return rate at round 2
-      return '$' + " " + this.data.rate + " " + this.data.asset_id_quote;
-    }
+    getMarketCap() {
+      if (this.asset) {
+        // return and put , after every 3 digits
+        return '$' + this.asset.market_cap_usd.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+      }
+    },
+    getPrice() {
+      if (this.asset) {
+        return '$' + this.asset.price_usd
+      }
+    },
+    getVolume24h() {
+      if (this.asset) {
+        return '$' + this.asset.volume24.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+      }
+    },
+    getTotalSupply() {
+      if (this.asset) {
+        return this.asset.tsupply.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+      }
+    },
+    getBTCEquivalent() {
+      if (this.asset) {
+        return this.asset.price_btc + 'BTC';
+      }
+    },
+    // use one function to get increase and decrease in change in 1h, 24h, 7d
+    getPercentChange1h() {
+      if (this.asset) {
+        return this.asset.percent_change_1h + '%'
+      }
+    },
+    getPercentChange24h() {
+      if (this.asset) {
+        return this.asset.percent_change_24h + '%'
+      }
+    },
+    getPercentChange7d() {
+      if (this.asset) {
+        return this.asset.percent_change_7d + '%'
+      }
+    },
+    getRank() {
+      if (this.asset) {
+        return this.asset.rank;
+      }
+    },
+    getSym() {
+      if (this.asset) {
+        return this.asset.symbol;
+      }
+    },
+    getCirculatingSupply() {
+      if (this.asset) {
+        return '$' + this.asset.csupply.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+      }
+    },
+    // get increase and decrease in change in 1h, 24h, 7d and set the color
+    getPercentChange1hColor() {
+      if (this.asset) {
+        if (this.asset.percent_change_1h > 0) {
+          return 'green-color';
+        } else {
+          return 'red-color';
+        }
+      }
+    },
+    getPercentChange24hColor() {
+      if (this.asset) {
+        if (this.asset.percent_change_24h > 0) {
+          return 'green-color';
+        } else {
+          return 'red-color';
+        }
+      }
+    },
+    getPercentChange7dColor() {
+      if (this.asset) {
+        if (this.asset.percent_change_7d > 0) {
+          return 'green-color';
+        } else {
+          return 'red-color';
+        }
+      }
+    },
   },
-  // toFixed function
+  
+  
 
 
 };
@@ -239,67 +366,57 @@ section.feature-section{
 
 
 /* End */
+.showcase-wrapper{
+  background-color: #faf5ef;
+  padding: 2em;
+  border-radius: 25px;
+  margin: 5rem 0;
+}
+
 .justify-container{
   display: flex;
   justify-content: center;
 }
 
-.horizontal-line{
+.middle-line{
   height: 5rem;
-  border-left: 5px solid #0f4c5c;
-  opacity: 50%;
+  border-left: 5px solid #ffa02e;
   padding: 0;
   display: flex;
+  margin-top: -5em;
 }
 
-.showcase-grid{
+.header-grid-showcase{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 1em;
+}
+
+.header-grid-showcase img{
+  width: 50px;
+  padding-right: 1em;
+}
+
+.asset-metadata{
+  margin-top: 1em;
+}
+
+.asset-grid{
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   grid-gap: 1rem;
   padding: 1rem;
   align-items: center;
+  color: #000;
 }
 
-.showcase-inner_wrapper.__text{
-  background: rgb(59, 59, 59);
-  color: #fff;
-  border: #000 solid 4px;
-  border-radius: 30px;
-  box-shadow: 0px 8px 30px rgb(64 64 64 / 37%)
+.red-color{
+  color: #ff2e2e;
 }
 
-.showcase-contain{
-  padding: 2rem;
-}
-
-.showcase-contain h1{
-  font-size: 3em;
-}
-
-.asset-title{
-  display: flex;
-  border: 3px solid rgb(255, 114, 58);
-  border-radius: 100%;
-  padding: 5px 20px;
-  display: inline-block;
-  margin-left: 10px;
-}
-
-.asset-title h2{
-  font-size: 1.5rem;
-  font-weight: 700;
-  line-height: 1;
-  margin-left: 1rem;
-}
-
-.showcase-grid{
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  
-}
-
-.showcase-inner_wrapper img{
-  width: 100%;
+.green-color{
+  color: #00b300;
 }
 
 
@@ -309,9 +426,12 @@ section.feature-section{
   .hero-grid {
     grid-template-columns: 100%;
   }
-  .feature-grids, .showcase-grid{
+  .feature-grids{
     grid-template-columns: 1fr;
 
+  }
+  .asset-grid{
+    grid-template-columns: 1fr 1fr;
   }
 
 }

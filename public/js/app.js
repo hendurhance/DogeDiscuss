@@ -2291,7 +2291,52 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _public_img_chat_svg__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../public/img/chat.svg */ "./public/img/chat.svg");
 /* harmony import */ var _public_img_feedback_svg__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../public/img/feedback.svg */ "./public/img/feedback.svg");
 /* harmony import */ var _public_img_discuss_png__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../public/img/discuss.png */ "./public/img/discuss.png");
-/* harmony import */ var _public_img_doge_svg__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../../public/img/doge.svg */ "./public/img/doge.svg");
+/* harmony import */ var _public_img_dogeicon_svg__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../../public/img/dogeicon.svg */ "./public/img/dogeicon.svg");
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -2418,39 +2463,119 @@ __webpack_require__.r(__webpack_exports__);
       chat: _public_img_chat_svg__WEBPACK_IMPORTED_MODULE_2__["default"],
       feedback: _public_img_feedback_svg__WEBPACK_IMPORTED_MODULE_3__["default"],
       discuss: _public_img_discuss_png__WEBPACK_IMPORTED_MODULE_4__["default"],
-      doge: _public_img_doge_svg__WEBPACK_IMPORTED_MODULE_5__["default"],
-      data: [],
-      asset: []
+      doge: _public_img_dogeicon_svg__WEBPACK_IMPORTED_MODULE_5__["default"],
+      data: null,
+      asset: null
     };
   },
   mounted: function mounted() {
     var _this = this;
 
-    // use axios to call https://pro-api.coinmarketcap.com/v1/cryptocurrency/map
-    // and get the data
-    // setting headers of api key and accept
-    // then get the data
+    // use axios to call https://api.coinlore.net/api/ticker/?id=2
     // and set the data to the state
-    axios.get("https://rest.coinapi.io/v1/exchangerate/DOGE/USD?apikey=DB057B64-B8D7-4448-810E-90D61FD3C819", {
+    axios.get("/api/ticker/doge", {
       headers: {
         Accept: "application/json"
       }
     }).then(function (response) {
       _this.data = response.data;
+      _this.asset = _this.data[0];
     })["catch"](function (error) {
       console.log(error);
     });
   },
   computed: {
-    assetName: function assetName() {
-      return this.data.asset_id_base;
+    getAssetName: function getAssetName() {
+      if (this.asset) {
+        return this.asset.name;
+      }
     },
-    rate: function rate() {
-      // return rate at round 2
-      return '$' + " " + this.data.rate + " " + this.data.asset_id_quote;
+    getMarketCap: function getMarketCap() {
+      if (this.asset) {
+        // return and put , after every 3 digits
+        return '$' + this.asset.market_cap_usd.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+      }
+    },
+    getPrice: function getPrice() {
+      if (this.asset) {
+        return '$' + this.asset.price_usd;
+      }
+    },
+    getVolume24h: function getVolume24h() {
+      if (this.asset) {
+        return '$' + this.asset.volume24.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+      }
+    },
+    getTotalSupply: function getTotalSupply() {
+      if (this.asset) {
+        return this.asset.tsupply.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+      }
+    },
+    getBTCEquivalent: function getBTCEquivalent() {
+      if (this.asset) {
+        return this.asset.price_btc + 'BTC';
+      }
+    },
+    // use one function to get increase and decrease in change in 1h, 24h, 7d
+    getPercentChange1h: function getPercentChange1h() {
+      if (this.asset) {
+        return this.asset.percent_change_1h + '%';
+      }
+    },
+    getPercentChange24h: function getPercentChange24h() {
+      if (this.asset) {
+        return this.asset.percent_change_24h + '%';
+      }
+    },
+    getPercentChange7d: function getPercentChange7d() {
+      if (this.asset) {
+        return this.asset.percent_change_7d + '%';
+      }
+    },
+    getRank: function getRank() {
+      if (this.asset) {
+        return this.asset.rank;
+      }
+    },
+    getSym: function getSym() {
+      if (this.asset) {
+        return this.asset.symbol;
+      }
+    },
+    getCirculatingSupply: function getCirculatingSupply() {
+      if (this.asset) {
+        return '$' + this.asset.csupply.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+      }
+    },
+    // get increase and decrease in change in 1h, 24h, 7d and set the color
+    getPercentChange1hColor: function getPercentChange1hColor() {
+      if (this.asset) {
+        if (this.asset.percent_change_1h > 0) {
+          return 'green-color';
+        } else {
+          return 'red-color';
+        }
+      }
+    },
+    getPercentChange24hColor: function getPercentChange24hColor() {
+      if (this.asset) {
+        if (this.asset.percent_change_24h > 0) {
+          return 'green-color';
+        } else {
+          return 'red-color';
+        }
+      }
+    },
+    getPercentChange7dColor: function getPercentChange7dColor() {
+      if (this.asset) {
+        if (this.asset.percent_change_7d > 0) {
+          return 'green-color';
+        } else {
+          return 'red-color';
+        }
+      }
     }
-  } // toFixed function
-
+  }
 });
 
 /***/ }),
@@ -7121,7 +7246,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.hero-section__wrapper[data-v-b3c5cf30] {\n  position: relative;\n}\n.hero-grid[data-v-b3c5cf30] {\n  display: grid;\n  grid-template-columns: 50% 50%;\n  grid-gap: 1rem;\n  padding: 1rem;\n  align-items: center;\n}\n.hero-inner_wrapper img[data-v-b3c5cf30] {\n  width: 100%;\n}\n.hero-inner_wrapper h1[data-v-b3c5cf30] {\n  font-size: 3rem;\n  font-weight: 700;\n  color: #000;\n  margin-bottom: 1rem;\n  line-height: 1;\n}\n.hero-inner_wrapper p[data-v-b3c5cf30] {\n  font-size: 0.8rem;\n  color: #000;\n  opacity: 0.6;\n}\nsection.feature-section[data-v-b3c5cf30]{\n  background-color: rgb(15 76 92);\n  background-image: linear-gradient(180deg, rgba(15, 76, 92, 0.95), rgba(15, 76, 92, 0.95)), url(/images/wave.png?f3764c8…);\n  background-position: 0px 0px, 50% 50%;\n  border-radius: 25px;\n  margin: 5rem 0;\n}\n.feature-inner_wrapper[data-v-b3c5cf30]{\n  padding: 2em;\n}\n.feature-grids[data-v-b3c5cf30]{\n  display: grid;\n  grid-template-columns: repeat(3, 1fr);\n  grid-gap: 1rem;\n  padding: 1rem;\n  align-items: center;\n  color: #fff;\n}\n\n\n/* Feature Item Component */\n.feature-content h3[data-v-b3c5cf30]{\n  font-size: 1.5rem;\n  font-weight: 700;\n  margin-bottom: 1rem;\n  line-height: 1;\n}\n.feature-content p[data-v-b3c5cf30]{\n  font-size: 0.9rem;\n  color: #fff;\n  opacity: 0.8;\n}\n.feature-icon img[data-v-b3c5cf30]{\n  width: 50px;\n  margin-bottom: 1rem;\n}\n\n\n/* End */\n.justify-container[data-v-b3c5cf30]{\n  display: flex;\n  justify-content: center;\n}\n.horizontal-line[data-v-b3c5cf30]{\n  height: 5rem;\n  border-left: 5px solid #0f4c5c;\n  opacity: 50%;\n  padding: 0;\n  display: flex;\n}\n.showcase-grid[data-v-b3c5cf30]{\n  display: grid;\n  grid-template-columns: repeat(2, 1fr);\n  grid-gap: 1rem;\n  padding: 1rem;\n  align-items: center;\n}\n.showcase-inner_wrapper.__text[data-v-b3c5cf30]{\n  background: rgb(59, 59, 59);\n  color: #fff;\n  border: #000 solid 4px;\n  border-radius: 30px;\n  box-shadow: 0px 8px 30px rgb(64 64 64 / 37%)\n}\n.showcase-contain[data-v-b3c5cf30]{\n  padding: 2rem;\n}\n.showcase-contain h1[data-v-b3c5cf30]{\n  font-size: 3em;\n}\n.asset-title[data-v-b3c5cf30]{\n  display: flex;\n  border: 3px solid rgb(255, 114, 58);\n  border-radius: 100%;\n  padding: 5px 20px;\n  display: inline-block;\n  margin-left: 10px;\n}\n.asset-title h2[data-v-b3c5cf30]{\n  font-size: 1.5rem;\n  font-weight: 700;\n  line-height: 1;\n  margin-left: 1rem;\n}\n.showcase-grid[data-v-b3c5cf30]{\n  display: grid;\n  grid-template-columns: repeat(2, 1fr);\n}\n.showcase-inner_wrapper img[data-v-b3c5cf30]{\n  width: 100%;\n}\n\n\n\n/* Screen less than 767px */\n@media screen and (max-width: 767px) {\n.hero-grid[data-v-b3c5cf30] {\n    grid-template-columns: 100%;\n}\n.feature-grids[data-v-b3c5cf30], .showcase-grid[data-v-b3c5cf30]{\n    grid-template-columns: 1fr;\n}\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.hero-section__wrapper[data-v-b3c5cf30] {\n  position: relative;\n}\n.hero-grid[data-v-b3c5cf30] {\n  display: grid;\n  grid-template-columns: 50% 50%;\n  grid-gap: 1rem;\n  padding: 1rem;\n  align-items: center;\n}\n.hero-inner_wrapper img[data-v-b3c5cf30] {\n  width: 100%;\n}\n.hero-inner_wrapper h1[data-v-b3c5cf30] {\n  font-size: 3rem;\n  font-weight: 700;\n  color: #000;\n  margin-bottom: 1rem;\n  line-height: 1;\n}\n.hero-inner_wrapper p[data-v-b3c5cf30] {\n  font-size: 0.8rem;\n  color: #000;\n  opacity: 0.6;\n}\nsection.feature-section[data-v-b3c5cf30]{\n  background-color: rgb(15 76 92);\n  background-image: linear-gradient(180deg, rgba(15, 76, 92, 0.95), rgba(15, 76, 92, 0.95)), url(/images/wave.png?f3764c8…);\n  background-position: 0px 0px, 50% 50%;\n  border-radius: 25px;\n  margin: 5rem 0;\n}\n.feature-inner_wrapper[data-v-b3c5cf30]{\n  padding: 2em;\n}\n.feature-grids[data-v-b3c5cf30]{\n  display: grid;\n  grid-template-columns: repeat(3, 1fr);\n  grid-gap: 1rem;\n  padding: 1rem;\n  align-items: center;\n  color: #fff;\n}\n\n\n/* Feature Item Component */\n.feature-content h3[data-v-b3c5cf30]{\n  font-size: 1.5rem;\n  font-weight: 700;\n  margin-bottom: 1rem;\n  line-height: 1;\n}\n.feature-content p[data-v-b3c5cf30]{\n  font-size: 0.9rem;\n  color: #fff;\n  opacity: 0.8;\n}\n.feature-icon img[data-v-b3c5cf30]{\n  width: 50px;\n  margin-bottom: 1rem;\n}\n\n\n/* End */\n.showcase-wrapper[data-v-b3c5cf30]{\n  background-color: #faf5ef;\n  padding: 2em;\n  border-radius: 25px;\n  margin: 5rem 0;\n}\n.justify-container[data-v-b3c5cf30]{\n  display: flex;\n  justify-content: center;\n}\n.middle-line[data-v-b3c5cf30]{\n  height: 5rem;\n  border-left: 5px solid #ffa02e;\n  padding: 0;\n  display: flex;\n  margin-top: -5em;\n}\n.header-grid-showcase[data-v-b3c5cf30]{\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  margin-top: 1em;\n}\n.header-grid-showcase img[data-v-b3c5cf30]{\n  width: 50px;\n  padding-right: 1em;\n}\n.asset-metadata[data-v-b3c5cf30]{\n  margin-top: 1em;\n}\n.asset-grid[data-v-b3c5cf30]{\n  display: grid;\n  grid-template-columns: repeat(3, 1fr);\n  grid-gap: 1rem;\n  padding: 1rem;\n  align-items: center;\n  color: #000;\n}\n.red-color[data-v-b3c5cf30]{\n  color: #ff2e2e;\n}\n.green-color[data-v-b3c5cf30]{\n  color: #00b300;\n}\n\n\n\n/* Screen less than 767px */\n@media screen and (max-width: 767px) {\n.hero-grid[data-v-b3c5cf30] {\n    grid-template-columns: 100%;\n}\n.feature-grids[data-v-b3c5cf30]{\n    grid-template-columns: 1fr;\n}\n.asset-grid[data-v-b3c5cf30]{\n    grid-template-columns: 1fr 1fr;\n}\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -7249,10 +7374,10 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./public/img/doge.svg":
-/*!*****************************!*\
-  !*** ./public/img/doge.svg ***!
-  \*****************************/
+/***/ "./public/img/dogeicon.svg":
+/*!*********************************!*\
+  !*** ./public/img/dogeicon.svg ***!
+  \*********************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -7260,7 +7385,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ("/images/doge.svg?2028d0b0de19e8509da541bdc1e5ae7d");
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ("/images/dogeicon.svg?4367e2dc55a8b54fcc7bc2c3ba19531a");
 
 /***/ }),
 
@@ -39688,27 +39813,97 @@ var render = function () {
       _vm._v(" "),
       _c("v-container", [
         _c("div", { staticClass: "showcase-wrapper" }, [
-          _c("div", { staticClass: "justify-container" }, [
-            _c("div", { staticClass: "horizontal-line" }),
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "showcase-grid" }, [
-            _c("div", { staticClass: "showcase-item" }, [
-              _c("div", { staticClass: "showcase-inner_wrapper" }, [
-                _c("img", { attrs: { src: _vm.discuss, alt: "" } }),
-              ]),
+          _c("div", { staticClass: "inner-showcase-wrapper" }, [
+            _c("div", { staticClass: "justify-container" }, [
+              _c("div", { staticClass: "middle-line" }),
             ]),
             _vm._v(" "),
-            _c("div", { staticClass: "showcase-item" }, [
-              _c("div", { staticClass: "showcase-inner_wrapper __text" }, [
-                _c("div", { staticClass: "showcase-contain" }, [
-                  _c("div", { staticClass: "asset-title" }, [
-                    _c("img", { attrs: { src: _vm.doge, alt: "" } }),
-                    _vm._v(" "),
-                    _c("h2", [_vm._v(_vm._s(_vm.assetName))]),
-                  ]),
+            _c("div", { staticClass: "header-grid-showcase" }, [
+              _c("img", { attrs: { src: _vm.doge, alt: "" } }),
+              _vm._v(" "),
+              _c("h1", [_vm._v("Doge Market Overview")]),
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "asset-metadata" }, [
+              _c("div", { staticClass: "asset-grid" }, [
+                _c("div", { staticClass: "asset-item" }, [
+                  _c("h6", [_vm._v("Asset Name")]),
                   _vm._v(" "),
-                  _c("h1", [_vm._v(" " + _vm._s(_vm.rate) + " ")]),
+                  _c("p", [_vm._v(" " + _vm._s(_vm.getAssetName) + " ")]),
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "asset-item" }, [
+                  _c("h6", [_vm._v("Symbol")]),
+                  _vm._v(" "),
+                  _c("p", [_vm._v(" " + _vm._s(_vm.getSym) + " ")]),
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "asset-item" }, [
+                  _c("h6", [_vm._v("Asset Price")]),
+                  _vm._v(" "),
+                  _c("p", [_vm._v(" " + _vm._s(_vm.getPrice) + " ")]),
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "asset-item" }, [
+                  _c("h6", [_vm._v("Percent Change in 1h")]),
+                  _vm._v(" "),
+                  _c("p", { class: _vm.getPercentChange1hColor }, [
+                    _vm._v(" " + _vm._s(_vm.getPercentChange1h) + " "),
+                  ]),
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "asset-item" }, [
+                  _c("h6", [_vm._v("Percent Change in 24h")]),
+                  _vm._v(" "),
+                  _c("p", { class: _vm.getPercentChange24hColor }, [
+                    _vm._v(" " + _vm._s(_vm.getPercentChange24h) + " "),
+                  ]),
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "asset-item" }, [
+                  _c("h6", [_vm._v("Percent Change in 7d")]),
+                  _vm._v(" "),
+                  _c("p", { class: _vm.getPercentChange7dColor }, [
+                    _vm._v(" " + _vm._s(_vm.getPercentChange7d) + " "),
+                  ]),
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "asset-item" }, [
+                  _c("h6", [_vm._v("Rank")]),
+                  _vm._v(" "),
+                  _c("p", [_vm._v(" " + _vm._s(_vm.getRank) + " ")]),
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "asset-item" }, [
+                  _c("h6", [_vm._v("Price in BTC")]),
+                  _vm._v(" "),
+                  _c("p", [_vm._v(" " + _vm._s(_vm.getBTCEquivalent) + " ")]),
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "asset-item" }, [
+                  _c("h6", [_vm._v("Circulating Supply")]),
+                  _vm._v(" "),
+                  _c("p", [
+                    _vm._v(" " + _vm._s(_vm.getCirculatingSupply) + " "),
+                  ]),
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "asset-item" }, [
+                  _c("h6", [_vm._v("Market Cap")]),
+                  _vm._v(" "),
+                  _c("p", [_vm._v(" " + _vm._s(_vm.getMarketCap) + " ")]),
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "asset-item" }, [
+                  _c("h6", [_vm._v("24h Volume")]),
+                  _vm._v(" "),
+                  _c("p", [_vm._v(" " + _vm._s(_vm.getVolume24h) + " ")]),
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "asset-item" }, [
+                  _c("h6", [_vm._v("Total Supply")]),
+                  _vm._v(" "),
+                  _c("p", [_vm._v(" " + _vm._s(_vm.getTotalSupply) + " ")]),
                 ]),
               ]),
             ]),
