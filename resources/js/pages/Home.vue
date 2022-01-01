@@ -413,10 +413,12 @@ section.feature-section{
 
 .red-color{
   color: #ff2e2e;
+  font-weight: 600;
 }
 
 .green-color{
   color: #00b300;
+  font-weight: 600;
 }
 
 
