@@ -13,7 +13,7 @@ import vuetify from './plugins/vuetify.js';
 // Axios 
 import axios from 'axios'
 import VueAxios from 'vue-axios'
-
+import User from './Helpers/User'
 
 Vue.use(vuetify);
 Vue.use(VueAxios, axios)
@@ -31,6 +31,8 @@ Vue.use(VueAxios, axios)
 
 Vue.component('app-home', require('./components/AppHome.vue').default);
 Vue.component('base-button', require('./layout/BaseButton.vue').default);
+// use User class
+window.User = User;
 import router from './router/router.js';
 /**
  * Next, we will create a fresh Vue application instance and attach it to

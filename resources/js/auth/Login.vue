@@ -7,7 +7,7 @@
       <div class="auth-form">
         <div class="inner-auth">
           <div class="auth-logo">
-            <img :src="logo" alt="" />
+            <img @click="reRouteHome" :src="logo" alt="" />
           </div>
           <h1>Login</h1>
           <p>Hello there, Log in to your account</p>
@@ -104,26 +104,20 @@ export default {
           email: this.form.email,
           password: this.form.password
         };
-        // try and catch with axios
-        axios
-          .post("/api/auth/login", payload)
-          .then(response => {
-            // console.log(response);
-            if (response.data.success) {
-              this.$router.push("/");
-            } else {
-              this.errors.email = response.data.message;
-              this.buttonValue = "Login";
-            }
-          })
-          .catch(error => {
-            console.log(error);
-            // show error message
-            this.buttonValue = "Login";
-            this.errors.email = "Email or password is incorrect";
-          });
+        
+        User.login(payload).then(response => {
+          this.buttonValue = "Login";
+          // this.$router.push("/");
+        }).catch(error => {
+          this.buttonValue = "Login";
+          this.errors.email = "Email or password is invalid";
+        });
         
       }
+    },
+    // re route to home
+    reRouteHome() {
+      this.$router.push("/");
     }
   }
 };
