@@ -9,6 +9,12 @@ class User{
         )
     }
 
+    async register(paylod){
+        return await axios.post('/api/auth/register', paylod).then(
+            response => response.data
+        )
+    }
+
     LoginResponse(response){
         const access_token = response.data.access_token;
         const username = response.data.user;
