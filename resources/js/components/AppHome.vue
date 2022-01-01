@@ -20,19 +20,13 @@ export default {
         };
     },
     // if route is at login or register, then we don't need to render the header and footer
-    beforeRouteEnter(to, from, next) {
-        if (to.path === '/login' || to.path === '/register') {
-            next(vm => {
-                vm.isActive = false;
-            });
-        } else {
-            next();
-        }
-    },
-    mounted() {
-        // if route is at login or register, then we don't need to render the header and footer
-        if (this.$route.path === '/login' || this.$route.path === '/register') {
-            this.isActive = false;
+    watch: {
+        '$route': function (to, from) {
+            if (to.path === '/login' || to.path === '/register') {
+                this.isActive = false;
+            } else {
+                this.isActive = true;
+            }
         }
     },
     

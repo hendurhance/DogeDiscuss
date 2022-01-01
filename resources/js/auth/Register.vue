@@ -68,6 +68,7 @@
               <div class="form-item">
                 <input type="submit" :value="buttonValue" />
               </div>
+              <p class="success" v-if="success"> {{success}} </p>
             </form>
             <div class="extra-link">
               <p>
@@ -106,7 +107,7 @@ export default {
         password: null,
         confirmPassword: null,
       },
-      success: true,
+      success: null,
     };
   },
   methods: {
@@ -149,24 +150,29 @@ export default {
           name: this.form.name,
           email: this.form.email,
           password: this.form.password,
+          password_confirmation:  this.form.confirmPassword,
         };
 
         User.register(payload)
           .then((response) => {
               console.log(response)
-            this.$router.push("/login");
+            this.success = response.success + ". Please login to your account with your email and password";
+            // all form fields are cleared
+            this.form.name = null;
+            this.form.email = null;
+            this.form.password = null;
+            this.form.confirmPassword = null;
+            this.buttonValue = "Register";
           })
           .catch((error) => {
+            console.log(error.response.data.errors);
             this.buttonValue = "Register";
-            this.errors.name = error.response.data.errors.name;
-            this.errors.email = error.response.data.errors.email;
-            this.errors.password = error.response.data.errors.password;
+            this.errors.name = error.response.data.errors.name[0];
+            this.errors.email = error.response.data.errors.email[0];
+            this.errors.password = error.response.data.errors.password[0];
           });
       }
-    },
-    handleDialog() {
-      this.success = false;
-    },
+    }
   },
 };
 </script>
@@ -290,6 +296,16 @@ a {
   opacity: 0.8;
   background: none !important;
   border: none !important;
+}
+
+form p.success {
+    color: #00c774;
+    font-size: 0.8em;
+    font-weight: 400;
+    margin-bottom: 0.5em;
+    opacity: 0.8;
+    background: none !important;
+    border: none !important;
 }
 
 /* screen less than 767px */

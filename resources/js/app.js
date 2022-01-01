@@ -33,6 +33,7 @@ Vue.component('app-home', require('./components/AppHome.vue').default);
 Vue.component('base-button', require('./layout/BaseButton.vue').default);
 // use User class
 window.User = User;
+console.log(User.checkIfLoggedIn());
 import router from './router/router.js';
 /**
  * Next, we will create a fresh Vue application instance and attach it to

@@ -107,7 +107,7 @@ export default {
         
         User.login(payload).then(response => {
           this.buttonValue = "Login";
-          // this.$router.push("/");
+          this.$router.push({ name: "forum" });
         }).catch(error => {
           this.buttonValue = "Login";
           this.errors.email = "Email or password is invalid";

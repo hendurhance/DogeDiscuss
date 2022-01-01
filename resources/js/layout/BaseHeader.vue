@@ -9,7 +9,7 @@
           </div>
           <div class="nav-item">
             <div class="logo">
-              <img :src="logo" alt="" />
+              <img :src="logo" alt="" @click="reRouteHome" />
             </div>
           </div>
           <div class="nav-item no-mobile">
@@ -59,7 +59,10 @@ export default {
     },
     closeSidebar() {
       this.$refs.sidebar.classList.remove("sidebar--open");
-    }
+    },
+    reRouteHome() {
+      this.$router.push("/");
+    },
   }
 };
 </script>
@@ -87,6 +90,7 @@ nav {
 
 .logo img {
   width: 240px;
+  cursor: pointer;
 }
 
 .nav-item {

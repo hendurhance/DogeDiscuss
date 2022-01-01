@@ -46,7 +46,7 @@ class AuthController extends Controller
     {
         $user = User::create($request->all());
 
-        return response()->json(['success' => 'User created successfully'], Response::HTTP_CREATED);
+        return response()->json(['success' => 'You are registered successfully'], Response::HTTP_CREATED);
     }
 
 
