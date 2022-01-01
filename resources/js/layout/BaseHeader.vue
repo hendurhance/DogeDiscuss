@@ -13,11 +13,11 @@
             </div>
           </div>
           <div class="nav-item no-mobile">
-            <a href="">Ask Question</a>
+            <router-link to="/hey">Ask Question</router-link>
             <router-link to="/login" class="filled">Login</router-link>
           </div>
           <div class="nav-item no-desktop">
-            <a href="" class="a-flex"><img :src="user" alt="" /> Login</a>
+            <router-link to="/login" class="a-flex"><img :src="user" alt="" /> Login</router-link>
             <button><img @click="openSidebar" :src="hamburger" alt="" /></button>
           </div>
           <div class="sidebar" ref="sidebar">
@@ -29,7 +29,7 @@
                 <a href="" class="links">Forum</a>
                 <a href="" class="links">Category</a>
                 <a href="" class="links">Ask Question</a>
-                <router-link to="/login" class="links">Login</router-link>
+                <router-link to="/register" class="links">Register</router-link>
               </div>
             </div>
           </div>
@@ -131,6 +131,8 @@ nav {
 .sidebar {
   display: none;
 }
+
+
 
 /* Screen less than 767px */
 @media (max-width: 767px) {

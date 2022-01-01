@@ -423,6 +423,8 @@ section.feature-section{
 
 
 
+
+
 /* Screen less than 767px */
 @media screen and (max-width: 767px) {
   .hero-grid {
@@ -434,6 +436,18 @@ section.feature-section{
   }
   .asset-grid{
     grid-template-columns: 1fr 1fr;
+  }
+
+}
+
+/* screen less than 480px */
+@media screen and (max-width: 480px) {
+  .header-grid-showcase img{
+    width: 40px;
+  }
+
+  .header-grid-showcase h1{
+    font-size: 1.2rem;
   }
 
 }

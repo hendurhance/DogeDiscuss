@@ -1,8 +1,8 @@
 <template>
   <div>
-    <base-header></base-header>
+    <base-header v-if="isActive"></base-header>
     <router-view></router-view>
-    <base-footer></base-footer>
+    <base-footer v-if="isActive"></base-footer>
   </div>
 </template>
 
@@ -13,7 +13,18 @@ export default {
     components: {
         'base-header': BaseHeader,
         'base-footer': BaseFooter,
-    }
+    },
+    data() {
+        return {
+            isActive: true,
+        };
+    },
+    
+    // if route is at login or register, then we don't need to render the header and footer
+    mounted() {
+        this.isActive = !(this.$route.path === '/login' || this.$route.path === '/register');
+    },
+    
 }
 </script>
 
