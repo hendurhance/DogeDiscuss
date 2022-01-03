@@ -4,6 +4,7 @@ import Login from '../auth/Login.vue'
 import Home from '../pages/Home.vue'
 import Register from '../auth/Register.vue'
 import Forum from '../components/Forum/Forum.vue'
+import QuestionDetail from '../components/Forum/QuestionDetail.vue'
 
 Vue.use(VueRouter)
 
@@ -29,6 +30,13 @@ const routes = [
         name: 'forum',
         component: Forum
     },
+    {
+        path: '/q/:slug',
+        name: 'question',
+        component: QuestionDetail,
+        props: true
+    }
+
     
 ]
 

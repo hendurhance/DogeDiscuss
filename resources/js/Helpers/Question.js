@@ -29,6 +29,33 @@ class Question {
         )
     }
 
+    /**
+     * GET question by slug
+     * @param string slug
+     * @returns response from server
+     */
+    async getQuestionBySlug(slug) {
+        // if user is logged in use token 
+        if(User.checkIfLoggedIn()){
+            return await axios.get(`/api/question/${slug}`, {
+                headers: {
+                    Authorization: `Bearer ${AppStorage.getToken()}`
+                }
+            }).then(
+                response => {
+                    return response.data;
+                }
+            )
+        }
+
+        return await axios.get(`/api/question/${slug}`).then(
+            response => response.data
+        )
+    }
+
+
+
+
 }
 
 export default Question = new Question();

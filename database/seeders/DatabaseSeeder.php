@@ -8,6 +8,8 @@ use App\Models\Category;
 use App\Models\Question;
 use App\Models\Reply;
 use App\Models\Like;
+use App\Models\Views;
+use App\Models\Vote;
 
 class DatabaseSeeder extends Seeder
 {
@@ -31,5 +33,10 @@ class DatabaseSeeder extends Seeder
                 $reply->likes()->saveMany(Like::factory(10)->make());
             }
         );
+        // create 200 votes using the VoteFactory
+        Vote::factory(200)->create();
+        // create 200 views using the ViewsFactory
+        Views::factory(300)->create();
+
     }
 }
