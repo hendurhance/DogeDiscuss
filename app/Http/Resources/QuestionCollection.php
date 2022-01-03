@@ -16,7 +16,7 @@ class QuestionCollection extends JsonResource
     {
         return [
             'title' => $this->title,
-            'body' => $this->body,
+            'body' => substr($this->body, 0, 200) . '...',
             'slug' => $this->slug,
             'category' => $this->category->name,
             'properties' => [
@@ -24,7 +24,9 @@ class QuestionCollection extends JsonResource
                 'up_votes' => $this->votes->where('vote', 'up')->count(),
                 'down_votes' => $this->votes->where('vote', 'down')->count(),
                 'views' => $this->views->count() ?? 0,
+                'reply_count' => $this->replies->count() ?? 'No reply',
             ],
+            'author' => $this->user->name,
             'user_vote' => $this->votes->where('user_id', auth()->id())->first() ? $this->votes->where('user_id', auth()->id())->first()->vote : null,
             'created_at' => $this->created_at->diffForHumans(),
         ];

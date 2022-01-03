@@ -15,6 +15,7 @@ import axios from 'axios'
 import VueAxios from 'vue-axios'
 import User from './Helpers/User'
 import CryptoReq from './Helpers/CryptoReq'
+import Question from './Helpers/Question'
 
 Vue.use(vuetify);
 Vue.use(VueAxios, axios)
@@ -38,6 +39,10 @@ Vue.component('base-button', require('./layout/BaseButton.vue').default);
 window.User = User;
 // use CryptoReq class
 window.CryptoReq = CryptoReq;
+// use Question class
+window.Question = Question;
+
+
 
 import router from './router/router.js';
 /**
