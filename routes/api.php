@@ -53,3 +53,4 @@ Route::delete('/like/{reply}', [LikeController::class, 'unlikeIt']);
 
 // Crypto currency API
 Route::get('/ticker/doge', [CryptoController::class, 'doge']);
+Route::get('/news/doge', [CryptoController::class, 'dogeNews']);

@@ -4,7 +4,7 @@
       <nav>
         <div class="nav-row">
           <div class="nav-item no-mobile">
-            <a href="">Forum</a>
+            <router-link to="/forum">Forum</router-link>
             <a href="">Category</a>
           </div>
           <div class="nav-item">
@@ -14,10 +14,12 @@
           </div>
           <div class="nav-item no-mobile">
             <router-link to="/hey">Ask Question</router-link>
-            <router-link to="/login" class="filled">Login</router-link>
+            <router-link to="/login" class="filled" v-if="notLoggedIn">Login</router-link>
+            <button @click="logout" class="filled" v-if="!notLoggedIn"> Logout</button>
           </div>
           <div class="nav-item no-desktop">
-            <router-link to="/login" class="a-flex"><img :src="user" alt="" /> Login</router-link>
+            <router-link to="/login" class="a-flex" v-if="notLoggedIn"><img :src="user" alt="" /> Login</router-link>
+            <button @click="logout" class="a-flex" v-if="!notLoggedIn"><img src="" alt=""> Logout</button>
             <button><img @click="openSidebar" :src="hamburger" alt="" /></button>
           </div>
           <div class="sidebar" ref="sidebar">
@@ -26,10 +28,10 @@
                 <img @click="closeSidebar" :src="cancel" alt="" />
               </div>
               <div class="navigation">
-                <a href="" class="links">Forum</a>
+                <router-link to="/forum" class="links">Forum</router-link>
                 <a href="" class="links">Category</a>
                 <a href="" class="links">Ask Question</a>
-                <router-link to="/register" class="links">Register</router-link>
+                <router-link to="/register" class="links" v-if="notLoggedIn">Register</router-link>
               </div>
             </div>
           </div>
@@ -42,15 +44,16 @@
 <script>
 import Logo from "../../../public/img/logo-green.svg";
 import Hamburger from "../../../public/img/vuesax/bold/hamburger.svg";
-import User from "../../../public/img/vuesax/bold/user.svg";
+import userIcon from "../../../public/img/vuesax/bold/user.svg";
 import Cancel from "../../../public/img/vuesax/bold/cancel.svg";
 export default {
   data() {
     return {
       logo: Logo,
       hamburger: Hamburger,
-      user: User,
+      user: userIcon,
       cancel: Cancel,
+      notLoggedIn: true,
     };
   },
   methods: {
@@ -63,7 +66,22 @@ export default {
     reRouteHome() {
       this.$router.push("/");
     },
-  }
+    logout() {
+      User.logout();
+      this.$router.push("/");
+      this.notLoggedIn = true;
+    }
+  },
+  watch: {
+    $route() {
+      this.closeSidebar();
+    },
+  },
+  mounted() {
+    if (User.checkIfLoggedIn()) {
+      this.notLoggedIn = false;
+    }
+  },
 };
 </script>
 
@@ -108,7 +126,7 @@ nav {
   justify-content: space-between;
 }
 
-.nav-item a {
+.nav-item a, .nav-item .a-flex {
   color: #0f4c5c;
   font-size: 14px;
   font-weight: 700;
@@ -117,7 +135,7 @@ nav {
   text-transform: uppercase;
 }
 
-.nav-item a.filled {
+.nav-item a.filled , .nav-item .filled{
   color: #fff;
   background: #0f4c5c;
   border-radius: 4px;

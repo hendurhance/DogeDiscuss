@@ -119,6 +119,12 @@ export default {
     reRouteHome() {
       this.$router.push("/");
     }
+  },
+  // created hook to check if user is logged in
+  created() {
+    if (User.checkIfLoggedIn()) {
+      this.$router.push({ name: "forum" });
+    }
   }
 };
 </script>

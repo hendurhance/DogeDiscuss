@@ -29,6 +29,13 @@ export default {
             }
         }
     },
+    created() {
+        if (this.$route.path === '/login' || this.$route.path === '/register') {
+            this.isActive = false;
+        } else {
+            this.isActive = true;
+        }
+    },
     
 }
 </script>

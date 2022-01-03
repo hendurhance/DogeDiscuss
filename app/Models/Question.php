@@ -57,4 +57,16 @@ class Question extends Model
     {
         return asset("api/questions/$this->slug");
     }
+
+    public function views()
+    {
+        return $this->hasMany(Views::class);
+    }
+
+    // return views count
+    public function getViewsCountAttribute()
+    {
+        return $this->views()->count();
+    }
+
 }

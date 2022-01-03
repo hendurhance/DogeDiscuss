@@ -174,6 +174,12 @@ export default {
       }
     }
   },
+  // created hook to check if user is logged in
+  created() {
+    if (User.checkIfLoggedIn()) {
+      this.$router.push({ name: "forum" });
+    }
+  }
 };
 </script>
 
