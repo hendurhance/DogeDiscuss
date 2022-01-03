@@ -39,6 +39,14 @@ Route::group([
 /*=============================== QUESTIONS ===============================*/
 Route::apiResource('question', QuestionController::class);
 
+/*=============================== QUESTIONS VOTES ===============================*/
+Route::group([
+    'prefix' => 'question/{question}/vote'
+], function () {
+    Route::post('up', [QuestionController::class, 'upVote']);
+    Route::post('down', [QuestionController::class, 'downVote']);
+    Route::delete('reset', [QuestionController::class, 'resetVote']);
+});
 
 /*=============================== CATEGORY ===============================*/
 Route::apiResource('category', CategoryController::class)->except('update');

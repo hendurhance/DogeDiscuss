@@ -81,4 +81,28 @@ class User extends Authenticatable implements JWTSubject
     {
         $this->attributes['password'] = bcrypt($value);
     }
+
+    /**
+     * Relationship between user and votes
+     * 
+     */
+    public function votes()
+    {
+        return $this->hasMany(Vote::class);
+    }
+
+    /**
+     * User can vote on a question
+     * 
+     */
+    public function voteQuestion(Question $question, $vote)
+    {
+        $vote = $this->votes()->updateOrCreate(
+            ['user_id' => $this->id, 'question_id' => $question->id],
+            ['vote' => $vote]
+        );
+
+        return $vote;
+    }
+
 }

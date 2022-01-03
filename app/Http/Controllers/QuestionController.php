@@ -108,4 +108,74 @@ class QuestionController extends Controller
         $question->delete();
         return response(null, Response::HTTP_NO_CONTENT);
     }
+
+    /**
+     * Upvote a question.
+     */
+    public function upVote(Question $question)
+    {
+        // if vote exist with same question_id and user_id and vote is up
+        // then return error
+        // else create new vote
+        $vote = $question->votes()->where('user_id', auth()->id())->first();
+        
+        // if votes exits and vote is up
+        if ($vote && $vote->vote == 'up') {
+            return response()->json([
+                'error' => 'You have already upvoted this question'
+            ], Response::HTTP_BAD_REQUEST);
+        }
+
+        $question->upVote();
+        return response([
+            'success' => 'You have up voted this question'
+        ], Response::HTTP_OK);
+    }
+
+    /**
+     * Downvote a question.
+     */
+    public function downVote(Question $question)
+    {
+        // if vote exist with same question_id and user_id and vote is down
+        // then return error
+        // else create new vote
+        $vote = $question->votes()->where('user_id', auth()->id())->first();
+        
+        // if votes exits and vote is down
+        if ($vote && $vote->vote == 'down') {
+            return response()->json([
+                'error' => 'You have already downvoted this question'
+            ], Response::HTTP_BAD_REQUEST);
+        }
+
+        $question->downVote();
+        return response([
+            'success' => 'You have down voted this question'
+        ], Response::HTTP_OK);
+    }
+
+    /**
+     * Reset vote of a question.
+     */
+    public function resetVote(Question $question)
+    {
+        // if vote exist with same question_id and user_id and vote is up
+        // then return error
+        // else create new vote
+        $vote = $question->votes()->where('user_id', auth()->id())->first();
+        
+        // if votes exits delete vote
+        if ($vote) {
+            $question->resetVote();
+            return response([
+                'success' => 'You have reset your vote'
+            ], Response::HTTP_OK);
+        }
+
+        return response([
+            'error' => 'You have not voted this question'
+        ], Response::HTTP_BAD_REQUEST);
+    }
+    
 }

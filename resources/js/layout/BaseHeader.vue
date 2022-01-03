@@ -19,7 +19,7 @@
           </div>
           <div class="nav-item no-desktop">
             <router-link to="/login" class="a-flex" v-if="notLoggedIn"><img :src="user" alt="" /> Login</router-link>
-            <button @click="logout" class="a-flex" v-if="!notLoggedIn"><img src="" alt=""> Logout</button>
+            <button @click="logout" class="a-flex" v-if="!notLoggedIn"><img class="logout" :src="logoutIcon" alt=""> Logout</button>
             <button><img @click="openSidebar" :src="hamburger" alt="" /></button>
           </div>
           <div class="sidebar" ref="sidebar">
@@ -46,12 +46,14 @@ import Logo from "../../../public/img/logo-green.svg";
 import Hamburger from "../../../public/img/vuesax/bold/hamburger.svg";
 import userIcon from "../../../public/img/vuesax/bold/user.svg";
 import Cancel from "../../../public/img/vuesax/bold/cancel.svg";
+import logoutIcon from "../../../public/img/vuesax/bold/logout.svg";
 export default {
   data() {
     return {
       logo: Logo,
       hamburger: Hamburger,
       user: userIcon,
+      logoutIcon: logoutIcon,
       cancel: Cancel,
       notLoggedIn: true,
     };
@@ -172,6 +174,10 @@ nav {
   }
   .nav-item button img {
     width: 30px;
+  }
+  .nav-item button .logout {
+    padding-right: 5px;
+    /* width: ; */
   }
   .a-flex {
     display: flex;

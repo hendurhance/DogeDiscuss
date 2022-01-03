@@ -69,4 +69,105 @@ class Question extends Model
         return $this->views()->count();
     }
 
+    /**
+     * Relationship between question and votes
+     */
+    public function votes()
+    {
+        return $this->hasMany(Vote::class);
+    }
+
+    /**
+     * User can vote on a question
+     */
+    public function vote()
+    {
+        return $this->hasOne(Vote::class);
+    }
+
+    /**
+     * When upVote is called on a question, it will create a new vote and store up in vote column, 
+     */
+    public function upVote()
+    {
+        // create or update vote
+        $vote = $this->vote()->updateOrCreate(
+            [
+                'user_id' => auth()->id()
+            ],
+            [
+                'vote' => 'up'
+            ]
+        );
+
+        return $vote;
+    }
+
+    /**
+     * When downVote is called on a question, it will update the vote column to down
+     */
+    public function downVote()
+    {
+        $vote = $this->vote()->updateOrCreate([
+            'user_id' => auth()->id(),
+        ], [
+            'vote' => 'down',
+        ]);
+
+        return $vote;
+    }
+
+    /**
+     * When resetVote is called on a question, it will delete the vote if it exists
+     */
+    public function resetVote()
+    {
+        $vote = $this->vote();
+
+        if ($vote) {
+            $vote->delete();
+        }
+
+        return $vote;
+    }
+
+    /**
+     * Return the vote status of the user
+     */
+    public function getVoteStatusAttribute()
+    {
+        if (auth()->guest()) {
+            return null;
+        }
+
+        $vote = $this->vote()->where('user_id', auth()->id())->first();
+
+        return $vote ? $vote->vote : null;
+    }
+
+    /**
+     * Return all votes count
+     * @return int
+     */
+    public function getVotesCountAttribute()
+    {
+        return $this->votes()->sum('vote');
+    }
+
+    /**
+     * Return questions upvotes count
+     */
+    public function getUpvotesCountAttribute()
+    {
+        return $this->votes()->where('vote', 'up')->count();
+    }
+
+    /**
+     * Return questions downvotes count
+     */
+    public function getDownvotesCountAttribute()
+    {
+        return $this->votes()->where('vote', 'down')->count();
+    }
+
 }

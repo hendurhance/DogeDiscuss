@@ -90,10 +90,16 @@ class Handler extends ExceptionHandler
                     'error' => 'Token can not be used, try to login again'
                 ], Response::HTTP_UNAUTHORIZED);
             }
-        
+
             if($e instanceof TokenInvalidException) {
                 return response()->json([
                     'error' => 'Token is invalid'
+                ], Response::HTTP_UNAUTHORIZED);
+            }
+            //The token could not be parsed from the request
+            if($e instanceof JWTException) {
+                return response()->json([
+                    'error' => 'Unauthorized or invalid token'
                 ], Response::HTTP_UNAUTHORIZED);
             }
 

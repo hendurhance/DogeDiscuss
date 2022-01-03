@@ -63,4 +63,6 @@ class LikeController extends Controller
         $like = $reply->likes()->where('user_id', auth()->id())->first();
         return $like ? true : false;
     }
+
+    
 }

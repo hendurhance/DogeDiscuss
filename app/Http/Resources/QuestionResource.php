@@ -22,8 +22,15 @@ class QuestionResource extends JsonResource
             'category' => $this->category->name,
             'created_at' => $this->created_at->diffForHumans(),
             'user' => $this->user->name,
-            // 'path' => $this->getPathAttribute(),
             'replies' => ReplyResource::collection($this->replies),
+            'properties' => [
+                'vote_count' => $this->votes->count() ?? 0,
+                'up_votes' => $this->votes->where('vote', 'up')->count(),
+                'down_votes' => $this->votes->where('vote', 'down')->count(),
+                'views' => $this->views->count() ?? 0,
+            ],
+            'user_vote' => $this->votes->where('user_id', auth()->id())->first() ? $this->votes->where('user_id', auth()->id())->first()->vote : null,
+            // 'path' => $this->getPathAttribute(),
         ];
     }
 }
