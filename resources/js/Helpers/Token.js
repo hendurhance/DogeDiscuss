@@ -2,7 +2,7 @@ class Token{
     
     // check if token is valid
     checkIfValid(token){
-        const payload = this.payload(token);
+        const payload = this.payload(token); 
         if(payload){
             // create an array of iss
             const iss = [

@@ -39,6 +39,7 @@ class User{
         const username = response.data.user;
         if(Token.checkIfValid(access_token)){
             AppStorage.store(access_token, username);
+            console.log('token stored on LoginResponse');
             return true;
         }
     }

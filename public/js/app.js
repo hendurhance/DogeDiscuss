@@ -2191,6 +2191,8 @@ __webpack_require__.r(__webpack_exports__);
           _this.$router.push({
             name: "forum"
           });
+
+          console.log('login success response', response);
         })["catch"](function (error) {
           _this.buttonValue = "Login";
           _this.errors.email = "Email or password is invalid";
@@ -3451,7 +3453,10 @@ var AppStorage = /*#__PURE__*/function () {
     key: "store",
     value: function store(token, user) {
       this.storeToken(token);
-      this.storeUser(user);
+      this.storeUser(user); // store the token in axios headers
+
+      axios.defaults.headers.common['Authorization'] = "Bearer ".concat(token);
+      console.log('token stored on store()');
     }
     /**
      * Clear the access token from local storage
@@ -3993,6 +3998,7 @@ var User = /*#__PURE__*/function () {
 
       if (_Token__WEBPACK_IMPORTED_MODULE_1__["default"].checkIfValid(access_token)) {
         _AppStorage__WEBPACK_IMPORTED_MODULE_2__["default"].store(access_token, username);
+        console.log('token stored on LoginResponse');
         return true;
       }
     }
