@@ -3919,19 +3919,15 @@ var User = /*#__PURE__*/function () {
      */
     function () {
       var _login = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee(paylod) {
-        var _this = this;
-
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
                 _context.next = 2;
                 return axios.post('/api/auth/login', paylod).then(function (response) {
-                  var LoginRes = _this.LoginResponse(response);
-
-                  console.log(LoginRes);
-                  return LoginRes;
-                });
+                  console.log(response);
+                } // response => this.LoginResponse(response)
+                );
 
               case 2:
                 return _context.abrupt("return", _context.sent);
