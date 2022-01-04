@@ -3917,11 +3917,6 @@ var User = /*#__PURE__*/function () {
      * @param {*} paylod 
      * @returns response from server
      */
-    // async login(paylod){
-    //     return await axios.post('/api/auth/login', paylod).then(
-    //         response => this.LoginResponse(response)
-    //     )
-    // }
     function () {
       var _login = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee(paylod) {
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee$(_context) {
@@ -3929,17 +3924,15 @@ var User = /*#__PURE__*/function () {
             switch (_context.prev = _context.next) {
               case 0:
                 _context.next = 2;
-                return axios.post('/api/auth/login', paylod).then(function (response) {
-                  var access_token = response.data.access_token;
-                  var user = response.data.user;
-                  console.log(response.data, 'response.data');
-
-                  if (_Token__WEBPACK_IMPORTED_MODULE_1__["default"].checkIfValid(access_token)) {
-                    _AppStorage__WEBPACK_IMPORTED_MODULE_2__["default"].store(access_token, user);
-                    console.log('token stored on login()');
-                    return response;
-                  }
-                });
+                return axios.post('/api/auth/login', paylod).then( // store token and user
+                function (response) {
+                  var Res = response.data;
+                  console.log(Res, 'response');
+                  localStorage.setItem('access_token', Res.access_token);
+                  localStorage.setItem('user', JSON.stringify(Res.user));
+                  return Res;
+                } // response => this.LoginResponse(response)
+                );
 
               case 2:
                 return _context.abrupt("return", _context.sent);
@@ -4000,16 +3993,18 @@ var User = /*#__PURE__*/function () {
      * Get token and user from Local Storage
      * @returns boolean
      */
-    // LoginResponse(response){
-    //     const access_token = response.data.access_token;
-    //     const username = response.data.user;
-    //     if(Token.checkIfValid(access_token)){
-    //         AppStorage.store(access_token, username);
-    //         console.log('token stored on LoginResponse');
-    //         return true;
-    //     }
-    // }
 
+  }, {
+    key: "LoginResponse",
+    value: function LoginResponse(response) {
+      var access_token = response.data.access_token;
+      var username = response.data.user;
+
+      if (_Token__WEBPACK_IMPORTED_MODULE_1__["default"].checkIfValid(access_token)) {
+        _AppStorage__WEBPACK_IMPORTED_MODULE_2__["default"].store(access_token, username);
+        return true;
+      }
+    }
     /**
      * Check if user has token
      * @returns boolean
