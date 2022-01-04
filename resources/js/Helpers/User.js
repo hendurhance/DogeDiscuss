@@ -14,7 +14,9 @@ class User{
     async login(paylod){
         return await axios.post('/api/auth/login', paylod).then(
             response => {
-                console.log(response);
+                // this.LoginResponse(response);
+                console.log(this.LoginResponse(response));
+                // return response.data;
             }
             // response => this.LoginResponse(response)
         )
