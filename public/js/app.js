@@ -3910,14 +3910,33 @@ var User = /*#__PURE__*/function () {
   }
 
   _createClass(User, [{
-    key: "login",
+    key: "LoginResponse",
     value:
+    /**
+     * Login Response
+     * @param {*} response
+     * Get token and user from Local Storage
+     * @returns boolean
+     */
+    function LoginResponse(response) {
+      var access_token = response.data.access_token;
+      var username = response.data.user;
+
+      if (_Token__WEBPACK_IMPORTED_MODULE_1__["default"].checkIfValid(access_token)) {
+        _AppStorage__WEBPACK_IMPORTED_MODULE_2__["default"].store(access_token, username);
+        console.log('token stored on LoginResponse');
+        return true;
+      }
+    }
     /**
      * Login user
      * @param {*} paylod 
      * @returns response from server
      */
-    function () {
+
+  }, {
+    key: "login",
+    value: function () {
       var _login = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee(paylod) {
         var _this = this;
 
@@ -3984,26 +4003,22 @@ var User = /*#__PURE__*/function () {
       }
 
       return register;
-    }()
-    /**
-     * Login Response
-     * @param {*} response
-     * Get token and user from Local Storage
-     * @returns boolean
-     */
+    }() // /**
+    //  * Login Response
+    //  * @param {*} response
+    //  * Get token and user from Local Storage
+    //  * @returns boolean
+    //  */
+    // LoginResponse(response){
+    //     const access_token = response.data.access_token;
+    //     const username = response.data.user;
+    //     if(Token.checkIfValid(access_token)){
+    //         AppStorage.store(access_token, username);
+    //         console.log('token stored on LoginResponse');
+    //         return true;
+    //     }
+    // }
 
-  }, {
-    key: "LoginResponse",
-    value: function LoginResponse(response) {
-      var access_token = response.data.access_token;
-      var username = response.data.user;
-
-      if (_Token__WEBPACK_IMPORTED_MODULE_1__["default"].checkIfValid(access_token)) {
-        _AppStorage__WEBPACK_IMPORTED_MODULE_2__["default"].store(access_token, username);
-        console.log('token stored on LoginResponse');
-        return true;
-      }
-    }
     /**
      * Check if user has token
      * @returns boolean

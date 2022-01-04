@@ -7,6 +7,23 @@ import AppStorage from './AppStorage';
  */
 class User{
     /**
+     * Login Response
+     * @param {*} response
+     * Get token and user from Local Storage
+     * @returns boolean
+     */
+    LoginResponse(response){
+        const access_token = response.data.access_token;
+        const username = response.data.user;
+        if(Token.checkIfValid(access_token)){
+            AppStorage.store(access_token, username);
+            console.log('token stored on LoginResponse');
+            return true;
+        }
+    }
+
+
+    /**
      * Login user
      * @param {*} paylod 
      * @returns response from server
@@ -33,21 +50,21 @@ class User{
         )
     }
 
-    /**
-     * Login Response
-     * @param {*} response
-     * Get token and user from Local Storage
-     * @returns boolean
-     */
-    LoginResponse(response){
-        const access_token = response.data.access_token;
-        const username = response.data.user;
-        if(Token.checkIfValid(access_token)){
-            AppStorage.store(access_token, username);
-            console.log('token stored on LoginResponse');
-            return true;
-        }
-    }
+    // /**
+    //  * Login Response
+    //  * @param {*} response
+    //  * Get token and user from Local Storage
+    //  * @returns boolean
+    //  */
+    // LoginResponse(response){
+    //     const access_token = response.data.access_token;
+    //     const username = response.data.user;
+    //     if(Token.checkIfValid(access_token)){
+    //         AppStorage.store(access_token, username);
+    //         console.log('token stored on LoginResponse');
+    //         return true;
+    //     }
+    // }
 
     /**
      * Check if user has token
