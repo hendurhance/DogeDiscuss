@@ -3844,7 +3844,7 @@ var Token = /*#__PURE__*/function () {
 
       if (payload) {
         // create an array of iss
-        var iss = ["http://127.0.0.1:8000/api/auth/login", "https://dogediscuss.herokuapp.πcom/api/auth/login"];
+        var iss = ["http://127.0.0.1:8000/api/auth/login", "http://dogediscuss.herokuapp.com/api/auth/login"];
         return iss.includes(payload.iss) ? true : false;
       }
 
