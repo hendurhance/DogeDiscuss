@@ -2,12 +2,12 @@
   <li>
     <div class="question-item">
       <div class="votes">
-        <button class="upvote" @click="upvote">
-          <img :src="upIcon" alt="" />
+        <button class="upvote" @click="vote(question.slug,'up')">
+          <img :src="upIcon" alt="UpVote" />
         </button>
-        <span class="vote-count">{{ question.properties.vote_count }}</span>
-        <button class="downvote" @click="downvote">
-          <img :src="downIcon" alt="" />
+        <span class="vote-count">{{ upVoteCount }}</span>
+        <button class="downvote" @click="vote(question.slug,'down')">
+          <img :src="downIcon" alt="DownVote" />
         </button>
       </div>
       <div class="question-content">
@@ -51,15 +51,62 @@ export default {
     data(){
         return {
             upIcon: upIcon,
-            downIcon: downIcon
+            downIcon: downIcon,
+            isAuthenticated: false,
+            userVoteType: this.question.user_vote,
         }
     },
     methods: {
-        upvote(){
-            console.log('upvote')
+      vote(slug, vote_type){
+        console.log(slug, vote_type, this.userVoteType);
+        // if user is not authenticated
+        if(!this.isAuthenticated){
+          // show login modal
+          alert("You must be logged in to vote");
+        }else{
+          // if user userVoteType is to vote_type
+          if(this.userVoteType === vote_type){
+            // remove vote
+            const reset = Question.resetVoteQuestion(slug);
+            reset
+              .then((response) => {
+                console.log(response);
+                const data = response.properties
+                this.question.properties.up_votes = data.up_votes;
+                this.question.properties.down_votes = data.down_votes;
+                this.question.user_vote = null,
+                this.userVoteType = null;
+              })
+              .catch((error) => {
+                console.log(error);
+              });
+          }else{
+            // vote
+            const vote = Question.voteQuestion(slug, vote_type);
+            vote
+              .then((response) => {
+                const data = response.properties;
+                this.question.properties.up_votes = data.up_votes;
+                this.userVoteType = data.user_vote;
+                console.log(response);
+              })
+              .catch((error) => {
+                console.log(error);
+              });
+          }
+        }
+
+      },
+    },
+    computed: {
+        upVoteCount(){
+            return this.question.properties.up_votes;
         },
-        downvote(){
-            console.log('downvote');
+    },
+    mounted(){
+        // if user is authenticated
+        if(User.checkIfLoggedIn()){
+            this.isAuthenticated = true;
         }
     }
 };

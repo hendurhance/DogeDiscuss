@@ -1,5 +1,14 @@
 <template>
-  <h1>Single Forum</h1>
+  <v-container>
+    <div class="question-detail-wrapper">
+      <main>
+        Hrello
+      </main>
+      <aside>
+        Aside
+      </aside>
+    </div>
+  </v-container>
 </template>
 
 <script>

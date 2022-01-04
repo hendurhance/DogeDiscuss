@@ -2537,14 +2537,7 @@ __webpack_require__.r(__webpack_exports__);
       isLoading: true
     };
   },
-  methods: {
-    upvote: function upvote() {
-      console.log("upvote");
-    },
-    downvote: function downvote() {
-      console.log("downvote");
-    }
-  },
+  methods: {},
   mounted: function mounted() {
     var _this = this;
 
@@ -2564,7 +2557,6 @@ __webpack_require__.r(__webpack_exports__);
     var questions = Question.getAllQuestions();
     questions.then(function (response) {
       _this.questions = response.data;
-      console.log(response);
     })["catch"](function (error) {
       console.log(error);
     })["finally"](function () {
@@ -2586,6 +2578,15 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -2685,15 +2686,58 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       upIcon: _public_img_vuesax_bold_upvote_svg__WEBPACK_IMPORTED_MODULE_0__["default"],
-      downIcon: _public_img_vuesax_bold_downvote_svg__WEBPACK_IMPORTED_MODULE_1__["default"]
+      downIcon: _public_img_vuesax_bold_downvote_svg__WEBPACK_IMPORTED_MODULE_1__["default"],
+      isAuthenticated: false,
+      userVoteType: this.question.user_vote
     };
   },
   methods: {
-    upvote: function upvote() {
-      console.log('upvote');
-    },
-    downvote: function downvote() {
-      console.log('downvote');
+    vote: function vote(slug, vote_type) {
+      var _this = this;
+
+      console.log(slug, vote_type, this.userVoteType); // if user is not authenticated
+
+      if (!this.isAuthenticated) {
+        // show login modal
+        alert("You must be logged in to vote");
+      } else {
+        // if user userVoteType is to vote_type
+        if (this.userVoteType === vote_type) {
+          // remove vote
+          var reset = Question.resetVoteQuestion(slug);
+          reset.then(function (response) {
+            console.log(response);
+            var data = response.properties;
+            _this.question.properties.up_votes = data.up_votes;
+            _this.question.properties.down_votes = data.down_votes;
+            _this.question.user_vote = null, _this.userVoteType = null;
+          })["catch"](function (error) {
+            console.log(error);
+          });
+        } else {
+          // vote
+          var vote = Question.voteQuestion(slug, vote_type);
+          vote.then(function (response) {
+            var data = response.properties;
+            _this.question.properties.up_votes = data.up_votes;
+            _this.userVoteType = data.user_vote;
+            console.log(response);
+          })["catch"](function (error) {
+            console.log(error);
+          });
+        }
+      }
+    }
+  },
+  computed: {
+    upVoteCount: function upVoteCount() {
+      return this.question.properties.up_votes;
+    }
+  },
+  mounted: function mounted() {
+    // if user is authenticated
+    if (User.checkIfLoggedIn()) {
+      this.isAuthenticated = true;
     }
   }
 });
@@ -3637,6 +3681,93 @@ var Question = /*#__PURE__*/function () {
 
       return getQuestionBySlug;
     }()
+    /**
+     * Upvote a question
+     * @param {String} slug - question slug
+     * @returns response from server
+     */
+
+  }, {
+    key: "voteQuestion",
+    value: function () {
+      var _voteQuestion = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee3(slug, vote_type) {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee3$(_context3) {
+          while (1) {
+            switch (_context3.prev = _context3.next) {
+              case 0:
+                if (!_User__WEBPACK_IMPORTED_MODULE_2__["default"].checkIfLoggedIn()) {
+                  _context3.next = 4;
+                  break;
+                }
+
+                _context3.next = 3;
+                return axios.post("/api/question/".concat(slug, "/vote/").concat(vote_type)).then(function (response) {
+                  return response.data;
+                })["catch"](function (error) {
+                  return error.response.data;
+                });
+
+              case 3:
+                return _context3.abrupt("return", _context3.sent);
+
+              case 4:
+              case "end":
+                return _context3.stop();
+            }
+          }
+        }, _callee3);
+      }));
+
+      function voteQuestion(_x2, _x3) {
+        return _voteQuestion.apply(this, arguments);
+      }
+
+      return voteQuestion;
+    }()
+    /**
+     * Reset vote on a question
+     * @param {String} slug - question slug
+     * @returns response from server
+     */
+
+  }, {
+    key: "resetVoteQuestion",
+    value: function () {
+      var _resetVoteQuestion = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee4(slug) {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee4$(_context4) {
+          while (1) {
+            switch (_context4.prev = _context4.next) {
+              case 0:
+                if (!_User__WEBPACK_IMPORTED_MODULE_2__["default"].checkIfLoggedIn()) {
+                  _context4.next = 4;
+                  break;
+                }
+
+                _context4.next = 3;
+                return axios["delete"]("/api/question/".concat(slug, "/vote/reset")).then(function (response) {
+                  console.log(response);
+                  return response.data;
+                })["catch"](function (error) {
+                  return error.response.data;
+                });
+
+              case 3:
+                return _context4.abrupt("return", _context4.sent);
+
+              case 4:
+              case "end":
+                return _context4.stop();
+            }
+          }
+        }, _callee4);
+      }));
+
+      function resetVoteQuestion(_x4) {
+        return _resetVoteQuestion.apply(this, arguments);
+      }
+
+      return resetVoteQuestion;
+    }()
   }]);
 
   return Question;
@@ -4059,6 +4190,13 @@ try {
 
 window.axios = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+/**
+ * Setup Access Token
+ * 
+ */
+
+var accessToken = "Bearer ".concat(localStorage.getItem('access_token'));
+window.axios.defaults.headers.common['Authorization'] = accessToken;
 /**
  * Echo exposes an expressive API for subscribing to channels and listening
  * for events that are broadcast by Laravel. Echo and event broadcasting
@@ -42924,7 +43062,13 @@ var render = function () {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("h1", [_vm._v("Single Forum")])
+  return _c("v-container", [
+    _c("div", { staticClass: "question-detail-wrapper" }, [
+      _c("main", [_vm._v("\n      Hrello\n    ")]),
+      _vm._v(" "),
+      _c("aside", [_vm._v("\n      Aside\n    ")]),
+    ]),
+  ])
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -42952,17 +43096,35 @@ var render = function () {
   return _c("li", [
     _c("div", { staticClass: "question-item" }, [
       _c("div", { staticClass: "votes" }, [
-        _c("button", { staticClass: "upvote", on: { click: _vm.upvote } }, [
-          _c("img", { attrs: { src: _vm.upIcon, alt: "" } }),
-        ]),
+        _c(
+          "button",
+          {
+            staticClass: "upvote",
+            on: {
+              click: function ($event) {
+                return _vm.vote(_vm.question.slug, "up")
+              },
+            },
+          },
+          [_c("img", { attrs: { src: _vm.upIcon, alt: "UpVote" } })]
+        ),
         _vm._v(" "),
         _c("span", { staticClass: "vote-count" }, [
-          _vm._v(_vm._s(_vm.question.properties.vote_count)),
+          _vm._v(_vm._s(_vm.upVoteCount)),
         ]),
         _vm._v(" "),
-        _c("button", { staticClass: "downvote", on: { click: _vm.downvote } }, [
-          _c("img", { attrs: { src: _vm.downIcon, alt: "" } }),
-        ]),
+        _c(
+          "button",
+          {
+            staticClass: "downvote",
+            on: {
+              click: function ($event) {
+                return _vm.vote(_vm.question.slug, "down")
+              },
+            },
+          },
+          [_c("img", { attrs: { src: _vm.downIcon, alt: "DownVote" } })]
+        ),
       ]),
       _vm._v(" "),
       _c("div", { staticClass: "question-content" }, [

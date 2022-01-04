@@ -37,16 +37,19 @@ class VoteFactory extends Factory
             ->where('question_id', $user_and_question['question_id'])
             ->first();
 
-
-        // if vote exits, move to next vote
-        if($vote) {
-            $user_and_question = $this->faker->unique()->randomElement($votes_array);
+        try {
+            if($vote) {
+                $user_and_question = $this->faker->unique()->randomElement($votes_array);
+            } 
+            return [
+                'user_id' => $user_and_question['user_id'],
+                'question_id' => $user_and_question['question_id'],
+                'vote' => $user_and_question['vote'],
+            ];
+        } catch (\Illuminate\Database\QueryException $e) {
+            // if vote already exists, try again
+            return $this->definition();
         }
 
-        return [
-            'user_id' => $user_and_question['user_id'],
-            'question_id' => $user_and_question['question_id'],
-            'vote' => $user_and_question['vote'],
-        ];
     }
 }

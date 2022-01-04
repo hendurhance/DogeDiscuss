@@ -57,12 +57,6 @@ export default {
     };
   },
   methods: {
-    upvote() {
-      console.log("upvote");
-    },
-    downvote() {
-      console.log("downvote");
-    },
   },
   mounted() {
     // use Crypto class to get doge news
@@ -85,7 +79,6 @@ export default {
     questions
       .then((response) => {
         this.questions = response.data;
-        console.log(response);
       })
       .catch((error) => {
         console.log(error);

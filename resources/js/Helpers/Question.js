@@ -53,6 +53,49 @@ class Question {
         )
     }
 
+    /**
+     * Upvote a question
+     * @param {String} slug - question slug
+     * @returns response from server
+     */
+    async voteQuestion(slug, vote_type) {
+        // if user is logged in use token 
+        if(User.checkIfLoggedIn()){
+            return await axios.post(`/api/question/${slug}/vote/${vote_type}`
+            ).then(
+                response => {
+                    return response.data;
+                }
+            ).catch(
+                error => {
+                    return error.response.data;
+                }
+            )
+        }
+    }
+
+    /**
+     * Reset vote on a question
+     * @param {String} slug - question slug
+     * @returns response from server
+     */
+    async resetVoteQuestion(slug) {
+        // if user is logged in use token 
+        if(User.checkIfLoggedIn()){
+            return await axios.delete(`/api/question/${slug}/vote/reset`,
+            ).then(
+                response => {
+                    console.log(response);
+                    return response.data;
+                }
+            ).catch(
+                error => {
+                    return error.response.data;
+                }
+            )
+        }
+    }
+
 
 
 

@@ -128,7 +128,13 @@ class QuestionController extends Controller
 
         $question->upVote();
         return response([
-            'success' => 'You have up voted this question'
+            'success' => 'You have up voted this question',
+            'properties' => [
+                'vote_count' => $question->votes()->count() ?? 0,
+                'up_votes' => $question->votes()->where('vote', 'up')->count() ?? 0,
+                'down_votes' => $question->votes()->where('vote', 'down')->count() ?? 0,
+                'user_vote' => $question->votes()->where('user_id', auth()->id())->first()->vote ?? null
+            ],
         ], Response::HTTP_OK);
     }
 
@@ -151,7 +157,13 @@ class QuestionController extends Controller
 
         $question->downVote();
         return response([
-            'success' => 'You have down voted this question'
+            'success' => 'You have down voted this question',
+            'properties' => [
+                'vote_count' => $question->votes()->count() ?? 0,
+                'up_votes' => $question->votes()->where('vote', 'up')->count() ?? 0,
+                'down_votes' => $question->votes()->where('vote', 'down')->count() ?? 0,
+                'user_vote' => $question->votes()->where('user_id', auth()->id())->first()->vote ?? null
+            ],
         ], Response::HTTP_OK);
     }
 
@@ -169,7 +181,13 @@ class QuestionController extends Controller
         if ($vote) {
             $question->resetVote();
             return response([
-                'success' => 'You have reset your vote'
+                'success' => 'You have reset your vote',
+                'properties' => [
+                    'vote_count' => $question->votes()->count() ?? 0,
+                    'up_votes' => $question->votes()->where('vote', 'up')->count() ?? 0,
+                    'down_votes' => $question->votes()->where('vote', 'down')->count() ?? 0,
+                    'user_vote' => $question->votes()->where('user_id', auth()->id())->first()->vote ?? null
+                ],
             ], Response::HTTP_OK);
         }
 
