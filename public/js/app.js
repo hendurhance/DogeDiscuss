@@ -3910,33 +3910,14 @@ var User = /*#__PURE__*/function () {
   }
 
   _createClass(User, [{
-    key: "LoginResponse",
+    key: "login",
     value:
-    /**
-     * Login Response
-     * @param {*} response
-     * Get token and user from Local Storage
-     * @returns boolean
-     */
-    function LoginResponse(response) {
-      var access_token = response.data.access_token;
-      var username = response.data.user;
-
-      if (_Token__WEBPACK_IMPORTED_MODULE_1__["default"].checkIfValid(access_token)) {
-        _AppStorage__WEBPACK_IMPORTED_MODULE_2__["default"].store(access_token, username);
-        console.log('token stored on LoginResponse');
-        return true;
-      }
-    }
     /**
      * Login user
      * @param {*} paylod 
      * @returns response from server
      */
-
-  }, {
-    key: "login",
-    value: function () {
+    function () {
       var _login = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee(paylod) {
         var _this = this;
 
@@ -3947,6 +3928,10 @@ var User = /*#__PURE__*/function () {
                 _context.next = 2;
                 return axios.post('/api/auth/login', paylod).then(function (response) {
                   // this.LoginResponse(response);
+                  // use static LoginResponse()
+                  var resLog = User.LoginResponse(response);
+                  console.log(resLog, 'Login Response');
+                  return resLog;
                   console.log(_this.LoginResponse(response)); // return response.data;
                 } // response => this.LoginResponse(response)
                 );
@@ -4003,13 +3988,17 @@ var User = /*#__PURE__*/function () {
       }
 
       return register;
-    }() // /**
-    //  * Login Response
-    //  * @param {*} response
-    //  * Get token and user from Local Storage
-    //  * @returns boolean
-    //  */
-    // LoginResponse(response){
+    }()
+    /**
+     * Login Response
+     * @param {*} response
+     * Get token and user from Local Storage
+     * @returns boolean
+     */
+
+  }, {
+    key: "hasToken",
+    value: // LoginResponse(response){
     //     const access_token = response.data.access_token;
     //     const username = response.data.user;
     //     if(Token.checkIfValid(access_token)){
@@ -4023,10 +4012,7 @@ var User = /*#__PURE__*/function () {
      * Check if user has token
      * @returns boolean
      */
-
-  }, {
-    key: "hasToken",
-    value: function hasToken() {
+    function hasToken() {
       var storedToken = _AppStorage__WEBPACK_IMPORTED_MODULE_2__["default"].getToken();
 
       if (storedToken) {
@@ -4136,6 +4122,18 @@ var User = /*#__PURE__*/function () {
       }
 
       throw new Error('User is not logged in');
+    }
+  }], [{
+    key: "LoginResponse",
+    value: function LoginResponse(response) {
+      var access_token = response.data.access_token;
+      var username = response.data.user.username;
+
+      if (_Token__WEBPACK_IMPORTED_MODULE_1__["default"].checkIfValid(access_token)) {
+        _AppStorage__WEBPACK_IMPORTED_MODULE_2__["default"].store(access_token, username);
+        console.log('token stored on LoginResponse()');
+        return true;
+      }
     }
   }]);
 

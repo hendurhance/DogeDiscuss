@@ -6,21 +6,6 @@ import AppStorage from './AppStorage';
  * @class
  */
 class User{
-    /**
-     * Login Response
-     * @param {*} response
-     * Get token and user from Local Storage
-     * @returns boolean
-     */
-    LoginResponse(response){
-        const access_token = response.data.access_token;
-        const username = response.data.user;
-        if(Token.checkIfValid(access_token)){
-            AppStorage.store(access_token, username);
-            console.log('token stored on LoginResponse');
-            return true;
-        }
-    }
 
 
     /**
@@ -32,6 +17,10 @@ class User{
         return await axios.post('/api/auth/login', paylod).then(
             response => {
                 // this.LoginResponse(response);
+                // use static LoginResponse()
+                const resLog = User.LoginResponse(response);
+                console.log(resLog, 'Login Response');
+                return resLog;
                 console.log(this.LoginResponse(response));
                 // return response.data;
             }
@@ -50,12 +39,21 @@ class User{
         )
     }
 
-    // /**
-    //  * Login Response
-    //  * @param {*} response
-    //  * Get token and user from Local Storage
-    //  * @returns boolean
-    //  */
+    /**
+     * Login Response
+     * @param {*} response
+     * Get token and user from Local Storage
+     * @returns boolean
+     */
+    static LoginResponse(response){
+        const access_token = response.data.access_token;
+        const username = response.data.user.username;
+        if(Token.checkIfValid(access_token)){
+            AppStorage.store(access_token, username);
+            console.log('token stored on LoginResponse()');
+            return true;
+        }
+    }
     // LoginResponse(response){
     //     const access_token = response.data.access_token;
     //     const username = response.data.user;
