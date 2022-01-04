@@ -13,18 +13,23 @@ class User{
      * @param {*} paylod 
      * @returns response from server
      */
+    // async login(paylod){
+    //     return await axios.post('/api/auth/login', paylod).then(
+    //         response => this.LoginResponse(response)
+    //     )
+    // }
     async login(paylod){
         return await axios.post('/api/auth/login', paylod).then(
             response => {
-                // this.LoginResponse(response);
-                // use static LoginResponse()
-                const resLog = User.LoginResponse(response);
-                console.log(resLog, 'Login Response');
-                return resLog;
-                console.log(this.LoginResponse(response));
-                // return response.data;
+                const access_token = response.data.access_token;
+                const user = response.data.user;
+                console.log(response.data, 'response.data');
+                if(Token.checkIfValid(access_token)){
+                    AppStorage.store(access_token, user);
+                    console.log('token stored on login()');
+                    return response;
+                }
             }
-            // response => this.LoginResponse(response)
         )
     }
 
@@ -45,15 +50,6 @@ class User{
      * Get token and user from Local Storage
      * @returns boolean
      */
-    static LoginResponse(response){
-        const access_token = response.data.access_token;
-        const username = response.data.user.username;
-        if(Token.checkIfValid(access_token)){
-            AppStorage.store(access_token, username);
-            console.log('token stored on LoginResponse()');
-            return true;
-        }
-    }
     // LoginResponse(response){
     //     const access_token = response.data.access_token;
     //     const username = response.data.user;
