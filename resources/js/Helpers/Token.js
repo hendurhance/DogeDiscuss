@@ -7,7 +7,7 @@ class Token{
             // create an array of iss
             const iss = [
                 "http://127.0.0.1:8000/api/auth/login",
-                "https://dogediscuss.herokuapp.com/api/auth/login"
+                "https://dogediscuss.herokuapp.πcom/api/auth/login"
             ]
 
             return iss.includes(payload.iss) ? true : false;

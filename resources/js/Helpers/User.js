@@ -13,18 +13,10 @@ class User{
      */
     async login(paylod){
         return await axios.post('/api/auth/login', paylod).then(
-            // store token and user
             response => {
-                
-                const Res = response.data;
-                console.log(Res, 'response');
-                localStorage.setItem('access_token', Res.access_token);
-                localStorage.setItem('user', JSON.stringify(Res.user));
-                return Res;
+                console.log(response);
+                return this.LoginResponse(response);
             }
-            
-
-
             // response => this.LoginResponse(response)
         )
     }

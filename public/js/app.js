@@ -3844,7 +3844,7 @@ var Token = /*#__PURE__*/function () {
 
       if (payload) {
         // create an array of iss
-        var iss = ["http://127.0.0.1:8000/api/auth/login", "https://dogediscuss.herokuapp.com/api/auth/login"];
+        var iss = ["http://127.0.0.1:8000/api/auth/login", "https://dogediscuss.herokuapp.πcom/api/auth/login"];
         return iss.includes(payload.iss) ? true : false;
       }
 
@@ -3919,18 +3919,16 @@ var User = /*#__PURE__*/function () {
      */
     function () {
       var _login = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee(paylod) {
+        var _this = this;
+
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
                 _context.next = 2;
-                return axios.post('/api/auth/login', paylod).then( // store token and user
-                function (response) {
-                  var Res = response.data;
-                  console.log(Res, 'response');
-                  localStorage.setItem('access_token', Res.access_token);
-                  localStorage.setItem('user', JSON.stringify(Res.user));
-                  return Res;
+                return axios.post('/api/auth/login', paylod).then(function (response) {
+                  console.log(response);
+                  return _this.LoginResponse(response);
                 } // response => this.LoginResponse(response)
                 );
 
