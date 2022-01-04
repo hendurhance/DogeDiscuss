@@ -3927,7 +3927,10 @@ var User = /*#__PURE__*/function () {
               case 0:
                 _context.next = 2;
                 return axios.post('/api/auth/login', paylod).then(function (response) {
-                  return _this.LoginResponse(response);
+                  var LoginRes = _this.LoginResponse(response);
+
+                  console.log(LoginRes);
+                  return LoginRes;
                 });
 
               case 2:

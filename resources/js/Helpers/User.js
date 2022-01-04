@@ -13,7 +13,11 @@ class User{
      */
     async login(paylod){
         return await axios.post('/api/auth/login', paylod).then(
-            response => this.LoginResponse(response)
+            response => {
+                const LoginRes = this.LoginResponse(response);
+                console.log(LoginRes);
+                return LoginRes;
+            }
         )
     }
 
