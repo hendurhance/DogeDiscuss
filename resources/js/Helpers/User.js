@@ -75,11 +75,8 @@ class User{
     async logoutRequest(){
         if(this.checkIfLoggedIn()){
             // return post request with token as header
-            return await axios.post('/api/auth/logout', null, {
-                headers: {
-                    Authorization: `Bearer ${AppStorage.getToken()}`
-                }
-            }).then(
+            return await axios.post('/api/auth/logout'
+            ).then(
                 // return response and console log
                 response => {
                     console.log(response);

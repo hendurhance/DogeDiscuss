@@ -13,11 +13,8 @@ class Question {
     async getAllQuestions() {
         // if user is logged in use token 
         if(User.checkIfLoggedIn()){
-            return await axios.get('/api/question', {
-                headers: {
-                    Authorization: `Bearer ${AppStorage.getToken()}`
-                }
-            }).then(
+            return await axios.get('/api/question'
+            ).then(
                 response => {
                     return response.data;
                 }
@@ -37,11 +34,8 @@ class Question {
     async getQuestionBySlug(slug) {
         // if user is logged in use token 
         if(User.checkIfLoggedIn()){
-            return await axios.get(`/api/question/${slug}`, {
-                headers: {
-                    Authorization: `Bearer ${AppStorage.getToken()}`
-                }
-            }).then(
+            return await axios.get(`/api/question/${slug}`
+            ).then(
                 response => {
                     return response.data;
                 }

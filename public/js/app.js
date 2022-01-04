@@ -2674,6 +2674,30 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
@@ -2688,7 +2712,9 @@ __webpack_require__.r(__webpack_exports__);
       upIcon: _public_img_vuesax_bold_upvote_svg__WEBPACK_IMPORTED_MODULE_0__["default"],
       downIcon: _public_img_vuesax_bold_downvote_svg__WEBPACK_IMPORTED_MODULE_1__["default"],
       isAuthenticated: false,
-      userVoteType: this.question.user_vote
+      userVoteType: this.question.user_vote,
+      upVoteColor: this.question.user_vote === "up" ? "#00C853" : "#9E9E9E",
+      downVoteColor: this.question.user_vote === "down" ? "#D50000" : "#9E9E9E"
     };
   },
   methods: {
@@ -2710,7 +2736,11 @@ __webpack_require__.r(__webpack_exports__);
             var data = response.properties;
             _this.question.properties.up_votes = data.up_votes;
             _this.question.properties.down_votes = data.down_votes;
-            _this.question.user_vote = null, _this.userVoteType = null;
+            _this.question.user_vote = null;
+            _this.userVoteType = null; // change color of upvote and downvote
+
+            _this.upVoteColor = "#9E9E9E";
+            _this.downVoteColor = "#9E9E9E";
           })["catch"](function (error) {
             console.log(error);
           });
@@ -2721,7 +2751,15 @@ __webpack_require__.r(__webpack_exports__);
             var data = response.properties;
             _this.question.properties.up_votes = data.up_votes;
             _this.userVoteType = data.user_vote;
-            console.log(response);
+            console.log(response); // change color of upvote/downvote button
+
+            if (_this.userVoteType === "up") {
+              _this.upVoteColor = "#00C853";
+              _this.downVoteColor = "#9E9E9E";
+            } else if (_this.userVoteType === "down") {
+              _this.upVoteColor = "#9E9E9E";
+              _this.downVoteColor = "#D50000";
+            }
           })["catch"](function (error) {
             console.log(error);
           });
@@ -3424,7 +3462,9 @@ var AppStorage = /*#__PURE__*/function () {
     key: "clear",
     value: function clear() {
       localStorage.removeItem('access_token');
-      localStorage.removeItem('user');
+      localStorage.removeItem('user'); // flush the axios headers
+
+      axios.defaults.headers.common['Authorization'] = '';
     }
     /**
      * Retrieve the access token from local storage
@@ -3593,11 +3633,7 @@ var Question = /*#__PURE__*/function () {
                 }
 
                 _context.next = 3;
-                return axios.get('/api/question', {
-                  headers: {
-                    Authorization: "Bearer ".concat(_AppStorage__WEBPACK_IMPORTED_MODULE_1__["default"].getToken())
-                  }
-                }).then(function (response) {
+                return axios.get('/api/question').then(function (response) {
                   return response.data;
                 });
 
@@ -3647,11 +3683,7 @@ var Question = /*#__PURE__*/function () {
                 }
 
                 _context2.next = 3;
-                return axios.get("/api/question/".concat(slug), {
-                  headers: {
-                    Authorization: "Bearer ".concat(_AppStorage__WEBPACK_IMPORTED_MODULE_1__["default"].getToken())
-                  }
-                }).then(function (response) {
+                return axios.get("/api/question/".concat(slug)).then(function (response) {
                   return response.data;
                 });
 
@@ -4014,11 +4046,7 @@ var User = /*#__PURE__*/function () {
                 }
 
                 _context3.next = 3;
-                return axios.post('/api/auth/logout', null, {
-                  headers: {
-                    Authorization: "Bearer ".concat(_AppStorage__WEBPACK_IMPORTED_MODULE_2__["default"].getToken())
-                  }
-                }).then( // return response and console log
+                return axios.post('/api/auth/logout').then( // return response and console log
                 function (response) {
                   console.log(response);
                   return response.data;
@@ -8799,7 +8827,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\nli .question-item{\n  display: flex;\n  height: auto;\n  background-color: rgb(255, 255, 255);\n}\nli:not(:first-child) .question-item{\n    border-top: 1px solid rgb(235, 237, 240);\n}\n.question-item .votes{\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  justify-content: center;\n  width: 30px;\n  padding: 4px;\n  font-size: 12px;\n  line-height: 25px;\n  font-weight: 500;\n  text-align: center;\n  color: rgb(36, 43, 40);\n}\n.question-content{\n  display: flex;\n  flex: 1 1 0%;\n  flex-direction: column;\n  border-left: 1px solid rgb(235, 237, 240);\n  padding: 8px;\n  min-width: 0px;\n}\n.question-content h4 a{\n  font-size: 1.2em;\n  font-weight: 500;\n  margin: 0;\n  padding: 0;\n  color: rgb(36, 43, 40);\n  text-decoration: none;\n}\n.question-content p{\n  font-size: 1em;\n  margin: 0;\n  padding: 0;\n  color: rgb(36, 43, 40);\n  opacity: 0.8;\n}\n.question-meta span{\n  font-size: 1em;\n}\n.question-meta span:first-child{\n  margin-right: .1em;\n}\n.question-meta span:nth-child(3){\n  font-weight: 500;\n  margin-right: .1em;\n  margin-left: .1em;\n}\n.question-meta span a{\n  color: rgb(36, 43, 40);\n  text-decoration: none;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\nli .question-item {\n  display: flex;\n  height: auto;\n  background-color: rgb(255, 255, 255);\n}\nli:not(:first-child) .question-item {\n  border-top: 1px solid rgb(235, 237, 240);\n}\n.question-item .votes {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  justify-content: center;\n  width: 30px;\n  padding: 4px;\n  font-size: 12px;\n  line-height: 25px;\n  font-weight: 500;\n  text-align: center;\n  color: rgb(36, 43, 40);\n}\n.question-content {\n  display: flex;\n  flex: 1 1 0%;\n  flex-direction: column;\n  border-left: 1px solid rgb(235, 237, 240);\n  padding: 8px;\n  min-width: 0px;\n}\n.question-content h4 a {\n  font-size: 1.2em;\n  font-weight: 500;\n  margin: 0;\n  padding: 0;\n  color: rgb(36, 43, 40);\n  text-decoration: none;\n}\n.question-content p {\n  font-size: 1em;\n  margin: 0;\n  padding: 0;\n  color: rgb(36, 43, 40);\n  opacity: 0.8;\n}\n.question-meta span {\n  font-size: 1em;\n}\n.question-meta span:first-child {\n  margin-right: 0.1em;\n}\n.question-meta span:nth-child(3) {\n  font-weight: 500;\n  margin-right: 0.1em;\n  margin-left: 0.1em;\n}\n.question-meta span a {\n  color: rgb(36, 43, 40);\n  text-decoration: none;\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -43095,37 +43123,86 @@ var render = function () {
   var _c = _vm._self._c || _h
   return _c("li", [
     _c("div", { staticClass: "question-item" }, [
-      _c("div", { staticClass: "votes" }, [
-        _c(
-          "button",
-          {
-            staticClass: "upvote",
-            on: {
-              click: function ($event) {
-                return _vm.vote(_vm.question.slug, "up")
+      _c(
+        "div",
+        {
+          staticClass: "votes",
+          attrs: { "vote-type": _vm.question.user_vote },
+        },
+        [
+          _c(
+            "button",
+            {
+              staticClass: "upvote",
+              on: {
+                click: function ($event) {
+                  return _vm.vote(_vm.question.slug, "up")
+                },
               },
             },
-          },
-          [_c("img", { attrs: { src: _vm.upIcon, alt: "UpVote" } })]
-        ),
-        _vm._v(" "),
-        _c("span", { staticClass: "vote-count" }, [
-          _vm._v(_vm._s(_vm.upVoteCount)),
-        ]),
-        _vm._v(" "),
-        _c(
-          "button",
-          {
-            staticClass: "downvote",
-            on: {
-              click: function ($event) {
-                return _vm.vote(_vm.question.slug, "down")
+            [
+              _c(
+                "svg",
+                {
+                  attrs: {
+                    width: "24",
+                    height: "24",
+                    viewBox: "0 0 24 24",
+                    fill: "none",
+                    xmlns: "http://www.w3.org/2000/svg",
+                  },
+                },
+                [
+                  _c("path", {
+                    attrs: {
+                      d: "M18.6806 13.9783L15.4706 10.7683L13.5106 8.79828C12.6806 7.96828 11.3306 7.96828 10.5006 8.79828L5.32056 13.9783C4.64056 14.6583 5.13056 15.8183 6.08056 15.8183H11.6906H17.9206C18.8806 15.8183 19.3606 14.6583 18.6806 13.9783Z",
+                      fill: _vm.upVoteColor,
+                    },
+                  }),
+                ]
+              ),
+            ]
+          ),
+          _vm._v(" "),
+          _c("span", { staticClass: "vote-count" }, [
+            _vm._v(_vm._s(_vm.upVoteCount)),
+          ]),
+          _vm._v(" "),
+          _c(
+            "button",
+            {
+              staticClass: "downvote",
+              on: {
+                click: function ($event) {
+                  return _vm.vote(_vm.question.slug, "down")
+                },
               },
             },
-          },
-          [_c("img", { attrs: { src: _vm.downIcon, alt: "DownVote" } })]
-        ),
-      ]),
+            [
+              _c(
+                "svg",
+                {
+                  attrs: {
+                    width: "24",
+                    height: "24",
+                    viewBox: "0 0 24 24",
+                    fill: "none",
+                    xmlns: "http://www.w3.org/2000/svg",
+                  },
+                },
+                [
+                  _c("path", {
+                    attrs: {
+                      d: "M17.9188 8.17969H11.6888H6.07877C5.11877 8.17969 4.63877 9.33969 5.31877 10.0197L10.4988 15.1997C11.3288 16.0297 12.6788 16.0297 13.5088 15.1997L15.4788 13.2297L18.6888 10.0197C19.3588 9.33969 18.8788 8.17969 17.9188 8.17969Z",
+                      fill: _vm.downVoteColor,
+                    },
+                  }),
+                ]
+              ),
+            ]
+          ),
+        ]
+      ),
       _vm._v(" "),
       _c("div", { staticClass: "question-content" }, [
         _c(

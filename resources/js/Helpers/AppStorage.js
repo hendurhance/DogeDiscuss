@@ -35,6 +35,8 @@ class AppStorage{
     clear(){
         localStorage.removeItem('access_token');
         localStorage.removeItem('user');
+        // flush the axios headers
+        axios.defaults.headers.common['Authorization'] = '';
     }
 
     /**
