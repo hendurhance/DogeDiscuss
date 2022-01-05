@@ -28,7 +28,6 @@ class AppStorage{
         this.storeUser(user);
         // store the token in axios headers
         axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-        console.log('token stored on store()');
     }
     
     /**

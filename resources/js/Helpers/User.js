@@ -14,7 +14,6 @@ class User{
     async login(paylod){
         return await axios.post('/api/auth/login', paylod).then(
             response => {
-                console.log(response);
                 return this.LoginResponse(response);
             }
             // response => this.LoginResponse(response)
@@ -83,7 +82,6 @@ class User{
             ).then(
                 // return response and console log
                 response => {
-                    console.log(response);
                     return response.data;
                 }
             )
