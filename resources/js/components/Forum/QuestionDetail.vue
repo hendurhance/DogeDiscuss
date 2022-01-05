@@ -2,17 +2,19 @@
   <v-container>
     <div class="question-detail-wrapper">
       <main>
-        Hrello
+        Test
       </main>
-      <aside>
-        Aside
-      </aside>
+      <base-aside></base-aside>
     </div>
   </v-container>
 </template>
 
 <script>
+import BaseAside from "../../layout/BaseAside.vue";
 export default {
+  components: {
+    BaseAside,
+  },
   data(){
     return {
       question: {},
@@ -42,6 +44,16 @@ export default {
 }
 </script>
 
-<style>
+<style lang="css">
+.question-detail-wrapper {
+  display: flex;
+  align-items: flex-start;
+}
+
+main {
+  flex: 1 1 0%;
+  padding: 1em;
+}
+
 
 </style>
