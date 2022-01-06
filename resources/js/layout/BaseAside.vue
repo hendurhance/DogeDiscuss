@@ -104,4 +104,12 @@ aside {
   width: 100%;
   height: auto;
 }
+
+/* less than 768px aside does not show */
+@media (max-width: 768px) {
+  aside {
+    display: none;
+  }
+}
+
 </style>

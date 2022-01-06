@@ -2191,8 +2191,6 @@ __webpack_require__.r(__webpack_exports__);
           _this.$router.push({
             name: "forum"
           });
-
-          console.log('login success response', response);
         })["catch"](function (error) {
           _this.buttonValue = "Login";
           _this.errors.email = "Email or password is invalid";
@@ -2627,6 +2625,39 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
@@ -2641,7 +2672,10 @@ __webpack_require__.r(__webpack_exports__);
       upVoteColor: "#9E9E9E",
       downVoteColor: "#9E9E9E",
       replyCount: 0,
-      isLoading: true
+      viewsCount: 0,
+      upVotedPercent: 0.0,
+      isLoading: true,
+      replies: []
     };
   },
   props: {
@@ -2662,7 +2696,11 @@ __webpack_require__.r(__webpack_exports__);
       _this.question = response.data;
       _this.upVoteCount = _this.question.properties.up_votes; // count length of replies array
 
+      _this.viewsCount = _this.question.properties.views;
       _this.replyCount = _this.question.replies.length;
+      _this.replies = _this.question.replies; // calc upvote percent
+
+      _this.upVotedPercent = _this.question.properties.up_votes / (_this.question.properties.up_votes + _this.question.properties.down_votes) * 100;
       console.log(response);
     })["catch"](function (error) {
       console.log(error);
@@ -8940,7 +8978,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.question-detail-wrapper {\n  display: flex;\n  align-items: flex-start;\n}\nmain {\n  flex: 1 1 0%;\n  padding: 1em;\n}\n.question-main-grid {\n  display: flex;\n  height: auto;\n  background-color: rgb(255, 255, 255);\n}\n.question-main-grid .votes {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  justify-content: flex-start;\n  width: 30px;\n  padding: 4px;\n  font-size: 12px;\n  line-height: 25px;\n  font-weight: 500;\n  text-align: center;\n  color: rgb(36, 43, 40);\n}\n.question-content .question-title h1 {\n  font-size: 1.2em;\n  font-weight: 500;\n  margin: 0;\n  padding: 0;\n  color: rgb(36, 43, 40);\n  text-decoration: none;\n}\n.question-content .question-description p {\n  font-size: 1em;\n  margin: 0;\n  padding: 0;\n  color: rgb(36, 43, 40);\n  opacity: 0.8;\n}\n.question-meta span {\n  font-size: 1em;\n}\n.question-meta span:first-child {\n  margin-right: 0.1em;\n}\n.question-meta span:nth-child(3) {\n  font-weight: 500;\n  margin-right: 0.1em;\n  margin-left: 0.1em;\n}\n\n/* second child on question content */\n.question-content div:nth-child(2) {\n  border-top: 1px solid rgb(235, 237, 240);\n  border-bottom: 1px solid rgb(235, 237, 240);\n  background-color: rgb(252, 252, 252);\n}\n.question-content div:nth-child(3) {\n  border-top: 1px solid rgb(235, 237, 240);\n  background-color: rgb(252, 252, 252);\n}\n\n\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\nsection {\n  display: grid;\n  grid-template-rows: 1fr;\n  row-gap: 1rem;\n}\n.question-detail-wrapper {\n  display: flex;\n  align-items: flex-start;\n}\nmain {\n  flex: 1 1 0%;\n  padding: 1em;\n}\n.question-main-grid {\n  display: flex;\n  height: auto;\n  background-color: rgb(243 243 243);\n  border: 1px solid rgb(235, 237, 240);\n}\n.question-main-grid .votes {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  justify-content: flex-start;\n  width: 30px;\n  padding: 4px;\n  font-size: 12px;\n  line-height: 25px;\n  font-weight: 500;\n  text-align: center;\n  color: rgb(36, 43, 40);\n}\n.question-content .question-title h1 {\n  font-size: 1.2em;\n  font-weight: 500;\n  margin: 0;\n  padding: 0;\n  color: rgb(36, 43, 40);\n  text-decoration: none;\n}\n.question-content .question-description p {\n  font-size: 1em;\n  margin: 0;\n  padding: 0;\n  color: rgb(36, 43, 40);\n  opacity: 0.8;\n}\n.question-meta span {\n  font-size: 1em;\n}\n.question-meta span:first-child {\n  margin-right: 0.1em;\n}\n.question-meta span:nth-child(3) {\n  font-weight: 500;\n  margin-right: 0.1em;\n  margin-left: 0.1em;\n}\n\n/* second child on question content */\n.question-content div:nth-child(2) {\n  border-top: 1px solid rgb(235, 237, 240);\n}\n.question-content div:nth-child(3) {\n  border-top: 1px solid rgb(235, 237, 240);\n}\n.question-stats {\n  background-color: rgb(243 243 243);\n  padding: 5px 10px;\n  display: flex;\n  justify-content: space-between;\n}\n/* Reply */\n.reply-wrapper {\n  background-color: rgb(243 243 243);\n  padding: 1em;\n}\n.new-reply form {\n  margin: 0.5em 0;\n  border-bottom: 1px solid rgb(235, 237, 240);\n  display: flex;\n  flex-direction: column;\n  align-items: flex-start;\n}\n.new-reply form textarea {\n  width: 100%;\n  background: #fff;\n  border: 1px solid #0f4c5c;\n  padding: 10px;\n  resize: none;\n  outline: none;\n  font-size: 15px;\n  -webkit-appearance: none;\n     -moz-appearance: none;\n          appearance: none;\n}\n.new-reply form input[type=\"submit\"] {\n  background: #0f4c5c;\n  color: #fff;\n  font-size: 12px;\n  padding: 4px 12px;\n  text-transform: uppercase;\n  margin: 0.5em 0;\n  align-self: flex-end;\n}\n.question-replies{\n  margin-top: .5em;\n}\n.question-replies .reply{\n  padding: 1em 0;\n  border-bottom: 1px solid rgb(235, 237, 240);\n}\n.reply-header {\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n  border-bottom: 1px solid rgb(235, 237, 240);\n}\n.reply-header span{\n  font-size: 14px;\n}\n.reply-header span:first-child {\n  font-weight: 600;\n}\n.reply-body p {\n  font-size: 1em;\n  opacity: 0.8;\n  color: rgb(36, 43, 40);\n}\n\n\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -9012,7 +9050,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\naside {\n  display: flex;\n  flex-direction: column;\n  flex: 0 0 25%;\n  position: -webkit-sticky;\n  position: sticky;\n  top: 2em;\n  z-index: 1;\n  height: 600px;\n  overflow: auto;\n  scroll-behavior: smooth;\n  scrollbar-width: none;\n  -ms-overflow-style: none;\n  -webkit-overflow-scrolling: touch;\n}\n::-webkit-scrollbar {\n  display: none;\n}\n.inner-aside {\n  background: #faf5ef;\n}\n.aside-header-wrapper {\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  margin-bottom: 1em;\n  background: #0f4c5c;\n  color: #fff;\n  padding: 0.5em;\n  position: -webkit-sticky;\n  position: sticky;\n  top: 0;\n  z-index: 1;\n}\n.inner-aside ul {\n  list-style: none;\n  padding: 1em;\n  margin: 0;\n}\n.inner-aside ul li a {\n  text-decoration: none;\n}\n.inner-aside ul li a h4 {\n  color: #000;\n}\n.inner-aside ul li a p {\n  color: #000;\n  font-size: 0.8em;\n  opacity: 0.8;\n}\n.inner-aside ul li a img {\n  width: 100%;\n  height: auto;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\naside {\n  display: flex;\n  flex-direction: column;\n  flex: 0 0 25%;\n  position: -webkit-sticky;\n  position: sticky;\n  top: 2em;\n  z-index: 1;\n  height: 600px;\n  overflow: auto;\n  scroll-behavior: smooth;\n  scrollbar-width: none;\n  -ms-overflow-style: none;\n  -webkit-overflow-scrolling: touch;\n}\n::-webkit-scrollbar {\n  display: none;\n}\n.inner-aside {\n  background: #faf5ef;\n}\n.aside-header-wrapper {\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  margin-bottom: 1em;\n  background: #0f4c5c;\n  color: #fff;\n  padding: 0.5em;\n  position: -webkit-sticky;\n  position: sticky;\n  top: 0;\n  z-index: 1;\n}\n.inner-aside ul {\n  list-style: none;\n  padding: 1em;\n  margin: 0;\n}\n.inner-aside ul li a {\n  text-decoration: none;\n}\n.inner-aside ul li a h4 {\n  color: #000;\n}\n.inner-aside ul li a p {\n  color: #000;\n  font-size: 0.8em;\n  opacity: 0.8;\n}\n.inner-aside ul li a img {\n  width: 100%;\n  height: auto;\n}\n\n/* less than 768px aside does not show */\n@media (max-width: 768px) {\naside {\n    display: none;\n}\n}\n\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -43406,109 +43444,171 @@ var render = function () {
           [
             _vm.isLoading
               ? _c("loading-spinner")
-              : _c("div", { staticClass: "question-wrapper" }, [
-                  _c("div", { staticClass: "question-main-grid" }, [
-                    _c("div", { staticClass: "votes" }, [
-                      _c("button", [
-                        _c(
-                          "svg",
-                          {
-                            attrs: {
-                              width: "24",
-                              height: "24",
-                              viewBox: "0 0 24 24",
-                              fill: "none",
-                              xmlns: "http://www.w3.org/2000/svg",
-                            },
-                          },
-                          [
-                            _c("path", {
+              : _c("section", [
+                  _c("div", { staticClass: "question-wrapper" }, [
+                    _c("div", { staticClass: "question-main-grid" }, [
+                      _c("div", { staticClass: "votes" }, [
+                        _c("button", [
+                          _c(
+                            "svg",
+                            {
                               attrs: {
-                                d: "M18.6806 13.9783L15.4706 10.7683L13.5106 8.79828C12.6806 7.96828 11.3306 7.96828 10.5006 8.79828L5.32056 13.9783C4.64056 14.6583 5.13056 15.8183 6.08056 15.8183H11.6906H17.9206C18.8806 15.8183 19.3606 14.6583 18.6806 13.9783Z",
-                                fill:
-                                  this.question.user_vote === "up"
-                                    ? "#00C853"
-                                    : "#9E9E9E",
+                                width: "24",
+                                height: "24",
+                                viewBox: "0 0 24 24",
+                                fill: "none",
+                                xmlns: "http://www.w3.org/2000/svg",
                               },
-                            }),
-                          ]
-                        ),
+                            },
+                            [
+                              _c("path", {
+                                attrs: {
+                                  d: "M18.6806 13.9783L15.4706 10.7683L13.5106 8.79828C12.6806 7.96828 11.3306 7.96828 10.5006 8.79828L5.32056 13.9783C4.64056 14.6583 5.13056 15.8183 6.08056 15.8183H11.6906H17.9206C18.8806 15.8183 19.3606 14.6583 18.6806 13.9783Z",
+                                  fill:
+                                    this.question.user_vote === "up"
+                                      ? "#00C853"
+                                      : "#9E9E9E",
+                                },
+                              }),
+                            ]
+                          ),
+                        ]),
+                        _vm._v(" "),
+                        _c("span", [
+                          _vm._v(" " + _vm._s(_vm.upVoteCount) + " "),
+                        ]),
+                        _vm._v(" "),
+                        _c("button", [
+                          _c(
+                            "svg",
+                            {
+                              attrs: {
+                                width: "24",
+                                height: "24",
+                                viewBox: "0 0 24 24",
+                                fill: "none",
+                                xmlns: "http://www.w3.org/2000/svg",
+                              },
+                            },
+                            [
+                              _c("path", {
+                                attrs: {
+                                  d: "M17.9188 8.17969H11.6888H6.07877C5.11877 8.17969 4.63877 9.33969 5.31877 10.0197L10.4988 15.1997C11.3288 16.0297 12.6788 16.0297 13.5088 15.1997L15.4788 13.2297L18.6888 10.0197C19.3588 9.33969 18.8788 8.17969 17.9188 8.17969Z",
+                                  fill:
+                                    this.question.user_vote === "down"
+                                      ? "#D50000"
+                                      : "#9E9E9E",
+                                },
+                              }),
+                            ]
+                          ),
+                        ]),
                       ]),
                       _vm._v(" "),
-                      _c("span", [_vm._v(" " + _vm._s(_vm.upVoteCount) + " ")]),
-                      _vm._v(" "),
-                      _c("button", [
-                        _c(
-                          "svg",
-                          {
-                            attrs: {
-                              width: "24",
-                              height: "24",
-                              viewBox: "0 0 24 24",
-                              fill: "none",
-                              xmlns: "http://www.w3.org/2000/svg",
-                            },
-                          },
-                          [
-                            _c("path", {
-                              attrs: {
-                                d: "M17.9188 8.17969H11.6888H6.07877C5.11877 8.17969 4.63877 9.33969 5.31877 10.0197L10.4988 15.1997C11.3288 16.0297 12.6788 16.0297 13.5088 15.1997L15.4788 13.2297L18.6888 10.0197C19.3588 9.33969 18.8788 8.17969 17.9188 8.17969Z",
-                                fill:
-                                  this.question.user_vote === "down"
-                                    ? "#D50000"
-                                    : "#9E9E9E",
-                              },
-                            }),
-                          ]
-                        ),
+                      _c("div", { staticClass: "question-content" }, [
+                        _c("div", { staticClass: "question-title" }, [
+                          _c("h1", [_vm._v(_vm._s(_vm.question.title))]),
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "question-description" }, [
+                          _c("p", [_vm._v(_vm._s(_vm.question.body))]),
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "question-meta" }, [
+                          _c(
+                            "span",
+                            { staticClass: "reply-count" },
+                            [
+                              _c("router-link", { attrs: { to: "/" } }, [
+                                _vm._v(
+                                  "\n                    " +
+                                    _vm._s(_vm.replyCount) +
+                                    " comments\n                  "
+                                ),
+                              ]),
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "span",
+                            { staticClass: "category-type" },
+                            [
+                              _c("router-link", { attrs: { to: "/" } }, [
+                                _vm._v(
+                                  "\n                    /c/" +
+                                    _vm._s(_vm.question.category) +
+                                    "\n                  "
+                                ),
+                              ]),
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c("span", { staticClass: "asked-by" }, [
+                            _vm._v(" by " + _vm._s(_vm.question.user) + " "),
+                          ]),
+                          _vm._v(" "),
+                          _c("span", { staticClass: "asked-on" }, [
+                            _c("span", [
+                              _vm._v(_vm._s(_vm.question.created_at)),
+                            ]),
+                          ]),
+                        ]),
                       ]),
                     ]),
                     _vm._v(" "),
-                    _c("div", { staticClass: "question-content" }, [
-                      _c("div", { staticClass: "question-title" }, [
-                        _c("h1", [_vm._v(_vm._s(_vm.question.title))]),
+                    _c("div", { staticClass: "question-stats" }, [
+                      _c("span", [
+                        _vm._v(" " + _vm._s(_vm.viewsCount) + " views "),
                       ]),
                       _vm._v(" "),
-                      _c("div", { staticClass: "question-description" }, [
-                        _c("p", [_vm._v(_vm._s(_vm.question.body))]),
+                      _c("span", [
+                        _vm._v(" " + _vm._s(_vm.upVotedPercent) + "% upvoted "),
                       ]),
                       _vm._v(" "),
-                      _c("div", { staticClass: "question-meta" }, [
-                        _c(
-                          "span",
-                          { staticClass: "reply-count" },
-                          [
-                            _c("router-link", { attrs: { to: "/" } }, [
-                              _vm._v(
-                                " " + _vm._s(_vm.replyCount) + " comments "
-                              ),
-                            ]),
-                          ],
-                          1
-                        ),
+                      _c("span", [_vm._v(" share ")]),
+                    ]),
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "reply-wrapper" }, [
+                    _c("div", { staticClass: "new-reply" }, [
+                      _c("form", [
+                        _c("textarea", {
+                          attrs: {
+                            rows: "2",
+                            placeholder: "Enter your reply...",
+                          },
+                        }),
                         _vm._v(" "),
-                        _c(
-                          "span",
-                          { staticClass: "category-type" },
-                          [
-                            _c("router-link", { attrs: { to: "/" } }, [
-                              _vm._v(
-                                " /c/" + _vm._s(_vm.question.category) + " "
-                              ),
-                            ]),
-                          ],
-                          1
-                        ),
-                        _vm._v(" "),
-                        _c("span", { staticClass: "asked-by" }, [
-                          _vm._v(" by " + _vm._s(_vm.question.user) + " "),
-                        ]),
-                        _vm._v(" "),
-                        _c("span", { staticClass: "asked-on" }, [
-                          _c("span", [_vm._v(_vm._s(_vm.question.created_at))]),
-                        ]),
+                        _c("input", {
+                          attrs: { type: "submit", value: "Add Reply" },
+                        }),
                       ]),
                     ]),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      { staticClass: "question-replies" },
+                      _vm._l(_vm.replies, function (reply) {
+                        return _c(
+                          "div",
+                          { key: reply.body, staticClass: "reply" },
+                          [
+                            _c("div", { staticClass: "reply-header" }, [
+                              _c("span", [_vm._v(_vm._s(reply.user))]),
+                              _vm._v(" "),
+                              _c("span", [_vm._v(_vm._s(reply.created_at))]),
+                            ]),
+                            _vm._v(" "),
+                            _c("div", { staticClass: "reply-body" }, [
+                              _c("p", [_vm._v(_vm._s(reply.reply))]),
+                            ]),
+                          ]
+                        )
+                      }),
+                      0
+                    ),
                   ]),
                 ]),
           ],
