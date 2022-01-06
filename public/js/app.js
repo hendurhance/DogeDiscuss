@@ -2652,12 +2652,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
@@ -2673,9 +2667,11 @@ __webpack_require__.r(__webpack_exports__);
       downVoteColor: "#9E9E9E",
       replyCount: 0,
       viewsCount: 0,
+      userVoteType: null,
       upVotedPercent: 0.0,
       isLoading: true,
-      replies: []
+      replies: [],
+      isAuthenticated: false
     };
   },
   props: {
@@ -2684,30 +2680,108 @@ __webpack_require__.r(__webpack_exports__);
       required: true
     }
   },
+  methods: {
+    vote: function vote(slug, vote_type) {
+      var _this = this;
+
+      console.log(slug, vote_type, this.userVoteType); // if user is not authenticated, alert them to login
+
+      if (!this.isAuthenticated) {
+        alert("You must be logged in to vote");
+      } else {
+        if (this.userVoteType === vote_type) {
+          var reset = Question.resetVoteQuestion(slug);
+          reset.then(function (response) {
+            console.log(response);
+            var data = response.properties;
+            _this.upVoteCount = data.up_votes;
+            _this.userVoteType = null;
+            _this.upVoteColor = "#9E9E9E";
+            _this.downVoteColor = "#9E9E9E";
+            var percent = data.up_votes / data.votes_count * 100; // if percent is NaN, set it to 0
+
+            if (isNaN(percent)) {
+              _this.upVotedPercent = 0;
+            } else {
+              _this.upVotedPercent = Math.round(percent * 100) / 100;
+            }
+          });
+        } else {
+          var vote = Question.voteQuestion(slug, vote_type);
+          vote.then(function (response) {
+            console.log(response);
+            var data = response.properties;
+            _this.upVoteCount = data.up_votes;
+            _this.userVoteType = vote_type;
+            var percent = data.up_votes / data.vote_count * 100; // if percent is NaN, set it to 0
+
+            if (isNaN(percent)) {
+              _this.upVotedPercent = 0;
+            } else {
+              _this.upVotedPercent = Math.round(percent * 100) / 100;
+            }
+
+            if (vote_type === 'up') {
+              _this.upVoteColor = "#00C853";
+              _this.downVoteColor = "#9E9E9E";
+            } else {
+              _this.upVoteColor = "#9E9E9E";
+              _this.downVoteColor = "#D50000";
+            }
+          });
+        }
+      }
+    }
+  },
   computed: {},
   created: function created() {
-    var _this = this;
+    var _this2 = this;
 
     // get slug from props
     var slug = this.slug; // use Forum class to get forum
 
     var forum = Question.getQuestionBySlug(slug);
     forum.then(function (response) {
-      _this.question = response.data;
-      _this.upVoteCount = _this.question.properties.up_votes; // count length of replies array
+      _this2.question = response.data; // user vote type
 
-      _this.viewsCount = _this.question.properties.views;
-      _this.replyCount = _this.question.replies.length;
-      _this.replies = _this.question.replies; // calc upvote percent and round to 2 decimal places
+      _this2.userVoteType = _this2.question.user_vote;
+      _this2.upVoteCount = _this2.question.properties.up_votes; // set vote color
 
-      _this.upVotedPercent = _this.question.properties.up_votes / (_this.question.properties.up_votes + _this.question.properties.down_votes) * 100;
-      _this.upVotedPercent = Math.round(_this.upVotedPercent * 100) / 100;
+      if (_this2.userVoteType === "up") {
+        _this2.upVoteColor = "#00C853";
+        _this2.downVoteColor = "#9E9E9E";
+      } else if (_this2.userVoteType === "down") {
+        _this2.upVoteColor = "#9E9E9E";
+        _this2.downVoteColor = "#D50000";
+      } else {
+        _this2.upVoteColor = "#9E9E9E";
+        _this2.downVoteColor = "#9E9E9E";
+      } // count length of replies array
+
+
+      _this2.viewsCount = _this2.question.properties.views;
+      _this2.replyCount = _this2.question.replies.length;
+      _this2.replies = _this2.question.replies; // calc upvote percent and round to 2 decimal places
+
+      var percent = _this2.question.properties.up_votes / (_this2.question.properties.up_votes + _this2.question.properties.down_votes) * 100; // if percent is NaN, set to 0
+
+      if (isNaN(percent)) {
+        _this2.upVotedPercent = 0;
+      } else {
+        _this2.upVotedPercent = Math.round(percent * 100) / 100;
+      }
+
       console.log(response);
     })["catch"](function (error) {
       console.log(error);
     })["finally"](function () {
-      _this.isLoading = false;
-    });
+      _this2.isLoading = false;
+    }); // check if user is authenticated
+    // if user is authenticated
+
+    if (User.checkIfLoggedIn()) {
+      this.isAuthenticated = true;
+    }
   }
 });
 
@@ -8979,7 +9053,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\nsection {\n  display: grid;\n  grid-template-rows: 1fr;\n  row-gap: 1rem;\n}\n.question-detail-wrapper {\n  display: flex;\n  align-items: flex-start;\n}\nmain {\n  flex: 1 1 0%;\n  padding: 1em;\n}\n.question-main-grid {\n  display: flex;\n  height: auto;\n  background-color: rgb(243 243 243);\n  border: 1px solid rgb(235, 237, 240);\n}\n.question-main-grid .votes {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  justify-content: flex-start;\n  width: 30px;\n  padding: 4px;\n  font-size: 12px;\n  line-height: 25px;\n  font-weight: 500;\n  text-align: center;\n  color: rgb(36, 43, 40);\n}\n.question-content .question-title h1 {\n  font-size: 1.2em;\n  font-weight: 500;\n  margin: 0;\n  padding: 0;\n  color: rgb(36, 43, 40);\n  text-decoration: none;\n}\n.question-content .question-description p {\n  font-size: 1em;\n  margin: 0;\n  padding: 0;\n  color: rgb(36, 43, 40);\n  opacity: 0.8;\n}\n.question-meta span {\n  font-size: 1em;\n}\n.question-meta span:first-child {\n  margin-right: 0.1em;\n}\n.question-meta span:nth-child(3) {\n  font-weight: 500;\n  margin-right: 0.1em;\n  margin-left: 0.1em;\n}\n\n/* second child on question content */\n.question-content div:nth-child(2) {\n  border-top: 1px solid rgb(235, 237, 240);\n}\n.question-content div:nth-child(3) {\n  border-top: 1px solid rgb(235, 237, 240);\n}\n.question-stats {\n  background-color: rgb(243 243 243);\n  padding: 5px 10px;\n  display: flex;\n  justify-content: space-between;\n}\n/* Reply */\n.reply-wrapper {\n  background-color: rgb(243 243 243);\n  padding: 1em;\n}\n.new-reply form {\n  margin: 0.5em 0;\n  border-bottom: 1px solid rgb(235, 237, 240);\n  display: flex;\n  flex-direction: column;\n  align-items: flex-start;\n}\n.new-reply form textarea {\n  width: 100%;\n  background: #fff;\n  border: 1px solid #0f4c5c;\n  padding: 10px;\n  resize: none;\n  outline: none;\n  font-size: 15px;\n  -webkit-appearance: none;\n     -moz-appearance: none;\n          appearance: none;\n}\n.new-reply form input[type=\"submit\"] {\n  background: #0f4c5c;\n  color: #fff;\n  font-size: 12px;\n  padding: 4px 12px;\n  text-transform: uppercase;\n  margin: 0.5em 0;\n  align-self: flex-end;\n}\n.question-replies{\n  margin-top: .5em;\n}\n.question-replies .reply{\n  padding: 1em 0;\n  border-bottom: 1px solid rgb(235, 237, 240);\n}\n.reply-header {\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n  border-bottom: 1px solid rgb(235, 237, 240);\n}\n.reply-header span{\n  font-size: 14px;\n}\n.reply-header span:first-child {\n  font-weight: 600;\n}\n.reply-body p {\n  font-size: 1em;\n  opacity: 0.8;\n  color: rgb(36, 43, 40);\n}\n\n\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\nsection {\n  display: grid;\n  grid-template-rows: 1fr;\n  row-gap: 1rem;\n}\n.question-detail-wrapper {\n  display: flex;\n  align-items: flex-start;\n}\nmain {\n  flex: 1 1 0%;\n  padding: 1em;\n}\n.question-main-grid {\n  display: flex;\n  height: auto;\n  background-color: rgb(243 243 243);\n  border: 1px solid rgb(235, 237, 240);\n}\n.question-main-grid .votes {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  justify-content: flex-start;\n  width: 30px;\n  padding: 4px;\n  font-size: 12px;\n  line-height: 25px;\n  font-weight: 500;\n  text-align: center;\n  color: rgb(36, 43, 40);\n}\n.question-content .question-title h1 {\n  font-size: 1.2em;\n  font-weight: 500;\n  margin: 0;\n  padding: 0;\n  color: rgb(36, 43, 40);\n  text-decoration: none;\n}\n.question-content .question-description p {\n  font-size: 1em;\n  margin: 0;\n  padding: 0;\n  color: rgb(36, 43, 40);\n  opacity: 0.8;\n}\n.question-meta span {\n  font-size: 1em;\n}\n.question-meta span:first-child {\n  margin-right: 0.1em;\n}\n.question-meta span:nth-child(3) {\n  font-weight: 500;\n  margin-right: 0.1em;\n  margin-left: 0.1em;\n}\n\n/* second child on question content */\n.question-content div:nth-child(2) {\n  border-top: 1px solid rgb(235, 237, 240);\n}\n.question-content div:nth-child(3) {\n  border-top: 1px solid rgb(235, 237, 240);\n}\n.question-stats {\n  background-color: rgb(243 243 243);\n  padding: 5px 10px;\n  display: flex;\n  justify-content: space-between;\n}\n/* Reply */\n.reply-wrapper {\n  background-color: rgb(243 243 243);\n  padding: 1em;\n}\n.new-reply form {\n  margin: 0.5em 0;\n  border-bottom: 1px solid rgb(235, 237, 240);\n  display: flex;\n  flex-direction: column;\n  align-items: flex-start;\n}\n.new-reply form textarea {\n  width: 100%;\n  background: #fff;\n  border: 1px solid #0f4c5c;\n  padding: 10px;\n  resize: none;\n  outline: none;\n  font-size: 15px;\n  -webkit-appearance: none;\n     -moz-appearance: none;\n          appearance: none;\n}\n.new-reply form input[type=\"submit\"] {\n  background: #0f4c5c;\n  color: #fff;\n  font-size: 12px;\n  padding: 4px 12px;\n  text-transform: uppercase;\n  margin: 0.5em 0;\n  align-self: flex-end;\n}\n.question-replies {\n  margin-top: 0.5em;\n}\n.question-replies .reply {\n  padding: 1em 0;\n  border-bottom: 1px solid rgb(235, 237, 240);\n}\n.reply-header {\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n  border-bottom: 1px solid rgb(235, 237, 240);\n}\n.reply-header span {\n  font-size: 14px;\n}\n.reply-header span:first-child {\n  font-weight: 600;\n}\n.reply-body p {\n  font-size: 1em;\n  opacity: 0.8;\n  color: rgb(36, 43, 40);\n}\n@media (max-width: 576px) {\nmain {\n    padding: 0;\n}\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -43449,61 +43523,75 @@ var render = function () {
                   _c("div", { staticClass: "question-wrapper" }, [
                     _c("div", { staticClass: "question-main-grid" }, [
                       _c("div", { staticClass: "votes" }, [
-                        _c("button", [
-                          _c(
-                            "svg",
-                            {
-                              attrs: {
-                                width: "24",
-                                height: "24",
-                                viewBox: "0 0 24 24",
-                                fill: "none",
-                                xmlns: "http://www.w3.org/2000/svg",
+                        _c(
+                          "button",
+                          {
+                            on: {
+                              click: function ($event) {
+                                return _vm.vote(_vm.question.slug, "up")
                               },
                             },
-                            [
-                              _c("path", {
+                          },
+                          [
+                            _c(
+                              "svg",
+                              {
                                 attrs: {
-                                  d: "M18.6806 13.9783L15.4706 10.7683L13.5106 8.79828C12.6806 7.96828 11.3306 7.96828 10.5006 8.79828L5.32056 13.9783C4.64056 14.6583 5.13056 15.8183 6.08056 15.8183H11.6906H17.9206C18.8806 15.8183 19.3606 14.6583 18.6806 13.9783Z",
-                                  fill:
-                                    this.question.user_vote === "up"
-                                      ? "#00C853"
-                                      : "#9E9E9E",
+                                  width: "24",
+                                  height: "24",
+                                  viewBox: "0 0 24 24",
+                                  fill: "none",
+                                  xmlns: "http://www.w3.org/2000/svg",
                                 },
-                              }),
-                            ]
-                          ),
-                        ]),
+                              },
+                              [
+                                _c("path", {
+                                  attrs: {
+                                    d: "M18.6806 13.9783L15.4706 10.7683L13.5106 8.79828C12.6806 7.96828 11.3306 7.96828 10.5006 8.79828L5.32056 13.9783C4.64056 14.6583 5.13056 15.8183 6.08056 15.8183H11.6906H17.9206C18.8806 15.8183 19.3606 14.6583 18.6806 13.9783Z",
+                                    fill: _vm.upVoteColor,
+                                  },
+                                }),
+                              ]
+                            ),
+                          ]
+                        ),
                         _vm._v(" "),
                         _c("span", [
                           _vm._v(" " + _vm._s(_vm.upVoteCount) + " "),
                         ]),
                         _vm._v(" "),
-                        _c("button", [
-                          _c(
-                            "svg",
-                            {
-                              attrs: {
-                                width: "24",
-                                height: "24",
-                                viewBox: "0 0 24 24",
-                                fill: "none",
-                                xmlns: "http://www.w3.org/2000/svg",
+                        _c(
+                          "button",
+                          {
+                            on: {
+                              click: function ($event) {
+                                return _vm.vote(_vm.question.slug, "down")
                               },
                             },
-                            [
-                              _c("path", {
+                          },
+                          [
+                            _c(
+                              "svg",
+                              {
                                 attrs: {
-                                  d: "M17.9188 8.17969H11.6888H6.07877C5.11877 8.17969 4.63877 9.33969 5.31877 10.0197L10.4988 15.1997C11.3288 16.0297 12.6788 16.0297 13.5088 15.1997L15.4788 13.2297L18.6888 10.0197C19.3588 9.33969 18.8788 8.17969 17.9188 8.17969Z",
-                                  fill:
-                                    this.question.user_vote === "down"
-                                      ? "#D50000"
-                                      : "#9E9E9E",
+                                  width: "24",
+                                  height: "24",
+                                  viewBox: "0 0 24 24",
+                                  fill: "none",
+                                  xmlns: "http://www.w3.org/2000/svg",
                                 },
-                              }),
-                            ]
-                          ),
-                        ]),
+                              },
+                              [
+                                _c("path", {
+                                  attrs: {
+                                    d: "M17.9188 8.17969H11.6888H6.07877C5.11877 8.17969 4.63877 9.33969 5.31877 10.0197L10.4988 15.1997C11.3288 16.0297 12.6788 16.0297 13.5088 15.1997L15.4788 13.2297L18.6888 10.0197C19.3588 9.33969 18.8788 8.17969 17.9188 8.17969Z",
+                                    fill: _vm.downVoteColor,
+                                  },
+                                }),
+                              ]
+                            ),
+                          ]
+                        ),
                       ]),
                       _vm._v(" "),
                       _c("div", { staticClass: "question-content" }, [

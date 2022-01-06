@@ -7,7 +7,7 @@
           <div class="question-wrapper">
             <div class="question-main-grid">
               <div class="votes">
-                <button>
+                <button @click="vote(question.slug, 'up')">
                   <svg
                     width="24"
                     height="24"
@@ -17,14 +17,12 @@
                   >
                     <path
                       d="M18.6806 13.9783L15.4706 10.7683L13.5106 8.79828C12.6806 7.96828 11.3306 7.96828 10.5006 8.79828L5.32056 13.9783C4.64056 14.6583 5.13056 15.8183 6.08056 15.8183H11.6906H17.9206C18.8806 15.8183 19.3606 14.6583 18.6806 13.9783Z"
-                      :fill="
-                        this.question.user_vote === 'up' ? '#00C853' : '#9E9E9E'
-                      "
+                      :fill="upVoteColor"
                     />
                   </svg>
                 </button>
                 <span> {{ upVoteCount }} </span>
-                <button>
+                <button @click="vote(question.slug, 'down')">
                   <svg
                     width="24"
                     height="24"
@@ -34,11 +32,7 @@
                   >
                     <path
                       d="M17.9188 8.17969H11.6888H6.07877C5.11877 8.17969 4.63877 9.33969 5.31877 10.0197L10.4988 15.1997C11.3288 16.0297 12.6788 16.0297 13.5088 15.1997L15.4788 13.2297L18.6888 10.0197C19.3588 9.33969 18.8788 8.17969 17.9188 8.17969Z"
-                      :fill="
-                        this.question.user_vote === 'down'
-                          ? '#D50000'
-                          : '#9E9E9E'
-                      "
+                      :fill="downVoteColor"
                     />
                   </svg>
                 </button>
@@ -117,15 +111,67 @@ export default {
       downVoteColor: "#9E9E9E",
       replyCount: 0,
       viewsCount: 0,
+      userVoteType: null,
       upVotedPercent: 0.0,
       isLoading: true,
       replies: [],
+      isAuthenticated: false,
     };
   },
   props: {
     slug: {
       type: String,
       required: true,
+    },
+  },
+  methods: {
+    vote(slug, vote_type) {
+      console.log(slug, vote_type, this.userVoteType);
+      // if user is not authenticated, alert them to login
+      if (!this.isAuthenticated) {
+        alert("You must be logged in to vote");
+      }else{
+        if (this.userVoteType === vote_type) {
+          const reset = Question.resetVoteQuestion(slug);
+          reset.then((response) => {
+            console.log(response);
+            const data = response.properties
+            this.upVoteCount = data.up_votes
+            this.userVoteType = null
+            this.upVoteColor = "#9E9E9E"
+            this.downVoteColor = "#9E9E9E"
+            const percent = (data.up_votes / data.votes_count) * 100
+            // if percent is NaN, set it to 0
+            if (isNaN(percent)) {
+              this.upVotedPercent = 0
+            } else {
+              this.upVotedPercent = Math.round(percent * 100) / 100
+            }
+          });
+        } else {
+          const vote = Question.voteQuestion(slug, vote_type);
+          vote.then((response) => {
+            console.log(response);
+            const data = response.properties
+            this.upVoteCount = data.up_votes
+            this.userVoteType = vote_type
+            const percent = (data.up_votes / data.vote_count) * 100
+            // if percent is NaN, set it to 0
+            if (isNaN(percent)) {
+              this.upVotedPercent = 0
+            } else {
+              this.upVotedPercent = Math.round(percent * 100) / 100
+            }
+            if (vote_type === 'up') {
+              this.upVoteColor = "#00C853"
+              this.downVoteColor = "#9E9E9E"
+            } else {
+              this.upVoteColor = "#9E9E9E"
+              this.downVoteColor = "#D50000"
+            }
+          });
+        }
+      }
     },
   },
   computed: {},
@@ -137,18 +183,37 @@ export default {
     forum
       .then((response) => {
         this.question = response.data;
+        // user vote type
+        this.userVoteType = this.question.user_vote;
         this.upVoteCount = this.question.properties.up_votes;
+        // set vote color
+        if (this.userVoteType === "up") {
+          this.upVoteColor = "#00C853";
+          this.downVoteColor = "#9E9E9E";
+        } else if (this.userVoteType === "down") {
+          this.upVoteColor = "#9E9E9E";
+          this.downVoteColor = "#D50000";
+        }else{
+          this.upVoteColor = "#9E9E9E";
+          this.downVoteColor = "#9E9E9E";
+        }
+
         // count length of replies array
         this.viewsCount = this.question.properties.views;
         this.replyCount = this.question.replies.length;
         this.replies = this.question.replies;
         // calc upvote percent and round to 2 decimal places
-        this.upVotedPercent =
+        const percent =
           (this.question.properties.up_votes /
             (this.question.properties.up_votes +
               this.question.properties.down_votes)) *
           100;
-        this.upVotedPercent = Math.round(this.upVotedPercent * 100) / 100;
+        // if percent is NaN, set to 0
+        if (isNaN(percent)) {
+          this.upVotedPercent = 0;
+        } else {
+          this.upVotedPercent = Math.round(percent * 100) / 100;
+        }
         console.log(response);
       })
       .catch((error) => {
@@ -157,6 +222,12 @@ export default {
       .finally(() => {
         this.isLoading = false;
       });
+
+    // check if user is authenticated
+    // if user is authenticated
+    if (User.checkIfLoggedIn()) {
+      this.isAuthenticated = true;
+    }
   },
 };
 </script>
@@ -282,11 +353,11 @@ main {
   align-self: flex-end;
 }
 
-.question-replies{
-  margin-top: .5em;
+.question-replies {
+  margin-top: 0.5em;
 }
 
-.question-replies .reply{
+.question-replies .reply {
   padding: 1em 0;
   border-bottom: 1px solid rgb(235, 237, 240);
 }
@@ -298,7 +369,7 @@ main {
   border-bottom: 1px solid rgb(235, 237, 240);
 }
 
-.reply-header span{
+.reply-header span {
   font-size: 14px;
 }
 
@@ -312,5 +383,9 @@ main {
   color: rgb(36, 43, 40);
 }
 
-
+@media (max-width: 576px) {
+  main {
+    padding: 0;
+  }
+}
 </style>
