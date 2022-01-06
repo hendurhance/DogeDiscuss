@@ -142,12 +142,13 @@ export default {
         this.viewsCount = this.question.properties.views;
         this.replyCount = this.question.replies.length;
         this.replies = this.question.replies;
-        // calc upvote percent
+        // calc upvote percent and round to 2 decimal places
         this.upVotedPercent =
           (this.question.properties.up_votes /
             (this.question.properties.up_votes +
               this.question.properties.down_votes)) *
           100;
+        this.upVotedPercent = Math.round(this.upVotedPercent * 100) / 100;
         console.log(response);
       })
       .catch((error) => {

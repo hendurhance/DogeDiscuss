@@ -2698,9 +2698,10 @@ __webpack_require__.r(__webpack_exports__);
 
       _this.viewsCount = _this.question.properties.views;
       _this.replyCount = _this.question.replies.length;
-      _this.replies = _this.question.replies; // calc upvote percent
+      _this.replies = _this.question.replies; // calc upvote percent and round to 2 decimal places
 
       _this.upVotedPercent = _this.question.properties.up_votes / (_this.question.properties.up_votes + _this.question.properties.down_votes) * 100;
+      _this.upVotedPercent = Math.round(_this.upVotedPercent * 100) / 100;
       console.log(response);
     })["catch"](function (error) {
       console.log(error);
