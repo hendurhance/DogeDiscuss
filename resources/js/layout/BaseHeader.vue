@@ -13,7 +13,7 @@
             </div>
           </div>
           <div class="nav-item no-mobile">
-            <router-link to="/hey">Ask Question</router-link>
+            <router-link to="/ask-question">Ask Question</router-link>
             <router-link to="/login" class="filled" v-if="notLoggedIn">Login</router-link>
             <button @click="logout" class="filled" v-if="!notLoggedIn"> Logout</button>
           </div>
@@ -30,7 +30,7 @@
               <div class="navigation">
                 <router-link to="/forum" class="links">Forum</router-link>
                 <a href="" class="links">Category</a>
-                <a href="" class="links">Ask Question</a>
+                <router-link to="/ask-question" class="links">Ask Question</router-link>
                 <router-link to="/register" class="links" v-if="notLoggedIn">Register</router-link>
               </div>
             </div>

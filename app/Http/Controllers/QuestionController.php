@@ -52,7 +52,7 @@ class QuestionController extends Controller
         $question->title = $request->title;
         $question->body = $request->body;
         $question->category_id = $request->category_id;
-        $question->user_id = $request->user()->id;
+        $question->user_id = auth()->user()->id;
         $question->save();
 
         return response([
@@ -105,6 +105,15 @@ class QuestionController extends Controller
      */
     public function destroy(Question $question)
     {
+        // check if user is authorized to delete the question
+        if (auth()->user()->id !== $question->user_id) {
+            return response([
+                'error' => 'You are not authorized to delete this question'
+            ], Response::HTTP_UNAUTHORIZED);
+        }
+
+
+
         $question->delete();
         return response(null, Response::HTTP_NO_CONTENT);
     }
@@ -118,7 +127,7 @@ class QuestionController extends Controller
         // then return error
         // else create new vote
         $vote = $question->votes()->where('user_id', auth()->id())->first();
-        
+
         // if votes exits and vote is up
         if ($vote && $vote->vote == 'up') {
             return response()->json([
@@ -147,7 +156,7 @@ class QuestionController extends Controller
         // then return error
         // else create new vote
         $vote = $question->votes()->where('user_id', auth()->id())->first();
-        
+
         // if votes exits and vote is down
         if ($vote && $vote->vote == 'down') {
             return response()->json([
@@ -176,7 +185,7 @@ class QuestionController extends Controller
         // then return error
         // else create new vote
         $vote = $question->votes()->where('user_id', auth()->id())->first();
-        
+
         // if votes exits delete vote
         if ($vote) {
             $question->resetVote();
@@ -195,5 +204,4 @@ class QuestionController extends Controller
             'error' => 'You have not voted this question'
         ], Response::HTTP_BAD_REQUEST);
     }
-    
 }

@@ -5,6 +5,7 @@ import Home from '../pages/Home.vue'
 import Register from '../auth/Register.vue'
 import Forum from '../components/Forum/Forum.vue'
 import QuestionDetail from '../components/Forum/QuestionDetail.vue'
+import CreateQuestion from '../components/Forum/CreateQuestion.vue'
 
 Vue.use(VueRouter)
 
@@ -35,6 +36,11 @@ const routes = [
         name: 'question',
         component: QuestionDetail,
         props: true
+    },
+    {
+        path : '/ask-question',
+        name: 'ask-question',
+        component: CreateQuestion
     }
 
     

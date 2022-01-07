@@ -16,6 +16,7 @@ import VueAxios from 'vue-axios'
 import User from './Helpers/User'
 import CryptoReq from './Helpers/CryptoReq'
 import Question from './Helpers/Question'
+import Category from './Helpers/Category'
 
 Vue.use(vuetify);
 Vue.use(VueAxios, axios)
@@ -41,7 +42,8 @@ window.User = User;
 window.CryptoReq = CryptoReq;
 // use Question class
 window.Question = Question;
-
+// use Category class
+window.Category = Category;
 
 
 import router from './router/router.js';

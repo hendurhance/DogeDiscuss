@@ -27,7 +27,6 @@ class QuestionRequest extends FormRequest
             'title' => 'required|string|min:5|max:255',
             'body' => 'required|string|min:5',
             'category_id' => 'required|integer|exists:categories,id',
-            'user_id' => 'required|integer',
         ];
     }
 
@@ -43,9 +42,7 @@ class QuestionRequest extends FormRequest
             'body.min' => 'A body must be at least :min characters',
             'category_id.required' => 'A category is required',
             'category_id.integer' => 'A category must be an integer',
-            'category_id.exists' => 'The category must exist',
-            'user_id.required' => 'A user is required',
-            'user_id.integer' => 'A user must be an integer',
+            'category_id.exists' => 'The category must exist'
         ];
     }
 }

@@ -15,6 +15,7 @@ class CategoryResource extends JsonResource
     public function toArray($request)
     {
         return [
+            'id' => $this->id,
             'name' => $this->name,
             'slug' => $this->slug,
             'questions' => $this->questions->count() > 0 ?  QuestionCollection::collection($this->questions) : "No Questions Available"
