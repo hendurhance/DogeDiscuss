@@ -93,7 +93,21 @@ class Question {
     /**
      * 
      */
-
+    async createQuestion(payload){
+        // if user is logged in use token 
+        if(User.checkIfLoggedIn()){
+            return await axios.post('/api/question', payload
+            ).then(
+                response => {
+                    return response.data;
+                }
+            ).catch(
+                error => {
+                    return error.response.data;
+                }
+            )
+        }
+    }
 
 
 }

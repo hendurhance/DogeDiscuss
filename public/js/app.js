@@ -2526,12 +2526,25 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
       categories: {},
       isAuth: false,
       isValidated: false,
+      buttonValue: "Post Question",
       form: {
         title: null,
         description: null,
@@ -2553,7 +2566,7 @@ __webpack_require__.r(__webpack_exports__);
       } else if (this.form.description === null) {
         this.errors.description = "Description is required";
       } else if (this.form.description.length < 50) {
-        this.errors.description = "Description must be at least 5 characters";
+        this.errors.description = "Description must be at least 50 characters";
       } else if (this.form.category === null) {
         this.errors.category = "Category is required";
       } else {
@@ -2562,15 +2575,51 @@ __webpack_require__.r(__webpack_exports__);
         this.errors.description = null;
         this.errors.category = null;
       }
+    },
+    createQuestion: function createQuestion() {
+      var _this = this;
+
+      this.validate();
+
+      if (this.isValidated) {
+        this.buttonValue = "Posting...";
+        var payload = {
+          title: this.form.title,
+          body: this.form.description,
+          category_id: this.form.category
+        };
+        console.log(payload);
+        Question.createQuestion(payload).then(function (response) {
+          _this.buttonValue = "Post Question";
+          _this.form.title = null;
+          _this.form.description = null;
+          _this.form.category = null;
+          _this.isValidated = false;
+
+          _this.$router.push({
+            name: "question",
+            params: {
+              slug: response.data.slug
+            }
+          });
+        })["catch"](function (error) {
+          _this.buttonValue = "Post Question";
+          _this.isValidated = false;
+
+          if (error.response.status === 422) {
+            _this.errors = error.response.data.errors;
+          }
+        });
+      }
     }
   },
   mounted: function mounted() {
-    var _this = this;
+    var _this2 = this;
 
     var catagories = Category.getAllCategories();
     catagories.then(function (response) {
       console.log(response);
-      _this.categories = response.data;
+      _this2.categories = response.data;
     }); // if user is not logged in and is not validated
 
     if (User.checkIfLoggedIn()) {
@@ -4264,6 +4313,43 @@ var Question = /*#__PURE__*/function () {
      * 
      */
 
+  }, {
+    key: "createQuestion",
+    value: function () {
+      var _createQuestion = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee5(payload) {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee5$(_context5) {
+          while (1) {
+            switch (_context5.prev = _context5.next) {
+              case 0:
+                if (!_User__WEBPACK_IMPORTED_MODULE_2__["default"].checkIfLoggedIn()) {
+                  _context5.next = 4;
+                  break;
+                }
+
+                _context5.next = 3;
+                return axios.post('/api/question', payload).then(function (response) {
+                  return response.data;
+                })["catch"](function (error) {
+                  return error.response.data;
+                });
+
+              case 3:
+                return _context5.abrupt("return", _context5.sent);
+
+              case 4:
+              case "end":
+                return _context5.stop();
+            }
+          }
+        }, _callee5);
+      }));
+
+      function createQuestion(_x5) {
+        return _createQuestion.apply(this, arguments);
+      }
+
+      return createQuestion;
+    }()
   }]);
 
   return Question;
@@ -9277,7 +9363,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.create-wrapper[data-v-1aa56e8a] {\n  margin: 0 auto;\n  position: relative;\n  background: rgb(247, 247, 247);\n  max-width: 600px;\n  padding: 1.5rem;\n}\n.create-header[data-v-1aa56e8a] {\n  text-align: center;\n  margin: 1rem 0;\n}\n.create-header h1[data-v-1aa56e8a] {\n  color: rgb(27, 27, 27);\n}\nform .category-wrapper[data-v-1aa56e8a] {\n  display: flex;\n  display: -webkit-flex;\n  flex-direction: row;\n  align-items: center;\n  justify-content: space-between;\n}\nform[data-v-1aa56e8a] {\n  display: grid;\n  display: -ms-grid;\n  display: -webkit-grid;\n  grid-template-rows: 1fr;\n  -ms-grid-rows: 1fr;\n  -webkit-grid-rows: 1fr;\n  grid-row-gap: 1rem;\n}\nform .category-wrapper select[data-v-1aa56e8a] {\n  width: 50%;\n  height: 40px;\n  border: 1px solid rgb(204, 204, 204);\n  border-radius: 3px;\n  padding: 0 20px;\n  color: rgb(27, 27, 27);\n  font-size: 12px;\n  text-decoration: none;\n}\n.main-form[data-v-1aa56e8a] {\n  display: grid;\n  display: -ms-grid;\n  display: -webkit-grid;\n  grid-template-rows: 1fr;\n  -ms-grid-row-gap: 1rem;\n  -webkit-grid-row-gap: 1rem;\n  grid-row-gap: 1rem;\n}\n.form-input input[data-v-1aa56e8a],\n.form-input textarea[data-v-1aa56e8a] {\n  width: 100%;\n  border: 1px solid rgb(204, 204, 204);\n  border-radius: 3px;\n  padding: 10px 20px;\n  color: rgb(27, 27, 27);\n  font-size: 12px;\n}\n.form-input textarea[data-v-1aa56e8a] {\n  height: 100px;\n  resize: none;\n}\n.form-submit input[type=\"submit\"][data-v-1aa56e8a] {\n  width: 100%;\n  border: none;\n  background: rgb(27, 27, 27);\n  color: rgb(255, 255, 255);\n  font-size: 14px;\n  font-weight: 700;\n  text-decoration: none;\n  text-transform: uppercase;\n  padding: 10px 20px;\n  border-radius: 3px;\n}\n.form-input input[data-v-1aa56e8a]:focus,\n.form-input textarea[data-v-1aa56e8a]:focus,\n.category-wrapper select[data-v-1aa56e8a]:focus {\n  outline: none;\n  border: 1px solid rgb(27, 27, 27);\n}\n.error-message[data-v-1aa56e8a] {\n  text-align: center;\n  margin: .5rem 0;\n  padding: 10px 0;\n  background: rgb(255, 69, 69);\n}\n.error-message p[data-v-1aa56e8a]{\n  color: #fff;\n  margin: 0;\n  font-size: 12px;\n}\n\n\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.create-wrapper[data-v-1aa56e8a] {\n  margin: 0 auto;\n  position: relative;\n  background: rgb(243, 243, 243);\n  max-width: 600px;\n  padding: 1.5rem;\n}\n.create-header[data-v-1aa56e8a] {\n  text-align: center;\n  margin: 1rem 0;\n}\n.create-header h1[data-v-1aa56e8a] {\n  color: #0f4c5c;\n}\nform .category-wrapper[data-v-1aa56e8a] {\n  display: flex;\n  display: -webkit-flex;\n  flex-direction: row;\n  align-items: center;\n  justify-content: space-between;\n}\nform[data-v-1aa56e8a] {\n  display: grid;\n  display: -ms-grid;\n  display: -webkit-grid;\n  grid-template-rows: 1fr;\n  -ms-grid-rows: 1fr;\n  -webkit-grid-rows: 1fr;\n  grid-row-gap: 1rem;\n}\nform .category-wrapper select[data-v-1aa56e8a] {\n  width: 50%;\n  height: 40px;\n  border: 1px solid #0f4c5c;\n  border-radius: 3px;\n  padding: 0 20px;\n  color: #0f4c5c;\n  font-size: 12px;\n  text-decoration: none;\n}\n.main-form[data-v-1aa56e8a] {\n  display: grid;\n  display: -ms-grid;\n  display: -webkit-grid;\n  grid-template-rows: 1fr;\n  -ms-grid-row-gap: 1rem;\n  -webkit-grid-row-gap: 1rem;\n  grid-row-gap: 1rem;\n}\n.form-input input[data-v-1aa56e8a],\n.form-input textarea[data-v-1aa56e8a] {\n  width: 100%;\n  border: 1px solid #0f4c5c;\n  border-radius: 3px;\n  padding: 10px 20px;\n  color: #0f4c5c;\n  font-size: 12px;\n}\n.form-input textarea[data-v-1aa56e8a] {\n  height: 100px;\n  resize: none;\n}\n.form-submit input[type=\"submit\"][data-v-1aa56e8a] {\n  width: 100%;\n  border: none;\n  background: #0f4c5c;\n  color: rgb(255, 255, 255);\n  font-size: 14px;\n  font-weight: 700;\n  text-decoration: none;\n  text-transform: uppercase;\n  padding: 10px 20px;\n  border-radius: 3px;\n}\nlabel[data-v-1aa56e8a] {\n  color: #0f4c5c;\n}\n.form-input input[data-v-1aa56e8a]:focus,\n.form-input textarea[data-v-1aa56e8a]:focus,\n.category-wrapper select[data-v-1aa56e8a]:focus {\n  outline: none;\n  border: 1px solid #082931;\n}\n.error-message[data-v-1aa56e8a] {\n  text-align: center;\n  margin: 0.5rem 0;\n  padding: 10px 0;\n  background: rgb(255, 69, 69);\n}\n.error-message p[data-v-1aa56e8a] {\n  color: #fff;\n  margin: 0;\n  font-size: 12px;\n}\n.v-application .error[data-v-1aa56e8a] {\n  background: none !important;\n}\n.error[data-v-1aa56e8a] {\n  color: #ff0000;\n  font-size: 0.8em;\n  font-weight: 400;\n  margin-bottom: 0.5em;\n  opacity: 0.8;\n  background: none !important;\n  border: none !important;\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -43847,9 +43933,7 @@ var render = function () {
     _c("div", { staticClass: "create-wrapper" }, [
       !_vm.isAuth
         ? _c("div", { staticClass: "error-message" }, [
-            _c("p", [
-              _vm._v(" You have to be logged in to create a question "),
-            ]),
+            _c("p", [_vm._v("You have to be logged in to create a question")]),
           ])
         : _vm._e(),
       _vm._v(" "),
@@ -43865,6 +43949,7 @@ var render = function () {
               on: {
                 submit: function ($event) {
                   $event.preventDefault()
+                  return _vm.createQuestion.apply(null, arguments)
                 },
               },
             },
@@ -43874,13 +43959,42 @@ var render = function () {
                 _vm._v(" "),
                 _c(
                   "select",
-                  { attrs: { name: "category" } },
+                  {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.form.category,
+                        expression: "form.category",
+                      },
+                    ],
+                    attrs: { name: "category" },
+                    on: {
+                      change: function ($event) {
+                        var $$selectedVal = Array.prototype.filter
+                          .call($event.target.options, function (o) {
+                            return o.selected
+                          })
+                          .map(function (o) {
+                            var val = "_value" in o ? o._value : o.value
+                            return val
+                          })
+                        _vm.$set(
+                          _vm.form,
+                          "category",
+                          $event.target.multiple
+                            ? $$selectedVal
+                            : $$selectedVal[0]
+                        )
+                      },
+                    },
+                  },
                   [
                     _c(
                       "option",
                       {
                         attrs: {
-                          value: "none",
+                          value: "null",
                           selected: "",
                           disabled: "",
                           hidden: "",
@@ -43914,23 +44028,92 @@ var render = function () {
                 ),
               ]),
               _vm._v(" "),
+              _vm.errors.category
+                ? _c("p", { staticClass: "error" }, [
+                    _vm._v(
+                      "\n            " +
+                        _vm._s(_vm.errors.category) +
+                        "\n          "
+                    ),
+                  ])
+                : _vm._e(),
+              _vm._v(" "),
               _c("div", { staticClass: "main-form" }, [
                 _c("div", { staticClass: "form-input" }, [
                   _c("label", [_vm._v("Title")]),
                   _vm._v(" "),
-                  _c("input", { attrs: { type: "text", name: "title" } }),
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.form.title,
+                        expression: "form.title",
+                      },
+                    ],
+                    attrs: { type: "text", name: "title" },
+                    domProps: { value: _vm.form.title },
+                    on: {
+                      input: function ($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.$set(_vm.form, "title", $event.target.value)
+                      },
+                    },
+                  }),
+                  _vm._v(" "),
+                  _vm.errors.title
+                    ? _c("p", { staticClass: "error" }, [
+                        _vm._v(
+                          "\n                " +
+                            _vm._s(_vm.errors.title) +
+                            "\n              "
+                        ),
+                      ])
+                    : _vm._e(),
                 ]),
                 _vm._v(" "),
                 _c("div", { staticClass: "form-input" }, [
                   _c("label", [_vm._v("Description")]),
                   _vm._v(" "),
-                  _c("textarea", { attrs: { name: "description" } }),
+                  _c("textarea", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.form.description,
+                        expression: "form.description",
+                      },
+                    ],
+                    attrs: { name: "description" },
+                    domProps: { value: _vm.form.description },
+                    on: {
+                      input: function ($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.$set(_vm.form, "description", $event.target.value)
+                      },
+                    },
+                  }),
+                  _vm._v(" "),
+                  _vm.errors.description
+                    ? _c("p", { staticClass: "error" }, [
+                        _vm._v(
+                          "\n                " +
+                            _vm._s(_vm.errors.description) +
+                            "\n              "
+                        ),
+                      ])
+                    : _vm._e(),
                 ]),
                 _vm._v(" "),
                 _c("div", { staticClass: "form-submit" }, [
                   _c("input", {
                     ref: "submitButton",
-                    attrs: { type: "submit", value: "Post Question" },
+                    attrs: { type: "submit" },
+                    domProps: { value: _vm.buttonValue },
                   }),
                 ]),
               ]),
