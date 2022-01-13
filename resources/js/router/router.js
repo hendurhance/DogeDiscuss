@@ -6,6 +6,8 @@ import Register from '../auth/Register.vue'
 import Forum from '../components/Forum/Forum.vue'
 import QuestionDetail from '../components/Forum/QuestionDetail.vue'
 import CreateQuestion from '../components/Forum/CreateQuestion.vue'
+import EditQuestion from '../components/Forum/EditQuestion.vue'
+import CategoryList from '../components/Category/CategoryList.vue'
 
 Vue.use(VueRouter)
 
@@ -38,10 +40,21 @@ const routes = [
         props: true
     },
     {
+        path: '/q/:slug/edit',
+        name: 'edit',
+        component: EditQuestion,
+        props: true
+    },
+    {
         path : '/ask-question',
         name: 'ask-question',
         component: CreateQuestion
-    }
+    },
+    {
+        path: '/categories',
+        name: 'categories',
+        component: CategoryList
+    },
 
     
 ]
@@ -49,10 +62,11 @@ const routes = [
 
 const router = new VueRouter({
     mode: 'history',
-
     routes // short for `routes: routes`
     
 })
+
+
 
 
 export default router
