@@ -65,8 +65,15 @@
             <div class="question-stats">
               <span> {{ viewsCount }} views </span>
               <span> {{ upVotedPercent }}% upvoted </span>
-              <span v-if="!ownsQuestion"> <router-link :to="{name: 'edit', params: {slug: question.slug}}">edit</router-link> </span>
-              <span v-if="!ownsQuestion" @click="deleteQuestion(question.slug)"> delete </span>
+              <span v-if="ownsQuestion">
+                <router-link
+                  :to="{ name: 'edit', params: { slug: question.slug } }"
+                  >edit</router-link
+                >
+              </span>
+              <span v-if="ownsQuestion" @click="deleteQuestion(question.slug)">
+                delete
+              </span>
             </div>
           </div>
           <div class="reply-wrapper">
@@ -132,55 +139,59 @@ export default {
       // if user is not authenticated, alert them to login
       if (!this.isAuthenticated) {
         alert("You must be logged in to vote");
-      }else{
+      } else {
         if (this.userVoteType === vote_type) {
           const reset = Question.resetVoteQuestion(slug);
           reset.then((response) => {
             console.log(response);
-            const data = response.properties
-            this.upVoteCount = data.up_votes
-            this.userVoteType = null
-            this.upVoteColor = "#9E9E9E"
-            this.downVoteColor = "#9E9E9E"
-            const percent = (data.up_votes / data.votes_count) * 100
+            const data = response.properties;
+            this.upVoteCount = data.up_votes;
+            this.userVoteType = null;
+            this.upVoteColor = "#9E9E9E";
+            this.downVoteColor = "#9E9E9E";
+            const percent = (data.up_votes / data.votes_count) * 100;
             // if percent is NaN, set it to 0
             if (isNaN(percent)) {
-              this.upVotedPercent = 0
+              this.upVotedPercent = 0;
             } else {
-              this.upVotedPercent = Math.round(percent * 100) / 100
+              this.upVotedPercent = Math.round(percent * 100) / 100;
             }
           });
         } else {
           const vote = Question.voteQuestion(slug, vote_type);
           vote.then((response) => {
             console.log(response);
-            const data = response.properties
-            this.upVoteCount = data.up_votes
-            this.userVoteType = vote_type
-            const percent = (data.up_votes / data.vote_count) * 100
+            const data = response.properties;
+            this.upVoteCount = data.up_votes;
+            this.userVoteType = vote_type;
+            const percent = (data.up_votes / data.vote_count) * 100;
             // if percent is NaN, set it to 0
             if (isNaN(percent)) {
-              this.upVotedPercent = 0
+              this.upVotedPercent = 0;
             } else {
-              this.upVotedPercent = Math.round(percent * 100) / 100
+              this.upVotedPercent = Math.round(percent * 100) / 100;
             }
-            if (vote_type === 'up') {
-              this.upVoteColor = "#00C853"
-              this.downVoteColor = "#9E9E9E"
+            if (vote_type === "up") {
+              this.upVoteColor = "#00C853";
+              this.downVoteColor = "#9E9E9E";
             } else {
-              this.upVoteColor = "#9E9E9E"
-              this.downVoteColor = "#D50000"
+              this.upVoteColor = "#9E9E9E";
+              this.downVoteColor = "#D50000";
             }
           });
         }
       }
     },
     userOwnsQuestion() {
-      let question_user = this.question.user;
-      let auth_user = User.getUsersName();
-      if (question_user == auth_user) {
-        this.ownQuestion = true;
-      } else {
+      if (this.isAuthenticated) {
+        let question_user = this.question.user;
+        let auth_user = User.getUsersName();
+        if (question_user == auth_user) {
+          this.ownQuestion = true;
+        } else {
+          this.ownQuestion = false;
+        }
+      }else{
         this.ownQuestion = false;
       }
     },
@@ -214,7 +225,7 @@ export default {
         } else if (this.userVoteType === "down") {
           this.upVoteColor = "#9E9E9E";
           this.downVoteColor = "#D50000";
-        }else{
+        } else {
           this.upVoteColor = "#9E9E9E";
           this.downVoteColor = "#9E9E9E";
         }
