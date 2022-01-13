@@ -9,22 +9,19 @@
           <h1>Edit Question</h1>
         </div>
         <div class="form-wrapper">
-          <form @submit.prevent="createQuestion">
+          <form @submit.prevent="editQuestionAction">
             <div class="category-wrapper">
               <label>Choose a Category</label>
               <!-- select input -->
               <select name="category" v-model="form.category">
-                <option :value="getCategoryID" selected disabled hidden>
-                  {{ question.category }}
-                </option>
-                <!--  -->
-                <!-- <option
+                <option
                   v-for="category in categories"
                   :key="category.slug"
                   :value="category.id"
+                  :selected="category.id == 3"
                 >
                   {{ category.name }}
-                </option> -->
+                </option>
               </select>
             </div>
             <p v-if="errors.category" class="error">
@@ -49,7 +46,12 @@
                 </p>
               </div>
               <div class="form-submit">
-                <input type="submit" :value="buttonValue" ref="submitButton" />
+                <input 
+                  type="submit" 
+                  :value="buttonValue" 
+                  ref="editButton" 
+                  :disabled="!valueChanged"
+                />
               </div>
             </div>
           </form>
@@ -72,8 +74,7 @@ export default {
       question: {},
       categories: {},
       ownQuestion: false,
-      isValidated: false,
-      buttonValue: "Post Question",
+      buttonValue: "Edit Question",
       form: {
         title: null,
         description: null,
@@ -84,6 +85,7 @@ export default {
         description: null,
         category: null,
       },
+      valueChanged: false,
     };
   },
   methods: {
@@ -93,30 +95,55 @@ export default {
         this.question = response.data;
         this.form.title = this.question.title;
         this.form.description = this.question.body;
-        this.form.category = this.question.category;
+        // this.form.category will get the category id from question.category using slug from category object
+        this.form.category = () => {
+          return this.getCategoryID()
+        };
 
         console.log(this.question);
         this.userOwnsQuestion();
       });
     },
     userOwnsQuestion() {
-      let question_user = this.question.user
+      let question_user = this.question.user;
       let auth_user = User.getUsersName();
       if (question_user == auth_user) {
         this.ownQuestion = true;
-      }else{
+      } else {
         this.ownQuestion = false;
+      }
+    },
+    editQuestionAction() {
+      console.log(this.ownQuestion, this.valueChanged)
+      if (this.ownQuestion) {
+        if (this.valueChanged) {
+          this.buttonValue = "Editing...";
+          this.valueChanged = false;
+          const slug = this.slug;
+          const payload = {
+            title: this.form.title,
+            body: this.form.description,
+            category: this.form.category,
+          };
+          const editReq = Question.editQuestion(slug, payload);
+          editReq.then((response) => {
+            this.buttonValue = "Edit Question";
+            this.valueChanged = true;
+            const questionRes = response.data;
+            this.$router.push({ name: "question", params: { slug: questionRes.slug } });
+          }).catch((error) => {
+            alert(error.response.data.message);
+          });
+        }
       }
     }
   },
   computed: {
-    getCategoryID() {
-      let categoryList = this.categories;
-      // get the category id from question.category name
-      let categoryID = categoryList.find(
-        (category) => category.name == this.question.category
-      ).id;
-      return categoryID;
+    getCategoryId(cat) {
+      // find the category id from the slug in category object and return id
+      return this.categories.find((category) => {
+        return category.slug == cat;
+      }).id;
     }
   },
   mounted() {
@@ -126,12 +153,31 @@ export default {
     });
 
     this.getQuestion();
-    
   },
   created() {
     if (!User.checkIfLoggedIn()) {
-      this.$router.push({ name: "login" }); 
+      this.$router.push({ name: "login" });
     }
+  },
+  watch: {
+    // when any form field with question data changes set valueChanged to true
+    form: {
+      handler() {
+        // if question data is changed
+        if (
+          this.form.title != this.question.title ||
+          this.form.description != this.question.body ||
+          this.form.category != this.question.category
+        ) {
+          this.valueChanged = true;
+          this.buttonValue = "Save Changes";
+        } else {
+          this.valueChanged = false;
+          this.buttonValue = "Edit Question";
+        }
+      },
+      deep: true,
+    },
   },
 };
 </script>
@@ -266,4 +312,10 @@ label {
   background: none !important;
   border: none !important;
 }
+
+/* disabled sub,it input */
+input[type="submit"]:disabled{
+  opacity: .7;
+}
+
 </style>

@@ -5,7 +5,7 @@
         <div class="nav-row">
           <div class="nav-item no-mobile">
             <router-link to="/forum">Forum</router-link>
-            <a href="">Category</a>
+            <router-link to="/categories">Categories</router-link>
           </div>
           <div class="nav-item">
             <div class="logo">
@@ -29,7 +29,7 @@
               </div>
               <div class="navigation">
                 <router-link to="/forum" class="links">Forum</router-link>
-                <a href="" class="links">Category</a>
+                <router-link to="/categories" class="links">Categories</router-link>
                 <router-link to="/ask-question" class="links">Ask Question</router-link>
                 <router-link to="/register" class="links" v-if="notLoggedIn">Register</router-link>
               </div>

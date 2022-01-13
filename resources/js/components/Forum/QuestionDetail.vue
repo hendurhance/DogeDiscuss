@@ -65,7 +65,8 @@
             <div class="question-stats">
               <span> {{ viewsCount }} views </span>
               <span> {{ upVotedPercent }}% upvoted </span>
-              <span> share </span>
+              <span v-if="!ownsQuestion"> <router-link :to="{name: 'edit', params: {slug: question.slug}}">edit</router-link> </span>
+              <span v-if="!ownsQuestion" @click="deleteQuestion(question.slug)"> delete </span>
             </div>
           </div>
           <div class="reply-wrapper">
@@ -116,6 +117,7 @@ export default {
       isLoading: true,
       replies: [],
       isAuthenticated: false,
+      ownsQuestion: false,
     };
   },
   props: {
@@ -173,6 +175,25 @@ export default {
         }
       }
     },
+    userOwnsQuestion() {
+      let question_user = this.question.user;
+      let auth_user = User.getUsersName();
+      if (question_user == auth_user) {
+        this.ownQuestion = true;
+      } else {
+        this.ownQuestion = false;
+      }
+    },
+    deleteQuestion(slug) {
+      if (confirm("Are you sure you want to delete this question?")) {
+        console.log(slug);
+        // const deleteQuestion = Question.deleteQuestion(slug);
+        // deleteQuestion.then((response) => {
+        //   console.log(response);
+        //  this.$router.push("/");
+        // });
+      }
+    },
   },
   computed: {},
   created() {
@@ -222,6 +243,8 @@ export default {
       .finally(() => {
         this.isLoading = false;
       });
+
+    this.userOwnsQuestion();
 
     // check if user is authenticated
     // if user is authenticated

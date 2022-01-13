@@ -109,6 +109,28 @@ class Question {
         }
     }
 
+    /**
+     * Edit question
+     * @param {String} slug - question slug
+     * @param {Object} payload - question payload
+     * @returns response from server
+     */
+    async editQuestion(slug, payload){
+        // if user is logged in use token 
+        if(User.checkIfLoggedIn()){
+            return await axios.put(`/api/question/${slug}`, payload
+            ).then(
+                response => {
+                    return response.data;
+                }
+            ).catch(
+                error => {
+                    return error.response.data;
+                }
+            )
+        }
+    }
+
 
 }
 

@@ -53,6 +53,19 @@ class Question extends Model
         });
     }
 
+    // auto generate slug from title when a user update a question
+    public function save(array $options = [])
+    {
+        $this->slug = Str::slug($this->title);
+
+        if (static::whereSlug($this->slug)->exists()) {
+            $this->slug = $this->slug . '-' . Str::random(5);
+        }
+
+        parent::save($options);
+    }
+
+
     public function getPathAttribute()
     {
         return asset("api/questions/$this->slug");
