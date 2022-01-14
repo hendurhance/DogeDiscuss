@@ -33,10 +33,10 @@ class DatabaseSeeder extends Seeder
                 $reply->likes()->saveMany(Like::factory(10)->make());
             }
         );
-        // create 200 votes using the VoteFactory
-        Vote::factory(200)->create();
         // create 200 views using the ViewsFactory
         Views::factory(300)->create();
+        // create 200 votes using the VoteFactory
+        Vote::factory(200)->create();
 
     }
 }

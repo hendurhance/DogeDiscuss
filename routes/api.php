@@ -49,7 +49,7 @@ Route::group([
 });
 
 /*=============================== CATEGORY ===============================*/
-Route::apiResource('category', CategoryController::class)->except('update');
+Route::apiResource('category', CategoryController::class)->except('update', 'destroy');
 
 
 /*============================ REPLIES ============================*/

@@ -38,9 +38,16 @@ class CategoryController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(CategoryRequest $request)
-    {
+    {   
+        // if name already exists, return error
+        if (Category::where('name', strtolower($request->name))->exists()) {
+            return response([
+                'error' => 'Category already exists'
+            ], Response::HTTP_UNPROCESSABLE_ENTITY);
+        }
+        
         $category = new Category();
-        $category->name = $request->name;
+        $category->name = strtolower($request->name);
         $category->save();
 
         return response()->json([

@@ -23,6 +23,29 @@ class Category {
     }
 
 
+    /**
+     * Fetch question from a category
+     * @param {String} slug - category slug
+     * @returns {Object} questions
+     */
+    async getQuestionsByCategory(slug) {
+        return await axios.get(`/api/category/${slug}`).then(
+            response => response.data
+        );
+    }
+
+    /**
+     * Create a new category
+     * @param {Object} category - category object
+     * @returns {Object} response
+     */
+    async createCategory(name) {
+        return await axios.post("/api/category", {
+            name
+        }).then(
+            response => response.data
+        );
+    }
 }
 
 export default Category = new Category();

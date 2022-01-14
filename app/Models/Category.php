@@ -15,7 +15,7 @@ class Category extends Model
         return $this->hasMany(Question::class);
     }
 
-    // auto-generate the slug when new category is created
+    // automatically generate slug from name and make name unique
     public static function boot()
     {
         parent::boot();
@@ -24,6 +24,7 @@ class Category extends Model
             $category->slug = Str::slug($category->name);
         });
     }
+
     
     // route model binding
     public function getRouteKeyName()

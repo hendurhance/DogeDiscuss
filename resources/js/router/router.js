@@ -8,6 +8,8 @@ import QuestionDetail from '../components/Forum/QuestionDetail.vue'
 import CreateQuestion from '../components/Forum/CreateQuestion.vue'
 import EditQuestion from '../components/Forum/EditQuestion.vue'
 import CategoryList from '../components/Category/CategoryList.vue'
+import CreateCategory from '../components/Category/CreateCategory.vue'
+import CategoryDetail from '../components/Category/CategoryDetail.vue'
 
 Vue.use(VueRouter)
 
@@ -55,6 +57,17 @@ const routes = [
         name: 'categories',
         component: CategoryList
     },
+    {
+        path: '/c/create',
+        name: 'create-category',
+        component: CreateCategory
+    },
+    {
+        path: '/c/:slug',
+        name: 'category',
+        component: CategoryDetail,
+        props: true
+    }
     
     
 ]

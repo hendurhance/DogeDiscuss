@@ -1,13 +1,14 @@
 <template>
   <v-container>
-    <div class="category__container">
+    <loading-spinner v-if="isLoading"></loading-spinner>
+    <div class="category__container" v-else>
       <div class="category__grid">
         <router-link
           class="category__item"
           v-for="category in categories"
           :key="category.id"
           :style="{ background: category.color }"
-          :to="`/category/${category.slug}`"
+          :to="{ name: 'category', params: { slug: category.slug } }"
         >
           <div class="category__inner-item">
             <h3>{{ category.name }}</h3>
@@ -17,7 +18,7 @@
         <router-link
           class="category__item"
           :style="{ background: '#0f4c5c' }"
-          :to="`/category/create`"
+          :to="{ name: 'create-category' }"
         >
           <div class="category__inner-item">
             <h3>Add Category</h3>
@@ -29,10 +30,15 @@
 </template>
 
 <script>
+import LoadingSpinner from '../../components/Layout/LoadingSpinner.vue'
 export default {
+  components: {
+    LoadingSpinner
+  },
   data() {
     return {
       categories: {},
+      isLoading: true,
     };
   },
   methods: {
@@ -44,6 +50,8 @@ export default {
           category.color = this.generateColorCode()
         });
         console.log(this.categories);
+      }).finally(() => {
+        this.isLoading = false;
       });
     },
     generateColorCode() {
