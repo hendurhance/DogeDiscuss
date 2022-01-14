@@ -4,7 +4,7 @@
       <div class="aside-header-wrapper">
         <h3>CATEGORIES</h3>
       </div>
-      <ul>
+      <ul class="cat__ul">
         <li v-for="category in categories" :key="category.id"
             :class="{ active: category.slug == activeCat }"
         >
@@ -48,6 +48,9 @@ export default {
 </script>
 
 <style>
+.cat__ul li{
+    padding: 3px 0 !important;
+}
 .cat__a {
   color: #0f4c5c !important;
   font-weight: 600;
