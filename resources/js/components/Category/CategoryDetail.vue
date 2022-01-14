@@ -18,9 +18,7 @@
           </div>
         </div>
       </main>
-      <aside>
-        <h1>Aside</h1>
-      </aside>
+      <category-aside :activeCat="activeCategory"></category-aside>
     </div>
   </v-container>
 </template>
@@ -28,10 +26,12 @@
 <script>
 import QuestionItem from "../../components/Forum/QuestionItem.vue";
 import LoadingSpinner from "../../components/Layout/LoadingSpinner.vue";
+import CategoryAside from "../../layout/CategoryAside.vue"
 export default {
   components: {
     QuestionItem,
     LoadingSpinner,
+    CategoryAside
   },
   props: {
     slug: {
@@ -42,6 +42,7 @@ export default {
     return {
       questions: {},
       isLoading: true,
+      activeCategory: "",
     };
   },
   mounted() {
@@ -53,6 +54,7 @@ export default {
       request
         .then((response) => {
           this.questions = response.data.questions;
+          this.activeCategory = response.data.slug;
           console.log(this.questions);
         })
         .finally(() => {
