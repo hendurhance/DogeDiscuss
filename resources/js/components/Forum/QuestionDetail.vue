@@ -65,13 +65,13 @@
             <div class="question-stats">
               <span> {{ viewsCount }} views </span>
               <span> {{ upVotedPercent }}% upvoted </span>
-              <span v-if="ownsQuestion">
+              <span>
                 <router-link
                   :to="{ name: 'edit', params: { slug: question.slug } }"
                   >edit</router-link
                 >
               </span>
-              <span v-if="ownsQuestion" @click="deleteQuestion(question.slug)">
+              <span @click="deleteQuestion(question.slug)">
                 delete
               </span>
             </div>
@@ -186,27 +186,32 @@ export default {
       if (this.isAuthenticated) {
         let question_user = this.question.user;
         let auth_user = User.getUsersName();
+        console.log(question_user, auth_user);
         if (question_user == auth_user) {
           this.ownQuestion = true;
         } else {
           this.ownQuestion = false;
         }
-      }else{
-        this.ownQuestion = false;
       }
+      console.log(this.ownQuestion);
     },
     deleteQuestion(slug) {
       if (confirm("Are you sure you want to delete this question?")) {
         console.log(slug);
-        // const deleteQuestion = Question.deleteQuestion(slug);
-        // deleteQuestion.then((response) => {
-        //   console.log(response);
-        //  this.$router.push("/");
-        // });
+        const deleteQuestion = Question.deleteQuestion(slug);
+        deleteQuestion.then((response) => {
+          console.log(response);
+         this.$router.push("/forum");
+        }).catch((error) => {
+          alert("You do not have permission to delete this question");
+        });
       }
     },
   },
   computed: {},
+  mounted() {
+    // this.userOwnsQuestion();
+  },
   created() {
     // get slug from props
     const slug = this.slug;
@@ -253,9 +258,8 @@ export default {
       })
       .finally(() => {
         this.isLoading = false;
+        this.userOwnsQuestion();
       });
-
-    this.userOwnsQuestion();
 
     // check if user is authenticated
     // if user is authenticated

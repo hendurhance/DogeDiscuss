@@ -131,6 +131,27 @@ class Question {
         }
     }
 
+    /**
+     * Delete question
+     * @param {String} slug - question slug
+     * @returns response from server
+     */
+    deleteQuestion(slug){
+        // if user is logged in use token 
+        if(User.checkIfLoggedIn()){
+            return axios.delete(`/api/question/${slug}`
+            ).then(
+                response => {
+                    return response.data;
+                }
+            ).catch(
+                error => {
+                    return error.response.data;
+                }
+            )
+        }
+    }
+
 
 }
 
