@@ -3,7 +3,7 @@
     <div class="inner-wrapper">
       <main>
         <div class="inner-main">
-          <div class="question-wrapper">
+          <div class="questions-wrapper">
             <ul>
               <!-- still loading -->
               <loading-spinner v-if="isLoading"></loading-spinner>
@@ -26,9 +26,11 @@
 </template>
 
 <script>
+import QuestionItem from "../../components/Forum/QuestionItem.vue";
 import LoadingSpinner from "../../components/Layout/LoadingSpinner.vue";
 export default {
   components: {
+    QuestionItem,
     LoadingSpinner,
   },
   props: {
@@ -48,10 +50,14 @@ export default {
   methods: {
     getCategory() {
       const request = Category.getQuestionsByCategory(this.slug);
-      request.then((response) => {
-        this.questions = response.data.questions;
-        console.log(this.questions);
-      });
+      request
+        .then((response) => {
+          this.questions = response.data.questions;
+          console.log(this.questions);
+        })
+        .finally(() => {
+          this.isLoading = false;
+        });
     },
   },
 };
@@ -66,5 +72,25 @@ export default {
 main {
   flex: 1 1 0%;
   padding: 1em;
+}
+
+.questions-wrapper ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+/* less than 768px aside does not show */
+@media (max-width: 768px) {
+  aside {
+    display: none;
+  }
+}
+
+/* on mobile no padding on main */
+@media (max-width: 576px) {
+  main {
+    padding: 0;
+  }
 }
 </style>
