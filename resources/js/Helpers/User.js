@@ -94,8 +94,8 @@ class User{
      * Clear token and user from Local Storage
      */
     logout(){
-        AppStorage.clear();
         this.logoutRequest();
+        AppStorage.clear();
     }
     
 
@@ -123,6 +123,7 @@ class User{
         }
         throw new Error('User is not logged in');
     }
+
 }
 
 

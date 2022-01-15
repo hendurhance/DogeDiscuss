@@ -67,13 +67,12 @@
               <span> {{ upVotedPercent }}% upvoted </span>
               <span>
                 <router-link
+                  v-if="ownsQuestion"
                   :to="{ name: 'edit', params: { slug: question.slug } }"
                   >edit</router-link
                 >
               </span>
-              <span @click="deleteQuestion(question.slug)">
-                delete
-              </span>
+              <span v-if="ownsQuestion" @click="deleteQuestion(question.slug)"> delete </span>
             </div>
           </div>
           <div class="reply-wrapper">
@@ -188,9 +187,9 @@ export default {
         let auth_user = User.getUsersName();
         console.log(question_user, auth_user);
         if (question_user == auth_user) {
-          this.ownQuestion = true;
+          this.ownsQuestion = true;
         } else {
-          this.ownQuestion = false;
+          this.ownsQuestion = false;
         }
       }
       console.log(this.ownQuestion);
@@ -199,12 +198,14 @@ export default {
       if (confirm("Are you sure you want to delete this question?")) {
         console.log(slug);
         const deleteQuestion = Question.deleteQuestion(slug);
-        deleteQuestion.then((response) => {
-          console.log(response);
-         this.$router.push("/forum");
-        }).catch((error) => {
-          alert("You do not have permission to delete this question");
-        });
+        deleteQuestion
+          .then((response) => {
+            console.log(response);
+            this.$router.push("/forum");
+          })
+          .catch((error) => {
+            alert("You do not have permission to delete this question");
+          });
       }
     },
   },
@@ -252,15 +253,14 @@ export default {
           this.upVotedPercent = Math.round(percent * 100) / 100;
         }
         console.log(response);
+        this.userOwnsQuestion();
       })
       .catch((error) => {
         console.log(error);
       })
       .finally(() => {
         this.isLoading = false;
-        this.userOwnsQuestion();
       });
-
     // check if user is authenticated
     // if user is authenticated
     if (User.checkIfLoggedIn()) {

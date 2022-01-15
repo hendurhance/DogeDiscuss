@@ -3,14 +3,16 @@ class Token{
     // check if token is valid
     checkIfValid(token){
         const payload = this.payload(token); 
+        // check if payload exists and if it is not expired
         if(payload){
-            // create an array of iss
             const iss = [
                 "http://127.0.0.1:8000/api/auth/login",
                 "http://dogediscuss.herokuapp.com/api/auth/login",
             ]
-
-            return iss.includes(payload.iss) ? true : false;
+            const now = Date.now() / 1000;
+            if(iss.includes(payload.iss) && payload.exp > now){
+                return true;
+            }
         }
         return false;
     }
