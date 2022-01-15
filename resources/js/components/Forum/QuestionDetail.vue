@@ -45,13 +45,16 @@
                   <p>{{ question.body }}</p>
                 </div>
                 <div class="question-meta">
-                  <span class="reply-count">
-                    <router-link to="/">
-                      {{ replyCount }} comments
-                    </router-link>
+                  <span class="reply-count"> 
+                    {{ replyCount }} comments 
                   </span>
                   <span class="category-type">
-                    <router-link to="/">
+                    <router-link
+                      :to="{
+                        name: 'category',
+                        params: { slug: question.category },
+                      }"
+                    >
                       /c/{{ question.category }}
                     </router-link>
                   </span>
@@ -72,14 +75,27 @@
                   >edit</router-link
                 >
               </span>
-              <span v-if="ownsQuestion" @click="deleteQuestion(question.slug)"> delete </span>
+              <span
+                v-if="ownsQuestion"
+                @click="deleteQuestion(question.slug)"
+                class="delete"
+              >
+                delete
+              </span>
             </div>
           </div>
           <div class="reply-wrapper">
             <div class="new-reply">
-              <form>
-                <textarea rows="2" placeholder="Enter your reply..."></textarea>
-                <input type="submit" value="Add Reply" />
+              <form @submit.prevent="createReply(question.slug)">
+                <textarea rows="2" placeholder="Enter your reply..."
+                  v-model="replyBody"
+                ></textarea>
+                <p v-if="replyError" class="error-p">{{ replyError }}</p>
+                <input
+                  type="submit"
+                  value="Add Reply"
+                  :disabled="isAuthenticated === false"
+                />
               </form>
             </div>
             <div class="question-replies">
@@ -124,6 +140,8 @@ export default {
       replies: [],
       isAuthenticated: false,
       ownsQuestion: false,
+      replyBody: "",
+      replyError: "",
     };
   },
   props: {
@@ -134,7 +152,6 @@ export default {
   },
   methods: {
     vote(slug, vote_type) {
-      console.log(slug, vote_type, this.userVoteType);
       // if user is not authenticated, alert them to login
       if (!this.isAuthenticated) {
         alert("You must be logged in to vote");
@@ -142,7 +159,6 @@ export default {
         if (this.userVoteType === vote_type) {
           const reset = Question.resetVoteQuestion(slug);
           reset.then((response) => {
-            console.log(response);
             const data = response.properties;
             this.upVoteCount = data.up_votes;
             this.userVoteType = null;
@@ -159,7 +175,6 @@ export default {
         } else {
           const vote = Question.voteQuestion(slug, vote_type);
           vote.then((response) => {
-            console.log(response);
             const data = response.properties;
             this.upVoteCount = data.up_votes;
             this.userVoteType = vote_type;
@@ -185,27 +200,50 @@ export default {
       if (this.isAuthenticated) {
         let question_user = this.question.user;
         let auth_user = User.getUsersName();
-        console.log(question_user, auth_user);
         if (question_user == auth_user) {
           this.ownsQuestion = true;
         } else {
           this.ownsQuestion = false;
         }
       }
-      console.log(this.ownQuestion);
     },
     deleteQuestion(slug) {
       if (confirm("Are you sure you want to delete this question?")) {
-        console.log(slug);
         const deleteQuestion = Question.deleteQuestion(slug);
         deleteQuestion
           .then((response) => {
-            console.log(response);
+            console.info(response);
             this.$router.push("/forum");
           })
           .catch((error) => {
             alert("You do not have permission to delete this question");
           });
+      }
+    },
+    createReply(slug) {
+      // if user is not authenticated, alert them to login
+      if (!this.isAuthenticated) {
+        alert("You must be logged in to reply");
+      } else {
+        // if reply is empty with trim() and lenght is less than 3 show error
+        if (this.replyBody.trim().length < 5) {
+          this.replyError = "Reply must be at least 5 characters long";
+        } else {
+          
+          const reply = Question.createReply(slug, this.replyBody);
+          reply
+            .then((response) => {
+              console.info(response);
+              this.replyBody = "";
+              this.replyError = "";
+              // push new reply to the top of the replies array
+              this.replies.unshift(response.data);
+            })
+            .catch((error) => {
+              console.error(error);
+              this.replyError = "Error creating reply";
+            });
+        }
       }
     },
   },
@@ -420,6 +458,27 @@ main {
   opacity: 0.8;
   color: rgb(36, 43, 40);
 }
+
+input[type="submit"]:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+span a {
+  color: #0f4c5c !important;
+  text-decoration: none;
+}
+
+.question-stats span.delete {
+  color: #f44336;
+  cursor: pointer;
+}
+
+p.error-p {
+    color: #ff5252 !important;
+}
+
+
 
 @media (max-width: 576px) {
   main {

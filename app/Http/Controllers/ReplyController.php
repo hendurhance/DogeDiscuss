@@ -27,7 +27,8 @@ class ReplyController extends Controller
      */
     public function index(Question $question)
     {
-        return ReplyCollection::collection($question->replies()->paginate(10));
+        // return ReplyCollection latest replies and paginate
+        return ReplyCollection::collection($question->replies()->latest()->paginate(5));
     }
 
     /**
@@ -48,7 +49,11 @@ class ReplyController extends Controller
      */
     public function store(ReplyRequest $request, Question $question)
     {
-        $reply = $question->replies()->create($request->all());
+        // create a new reply
+        $reply = new Reply;
+        $reply->body = $request->body;
+        $reply->user_id = auth()->user()->id;
+        $question->replies()->save($reply);
 
         return response([
             'data' => new ReplyResource($reply)

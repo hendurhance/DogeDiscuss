@@ -22,7 +22,9 @@ class QuestionResource extends JsonResource
             'category' => $this->category->name,
             'created_at' => $this->created_at->diffForHumans(),
             'user' => $this->user->name,
-            'replies' => ReplyResource::collection($this->replies),
+            // use ReplyResource to lates replies
+            'replies' => ReplyResource::collection($this->replies->sortByDesc('created_at')->take(5)),
+            // 'replies' => ReplyResource::collection($this->replies),
             'properties' => [
                 'vote_count' => $this->votes->count() ?? 0,
                 'up_votes' => $this->votes->where('vote', 'up')->count(),

@@ -152,6 +152,29 @@ class Question {
         }
     }
 
+    /**
+     * Create a reply
+     * @param {String} slug - question slug
+     * @param {string} reply - reply content
+     * @returns response from server
+     */
+    async createReply(slug, reply){
+        // if user is logged in use token 
+        if(User.checkIfLoggedIn()){
+            return await axios.post(`/api/question/${slug}/reply`, {
+                body: reply
+            }).then(
+                response => {
+                    return response.data;
+                }
+            ).catch(
+                error => {
+                    return error.response.data;
+                }
+            )
+        }
+    }
+
 
 }
 
