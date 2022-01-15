@@ -175,6 +175,27 @@ class Question {
         }
     }
 
+    /**
+     * Delete reply
+     * @param {String} slug - question slug
+     * @param {String} reply_id - reply id
+     * @returns response from server
+     */
+    async deleteReply(slug, reply_id){
+        // if user is logged in use token 
+        if(User.checkIfLoggedIn()){
+            return await axios.delete(`/api/question/${slug}/reply/${reply_id}`
+            ).then(
+                response => {
+                    return response.data;
+                }
+            ).catch(
+                error => {
+                    return error.response.data;
+                }
+            )
+        }
+    }
 
 }
 

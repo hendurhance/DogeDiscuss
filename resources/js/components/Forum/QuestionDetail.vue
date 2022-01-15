@@ -45,9 +45,7 @@
                   <p>{{ question.body }}</p>
                 </div>
                 <div class="question-meta">
-                  <span class="reply-count"> 
-                    {{ replyCount }} comments 
-                  </span>
+                  <span class="reply-count"> {{ replyCount }} comments </span>
                   <span class="category-type">
                     <router-link
                       :to="{
@@ -87,7 +85,9 @@
           <div class="reply-wrapper">
             <div class="new-reply">
               <form @submit.prevent="createReply(question.slug)">
-                <textarea rows="2" placeholder="Enter your reply..."
+                <textarea
+                  rows="2"
+                  placeholder="Enter your reply..."
                   v-model="replyBody"
                 ></textarea>
                 <p v-if="replyError" class="error-p">{{ replyError }}</p>
@@ -104,6 +104,10 @@
                 <div class="reply-header">
                   <span>{{ reply.user }}</span>
                   <span>{{ reply.created_at }}</span>
+                  <span v-if="reply.user === userName" class="delete"
+                    @click="deleteReply(question.slug, reply.id)"
+                    >delete</span
+                  >
                 </div>
                 <div class="reply-body">
                   <p>{{ reply.reply }}</p>
@@ -142,6 +146,7 @@ export default {
       ownsQuestion: false,
       replyBody: "",
       replyError: "",
+      userName: "",
     };
   },
   props: {
@@ -229,7 +234,6 @@ export default {
         if (this.replyBody.trim().length < 5) {
           this.replyError = "Reply must be at least 5 characters long";
         } else {
-          
           const reply = Question.createReply(slug, this.replyBody);
           reply
             .then((response) => {
@@ -242,6 +246,25 @@ export default {
             .catch((error) => {
               console.error(error);
               this.replyError = "Error creating reply";
+            });
+        }
+      }
+    },
+    deleteReply(slug, id) {
+      if(!this.isAuthenticated){
+        alert("You must be logged in to delete a reply");
+      } else {
+        if(confirm("Are you sure you want to delete this reply?")) {
+          const deleteReply = Question.deleteReply(slug, id);
+          deleteReply
+            .then((response) => {
+              console.info(response);
+              // remove reply from the replies array
+              this.replies = this.replies.filter((reply) => reply.id !== id);
+            })
+            .catch((error) => {
+              console.error(error);
+              alert("You do not have permission to delete this reply");
             });
         }
       }
@@ -303,6 +326,7 @@ export default {
     // if user is authenticated
     if (User.checkIfLoggedIn()) {
       this.isAuthenticated = true;
+      this.userName = User.getUsersName();
     }
   },
 };
@@ -469,16 +493,15 @@ span a {
   text-decoration: none;
 }
 
-.question-stats span.delete {
+.question-stats span.delete,
+.reply-header span.delete {
   color: #f44336;
   cursor: pointer;
 }
 
 p.error-p {
-    color: #ff5252 !important;
+  color: #ff5252 !important;
 }
-
-
 
 @media (max-width: 576px) {
   main {

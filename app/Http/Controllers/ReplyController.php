@@ -111,6 +111,14 @@ class ReplyController extends Controller
      */
     public function destroy(Question $question, Reply $reply)
     {
+        // check if user is authorized to delete the reply
+        if (auth()->user()->id !== $reply->user_id) {
+            return response([
+                'error' => 'You are not authorized to delete this reply'
+            ], Response::HTTP_UNAUTHORIZED);
+        }
+
+
         $check = $this->checkReply($question->id, $reply->question_id);
         
         if($check){
