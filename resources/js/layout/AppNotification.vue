@@ -17,9 +17,19 @@
           fill="#FF3838"
         />
       </svg>
+      <span class="notify__count">5</span>
     </button>
     <div class="notify-content" v-if="notify">
         <div class="notify-items">
+            <div class="notify-item">
+                <p>Hello</p>
+            </div>
+            <div class="notify-item">
+                <p>Hello</p>
+            </div>
+            <div class="notify-item">
+                <p>Hello</p>
+            </div>
             <div class="notify-item">
                 <p>Hello</p>
             </div>
@@ -44,11 +54,16 @@ export default {
 </script>
 
 <style>
+notify-wrapper{
+    position: relative;
+}
+
 button {
   padding: 0 20px;
   border: none;
   background: none;
   cursor: pointer;
+  
 }
 
 @media (max-width: 480px) {
