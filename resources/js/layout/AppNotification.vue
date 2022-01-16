@@ -67,6 +67,9 @@ export default {
         });
     },
   },
+  mounted() {
+    this.getNotification();
+  },
 };
 </script>
 
