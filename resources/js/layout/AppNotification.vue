@@ -20,50 +20,58 @@
       <span class="notify__count">5</span>
     </button>
     <div class="notify-content" v-if="notify">
-        <div class="notify-items">
-            <div class="notify-item">
-                <p>Hello</p>
-            </div>
-            <div class="notify-item">
-                <p>Hello</p>
-            </div>
-            <div class="notify-item">
-                <p>Hello</p>
-            </div>
-            <div class="notify-item">
-                <p>Hello</p>
-            </div>
+      <div class="notify-items">
+        <div class="notify-item">
+          <p>Hello</p>
         </div>
+        <div class="notify-item">
+          <p>Hello</p>
+        </div>
+        <div class="notify-item">
+          <p>Hello</p>
+        </div>
+        <div class="notify-item">
+          <p>Hello</p>
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 export default {
-    data() {
-        return {
-            notify: false,
-        };
+  data() {
+    return {
+      notify: false,
+    };
+  },
+  methods: {
+    openNotify() {
+      this.notify = !this.notify;
     },
-    methods: {
-        openNotify() {
-            this.notify = !this.notify;
-        },
-    },
+  },
 };
 </script>
 
 <style>
-notify-wrapper{
-    position: relative;
+notify-wrapper {
+  position: relative;
 }
 
-button {
+button.notification {
   padding: 0 20px;
   border: none;
   background: none;
   cursor: pointer;
-  
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.notification span{
+    font-size: 14px;
+    font-weight: 700;
+    color: #000;
 }
 
 @media (max-width: 480px) {
