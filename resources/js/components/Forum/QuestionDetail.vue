@@ -188,11 +188,8 @@ export default {
       }
     },
     like(id){
-      this.$http.post(`/api/replies/${id}/like`).then(response => {
-        this.question.properties.like_count += 1;
-        this.question.properties.is_liked = true;
-        this.question.properties.liked_by.push(this.userName);
-      });
+      const request = Question.likeReply(id);
+      
     },
     vote(slug, vote_type) {
       // if user is not authenticated, alert them to login

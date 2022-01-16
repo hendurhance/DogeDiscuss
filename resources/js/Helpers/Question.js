@@ -196,6 +196,27 @@ class Question {
             )
         }
     }
+    
+    /**
+     * Like reply
+     * @param {Int} reply_id - reply id
+     * @returns response from server
+     */
+    async likeReply(reply_id){
+        // if user is logged in use token 
+        if(User.checkIfLoggedIn()){
+            return await axios.post(`/api/like/${reply_id}`
+            ).then(
+                response => {
+                    return response.data;
+                }
+            ).catch(
+                error => {
+                    return error.response.data;
+                }
+            )
+        }
+    }
 
 }
 
