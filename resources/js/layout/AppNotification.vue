@@ -22,7 +22,7 @@
     <div class="notify-content" v-if="notify">
       <div class="notify-items" v-if="unreadCount > 0">
         <div class="notify-item" v-for="unre in unread" :key="unre.id">
-          <p>
+          <p @click="markAsRead(unre.id)">
             A new reply from {{ unre.data.reply_by }} on
             <router-link
               :to="{ name: 'question', params: { slug: unre.data.slug } }"
@@ -71,7 +71,9 @@ export default {
       axios
         .post(`/api/notifications/${id}`)
         .then((response) => {
-          this.getNotification();
+          this.unreadCount--;
+          // remove this notification from unread array
+          this.unread
         })
         .catch((error) => {
           console.log(error);
