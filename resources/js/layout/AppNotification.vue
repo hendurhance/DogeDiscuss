@@ -121,6 +121,11 @@ button.notification {
   z-index: 9999;
 }
 
+.notify-item p a{
+  color: #000;
+  text-decoration: none;
+}
+
 @media (max-width: 480px) {
   button.notification {
     padding: 0 10px;
