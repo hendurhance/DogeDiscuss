@@ -240,6 +240,13 @@ nav {
   .logo img {
     width: 120px;
   }
+  button img{
+    width: 20px !important;
+  }
+
+  .nav-item a, .nav-item .a-flex{
+    font-size: 12px;
+  }
 }
 
 

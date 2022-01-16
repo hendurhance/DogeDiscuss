@@ -152,4 +152,15 @@ button.notification {
     padding: 0 10px;
   }
 }
+
+@media (max-width: 359px){
+  .notification svg {
+    width: 20px;
+    height: 20px;
+  }
+  .notification span {
+    font-size: 12px;
+    font-weight: 400;
+  }
+}
 </style>
