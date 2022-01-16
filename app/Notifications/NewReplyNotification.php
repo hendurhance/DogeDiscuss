@@ -2,6 +2,7 @@
 
 namespace App\Notifications;
 
+use App\Models\Reply;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
@@ -11,14 +12,16 @@ class NewReplyNotification extends Notification
 {
     use Queueable;
 
+    public $reply;
+
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(Reply $reply)
     {
-        //
+        $this->reply = $reply;
     }
 
     /**
