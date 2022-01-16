@@ -60,8 +60,6 @@ class ReplyController extends Controller
         if ($reply->user_id !== $question->user_id) {
             $question->user->notify(new NewReplyNotification($reply));
         }
-        $user = $question->user;
-        $user->notify(new NewReplyNotification($reply));
 
         return response([
             'data' => new ReplyResource($reply)
