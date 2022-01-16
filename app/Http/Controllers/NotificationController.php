@@ -7,7 +7,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class NotificationController extends Controller
 {
-    
+
     public function __construct()
     {
         $this->middleware('JWT');
@@ -57,11 +57,9 @@ class NotificationController extends Controller
     public function markAsRead($id)
     {
         auth()->user()->notifications->find($id)->markAsRead();
-        return response(
-            
-            , Response::HTTP_OK);
+        return response([
+                'message' => 'Notification marked as read.'
+            ], Response::HTTP_OK
+        );
     }
-
-
-
 }
