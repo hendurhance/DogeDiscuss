@@ -15,6 +15,7 @@
           <div class="nav-item no-mobile">
             <router-link to="/ask-question">Ask Question</router-link>
             <router-link to="/login" class="filled" v-if="notLoggedIn">Login</router-link>
+            <app-notification></app-notification>
             <button @click="logout" class="filled" v-if="!notLoggedIn"> Logout</button>
           </div>
           <div class="nav-item no-desktop">
@@ -47,8 +48,11 @@ import Hamburger from "../../../public/img/vuesax/bold/hamburger.svg";
 import userIcon from "../../../public/img/vuesax/bold/user.svg";
 import Cancel from "../../../public/img/vuesax/bold/cancel.svg";
 import logoutIcon from "../../../public/img/vuesax/bold/logout.svg";
-import AppN
+import AppNotification from "./AppNotification.vue"
 export default {
+  components: {
+    AppNotification
+  },
   data() {
     return {
       logo: Logo,

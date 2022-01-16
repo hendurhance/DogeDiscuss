@@ -1,5 +1,5 @@
 <template>
-  <v-btn>
+  <button>
     <svg
       width="24"
       height="24"
@@ -16,7 +16,7 @@
         fill="#292D32"
       />
     </svg>
-  </v-btn>
+  </button>
 </template>
 
 <script>
@@ -24,4 +24,11 @@ export default {};
 </script>
 
 <style>
+button {
+  width: 24px;
+  height: 24px;
+  border: none;
+  background: none;
+  cursor: pointer;
+}
 </style>
