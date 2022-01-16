@@ -10,7 +10,7 @@
     <meta name="description" content="DogeDiscuss is a platform for thousands of communities to share opinions regarding trending crypto coin.">
     <meta property="og:title" content="DogeDiscuss" />
     <meta property="og:description" content="DogeDiscuss is a platform for thousands of communities to share opinions regarding trending crypto coin." />
-    <meta property="og:image" content="{{ asset('images/logo.png') }}" />
+    <meta property="og:image" content="{{ asset('img/logo-green.svg') }}" />
     <meta property="og:url" content="{{ url('/') }}" />
     <meta property="og:type" content="website" />
     <meta name="twitter:card" content="summary_large_image" />
@@ -18,7 +18,7 @@
     <meta name="twitter:creator" content="@DogeDiscuss" />
     <meta name="twitter:title" content="DogeDiscuss" />
     <meta name="twitter:description" content="DogeDiscuss is a platform for thousands of communities to share opinions regarding trending crypto coin." />
-    <meta name="twitter:image" content="{{ asset('images/logo.png') }}" />
+    <meta name="twitter:image" content="{{ asset('img/logo-green.svg') }}" />
     {{-- favicon --}}
     {{-- more meta --}}
     <link rel="stylesheet" href="/css/app.css">
