@@ -177,23 +177,20 @@ export default {
   methods: {
     likeAction(id){
       if(this.isAuthenticated){
-        if(action){
-          this.like(id);
-        } else {
-          this.like(id);
-        }
+        const request = Question.likeReply(id);
+        request.then(response => {
+          console.log(response);
+          this.replies.forEach(reply => {
+            if(reply.id === id){
+              reply.properties.is_liked = response.data.is_liked;
+              reply.properties.like_count = response.data.like_count;
+            }
+          });
+        });
       }
       else{
         alert("You must be logged in to like a reply");
       }
-    },
-    like(id){
-      const request = Question.likeReply(id);
-      request.then(response => {
-        console.log(response);
-      }).catch(error => {
-        console.log(error);
-      });
     },
     vote(slug, vote_type) {
       // if user is not authenticated, alert them to login
