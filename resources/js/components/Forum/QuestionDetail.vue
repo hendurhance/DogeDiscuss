@@ -115,7 +115,7 @@
                   <p>{{ reply.reply }}</p>
                   <div>
                     <svg
-                      @click="like(reply.id, reply.properties.is_liked)"
+                      @click="likeAction(reply.id, reply.properties.is_liked)"
                       width="24"
                       height="24"
                       viewBox="0 0 24 24"
@@ -175,6 +175,9 @@ export default {
     },
   },
   methods: {
+    likeAction(id, action){
+      console.log(id, action);
+    },
     vote(slug, vote_type) {
       // if user is not authenticated, alert them to login
       if (!this.isAuthenticated) {
