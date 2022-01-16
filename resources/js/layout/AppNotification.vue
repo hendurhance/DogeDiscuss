@@ -49,9 +49,16 @@ export default {
     openNotify() {
       this.notify = !this.notify;
     },
-    getNotfication() {
-        ax
-    }
+    getNotification() {
+      axios
+        .get("/api/notification")
+        .then((response) => {
+          console.log(response.data);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
   },
 };
 </script>
@@ -71,10 +78,10 @@ button.notification {
   justify-content: center;
 }
 
-.notification span{
-    font-size: 16px;
-    font-weight: 700;
-    color: #000;
+.notification span {
+  font-size: 16px;
+  font-weight: 700;
+  color: #000;
 }
 
 .notify-content {

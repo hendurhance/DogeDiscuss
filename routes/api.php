@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CryptoController;
+use App\Http\Controllers\NotificationController
 
 /*
 |--------------------------------------------------------------------------
@@ -62,3 +63,7 @@ Route::delete('/like/{reply}', [LikeController::class, 'unlikeIt']);
 // Crypto currency API
 Route::get('/ticker/doge', [CryptoController::class, 'doge']);
 Route::get('/news/doge', [CryptoController::class, 'dogeNews']);
+
+// Notifications API
+Route::get('/notifications', [NotificationController::class, 'index']);
+Route::post('/notifications/{notification}', [NotificationController::class, 'markAsRead']);
