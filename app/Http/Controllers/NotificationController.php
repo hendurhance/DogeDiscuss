@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class NotificationController extends Controller
 {
@@ -49,8 +50,18 @@ class NotificationController extends Controller
     }
 
     /**
-     * Show notification.
+     * Mark the given notification as read.
+     * Only the user that owns the notification can mark it as read.
+     * 
      */
+    public function markAsRead($id)
+    {
+        auth()->user()->notifications->find($id)->markAsRead();
+        return response(
+            
+            , Response::HTTP_OK);
+    }
+
 
 
 }
