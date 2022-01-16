@@ -111,6 +111,9 @@
                 </div>
                 <div class="reply-body">
                   <p>{{ reply.reply }}</p>
+                  <span>
+                    like
+                  </span>
                 </div>
               </div>
             </div>
@@ -475,6 +478,10 @@ main {
 
 .reply-header span:first-child {
   font-weight: 600;
+}
+
+.reply-body{
+  disp
 }
 
 .reply-body p {
