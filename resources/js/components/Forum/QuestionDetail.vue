@@ -115,7 +115,7 @@
                   <p>{{ reply.reply }}</p>
                   <div>
                     <svg
-                      @click="likeAction(reply.id)"
+                      @click="likeAction(reply.id, reply.properties.is_liked)"
                       width="24"
                       height="24"
                       viewBox="0 0 24 24"
@@ -175,7 +175,7 @@ export default {
     },
   },
   methods: {
-    likeAction(id){
+    likeAction(id, action){
       if(this.isAuthenticated){
         const request = Question.likeReply(id);
         request.then(response => {

@@ -218,6 +218,22 @@ class Question {
         }
     }
 
+    async unlikeReply(reply_id){
+        // if user is logged in use token 
+        if(User.checkIfLoggedIn()){
+            return await axios.delete(`/api/like/${reply_id}`
+            ).then(
+                response => {
+                    return response.data;
+                }
+            ).catch(
+                error => {
+                    return error.response.data;
+                }
+            )
+        }
+    }
+
 }
 
 export default Question = new Question();
