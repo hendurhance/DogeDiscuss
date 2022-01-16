@@ -111,9 +111,9 @@
                 </div>
                 <div class="reply-body">
                   <p>{{ reply.reply }}</p>
-                  <span>
-                    like
-                  </span>
+                  <div>
+                    
+                  </div>
                 </div>
               </div>
             </div>
@@ -482,7 +482,6 @@ main {
 
 .reply-body{
   display: grid;
-  /* make the like div take up 1/5 of the grid */
   grid-template-columns: 90% 1fr;
 }
 
