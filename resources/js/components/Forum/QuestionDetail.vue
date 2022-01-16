@@ -115,7 +115,7 @@
                   <p>{{ reply.reply }}</p>
                   <div>
                     <svg
-                      @click="vote(reply.id, reply.pe
+                      @click="like(reply.id, reply.properties.is_liked)"
                       width="24"
                       height="24"
                       viewBox="0 0 24 24"
@@ -506,8 +506,16 @@ main {
   flex-direction: column;
   align-items: center;
   justify-content: center;
+}
 
-
+.reply-body div p{
+  font-size: 1em;
+  font-weight: 600;
+  text-align: center;
+  margin: 0;
+  padding: 0;
+  color: rgb(36, 43, 40);
+  opacity: 0.8;
 }
 
 .reply-body p {
