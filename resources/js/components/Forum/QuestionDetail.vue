@@ -177,16 +177,22 @@ export default {
   methods: {
     likeAction(id, action){
       if(this.isAuthenticated){
-        const request = Question.likeReply(id);
-        request.then(response => {
-          console.log(response);
-          this.replies.forEach(reply => {
-            if(reply.id === id){
-              reply.properties.is_liked = response.data.is_liked;
-              reply.properties.like_count = response.data.like_count;
-            }
+        // if action is true, then we are unliking
+        if(action){
+          const unlikeRequest = Question.unlikeReply(id);
+          unlikeRequest.then(response => {
+            console.log(response);
+          }).catch(error => {
+            console.log(error);
           });
-        });
+        } else {
+          const likeRequest = Question.likeReply(id);
+          likeRequest.then(response => {
+            console.log(response);
+          }).catch(error => {
+            console.log(error);
+          });
+        }
       }
       else{
         alert("You must be logged in to like a reply");
