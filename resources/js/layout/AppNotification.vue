@@ -73,7 +73,9 @@ export default {
         .then((response) => {
           this.unreadCount--;
           // remove this notification from unread array
-          this.unread
+          this.unread = this.unread.filter((unread) => {
+            return unread.id !== id;
+          });
         })
         .catch((error) => {
           console.log(error);
