@@ -47,6 +47,7 @@ import Hamburger from "../../../public/img/vuesax/bold/hamburger.svg";
 import userIcon from "../../../public/img/vuesax/bold/user.svg";
 import Cancel from "../../../public/img/vuesax/bold/cancel.svg";
 import logoutIcon from "../../../public/img/vuesax/bold/logout.svg";
+import AppN
 export default {
   data() {
     return {
