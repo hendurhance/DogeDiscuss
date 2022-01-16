@@ -22,13 +22,14 @@
     <div class="notify-content" v-if="notify">
       <div class="notify-items" v-if="unreadCount > 0">
         <div class="notify-item" v-for="unre in unread" :key="unre.id">
-          <router-link
-            :to="{ name: 'question', params: { slug: unre.data.slug } }"
-            @click="markAsRead(unre.id)"
-            >
+          <p>
             A new reply from {{ unre.data.reply_by }} on
-            {{ unre.data.question }}
-          </router-link>
+            <router-link
+              :to="{ name: 'question', params: { slug: unre.data.slug } }"
+            >
+              {{ unre.data.question }}
+            </router-link>
+          </p>
         </div>
       </div>
       <div class="notify-items" v-else>
@@ -68,9 +69,7 @@ export default {
     },
     markAsRead(id) {
       axios
-        .post("/api/notifications/read", {
-          id: id,
-        })
+        .post(`/api/notifications/${id}`)
         .then((response) => {
           this.getNotification();
         })
