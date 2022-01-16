@@ -32,6 +32,7 @@ class LikeController extends Controller
 
             return response([
                 'message' => 'Reply liked.'
+                'data' 
             ], Response::HTTP_OK);
         }
     }
