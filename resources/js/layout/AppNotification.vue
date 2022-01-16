@@ -137,12 +137,14 @@ button.notification {
   font-size: 14px;
   font-weight: 500;
   color: #000;
+  opacity: .7;
   margin-bottom: 10px;
 }
 
 .notify-item p a{
   color: #000;
-  text-decoration: none;
+  opacity: 1;
+  text-decoration: underline;
 }
 
 @media (max-width: 480px) {
