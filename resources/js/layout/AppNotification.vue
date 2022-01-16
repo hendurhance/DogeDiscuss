@@ -43,6 +43,9 @@ export default {
   data() {
     return {
       notify: false,
+      read: {},
+      unread: {},
+      unreadCount: 0,
     };
   },
   methods: {
@@ -51,9 +54,11 @@ export default {
     },
     getNotification() {
       axios
-        .get("/api/notification")
+        .get("/api/notifications")
         .then((response) => {
-          console.log(response.data);
+            this.read = response.data.read;
+            this.unread = response.data.unread;
+            this.unreadCount = Object.keys(this.unread).length;
         })
         .catch((error) => {
           console.log(error);
