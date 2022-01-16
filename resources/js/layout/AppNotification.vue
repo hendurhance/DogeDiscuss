@@ -25,8 +25,7 @@ export default {};
 
 <style>
 button {
-  width: 24px;
-  height: 24px;
+  padding: 0 20px;
   border: none;
   background: none;
   cursor: pointer;

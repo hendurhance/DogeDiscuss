@@ -15,7 +15,7 @@
           <div class="nav-item no-mobile">
             <router-link to="/ask-question">Ask Question</router-link>
             <router-link to="/login" class="filled" v-if="notLoggedIn">Login</router-link>
-            <app-notification></app-notification>
+            <app-notification v-else></app-notification>
             <button @click="logout" class="filled" v-if="!notLoggedIn"> Logout</button>
           </div>
           <div class="nav-item no-desktop">
