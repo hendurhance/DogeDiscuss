@@ -113,6 +113,7 @@
                   <p>{{ reply.reply }}</p>
                   <div>
                     
+                    <p>{{reply.like_count}}</p>
                   </div>
                 </div>
               </div>
