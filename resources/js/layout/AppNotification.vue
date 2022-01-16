@@ -49,6 +49,9 @@ export default {
     openNotify() {
       this.notify = !this.notify;
     },
+    getNotfication() {
+        ax
+    }
   },
 };
 </script>
