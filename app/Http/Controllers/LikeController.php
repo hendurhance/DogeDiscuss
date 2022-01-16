@@ -31,8 +31,12 @@ class LikeController extends Controller
             ]);
 
             return response([
-                'message' => 'Reply liked.'
-                'data' 
+                'message' => 'Reply liked.',
+                'properties' => [
+                    'like_count' => $reply->likes->count(),
+                    'is_liked' => true
+                ]
+
             ], Response::HTTP_OK);
         }
     }
@@ -47,7 +51,11 @@ class LikeController extends Controller
         if($hasLiked) {
             $reply->likes()->where('user_id', auth()->id())->delete();
             return response([
-                'message' => 'You have unliked this reply.'
+                'message' => 'You have unliked this reply.',
+                'properties' => [
+                    'like_count' => $reply->likes->count(),
+                    'is_liked' => false
+                ]
             ], Response::HTTP_OK);
         }else{
             return response([

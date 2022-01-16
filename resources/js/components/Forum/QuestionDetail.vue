@@ -182,6 +182,13 @@ export default {
           const unlikeRequest = Question.unlikeReply(id);
           unlikeRequest.then(response => {
             console.log(response);
+            // update that exact reply count and like properties
+            this.replies.forEach(reply => {
+              if(reply.id === id){
+                reply.properties.like_count -= 1;
+                reply.properties.is_liked = false;
+              }
+            });
           }).catch(error => {
             console.log(error);
           });
