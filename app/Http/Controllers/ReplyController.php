@@ -9,6 +9,7 @@ use App\Http\Resources\ReplyCollection;
 use App\Http\Resources\ReplyResource;
 use App\Models\Question;
 use App\Models\Reply;
+use App\Notifications\NewReplyNotification;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -54,6 +55,9 @@ class ReplyController extends Controller
         $reply->body = $request->body;
         $reply->user_id = auth()->user()->id;
         $question->replies()->save($reply);
+
+        $user = $question->user;
+        $user->notify(new NewReplyNotification($reply));
 
         return response([
             'data' => new ReplyResource($reply)
