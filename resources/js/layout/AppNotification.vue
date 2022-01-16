@@ -20,18 +20,14 @@
       <span class="notify__count">{{ unreadCount }}</span>
     </button>
     <div class="notify-content" v-if="notify">
-      <div class="notify-items">
-        <div class="notify-item">
+      <div class="notify-items" v-if="unreadCount > 0">
+        <div class="notify-item" v-for="unread
           <p>Hello</p>
         </div>
+      </div>
+      <div class="notify-items" v-else>
         <div class="notify-item">
-          <p>Hello</p>
-        </div>
-        <div class="notify-item">
-          <p>Hello</p>
-        </div>
-        <div class="notify-item">
-          <p>Hello</p>
+          <p>No unread notifications</p>
         </div>
       </div>
     </div>
@@ -56,9 +52,9 @@ export default {
       axios
         .get("/api/notifications")
         .then((response) => {
-            this.read = response.data.read;
-            this.unread = response.data.unread;
-            this.unreadCount = Object.keys(this.unread).length;
+          this.read = response.data.read;
+          this.unread = response.data.unread;
+          this.unreadCount = Object.keys(this.unread).length;
         })
         .catch((error) => {
           console.log(error);
