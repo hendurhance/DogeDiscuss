@@ -57,6 +57,9 @@ class ReplyController extends Controller
         $question->replies()->save($reply);
 
         // notify the question owner
+        if ($reply->user_id !== $question->user_id) {
+            $question->user->notify(new NewReplyNotification($reply));
+        }
         $user = $question->user;
         $user->notify(new NewReplyNotification($reply));
 
