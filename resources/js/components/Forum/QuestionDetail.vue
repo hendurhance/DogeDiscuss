@@ -482,7 +482,8 @@ main {
 
 .reply-body{
   display: grid;
-  /* make  */
+  /* make the like div take up 1/5 of the grid */
+  grid-template-columns: 90% 1fr;
 }
 
 .reply-body p {
