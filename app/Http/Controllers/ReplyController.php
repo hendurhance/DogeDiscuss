@@ -56,6 +56,7 @@ class ReplyController extends Controller
         $reply->user_id = auth()->user()->id;
         $question->replies()->save($reply);
 
+        // notify the question owner
         $user = $question->user;
         $user->notify(new NewReplyNotification($reply));
 
