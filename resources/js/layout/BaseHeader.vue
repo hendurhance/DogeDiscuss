@@ -235,6 +235,12 @@ nav {
 }
 
 
+/* screen less than 359 */
+@media (max-width: 359px) {
+  .logo img {
+    width: 120px;
+  }
+}
 
 
 </style>
