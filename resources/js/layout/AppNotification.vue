@@ -22,7 +22,7 @@
     <div class="notify-content" v-if="notify">
       <div class="notify-items" v-if="unreadCount > 0">
         <div class="notify-item" v-for="unre in unread" :key="unre.id">
-          <p> A new reply 
+          <p> A new reply from {{ unre.data.reply_by }} on <router-link>{{ unre.data.question }}</router-link></p>
         </div>
       </div>
       <div class="notify-items" v-else>
