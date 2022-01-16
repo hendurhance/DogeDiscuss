@@ -17,7 +17,7 @@
           fill="#FF3838"
         />
       </svg>
-      <span class="notify__count">5</span>
+      <span class="notify__count">{{ unreadCount }}</span>
     </button>
     <div class="notify-content" v-if="notify">
       <div class="notify-items">
