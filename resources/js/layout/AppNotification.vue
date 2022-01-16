@@ -1,5 +1,5 @@
 <template>
-  <button>
+  <button class="notification">
     <svg
       width="24"
       height="24"
@@ -31,5 +31,10 @@ button {
   cursor: pointer;
 }
 
+@media (max-width: 480px) {
+  button.notification {
+    padding: 0 10px;
+  }
+}
 
 </style>
