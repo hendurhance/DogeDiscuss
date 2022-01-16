@@ -46,7 +46,7 @@ class NewReplyNotification extends Notification
         return [
             'reply_by' => $this->reply->user->name,
             'question' => $this->reply->question->title,
-            'path' => $this->reply->question->path,
+            'slug' => $this->reply->question->slug,
         ];
     }
 }
