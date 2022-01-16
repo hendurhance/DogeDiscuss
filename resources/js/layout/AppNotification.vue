@@ -121,6 +121,25 @@ button.notification {
   z-index: 9999;
 }
 
+.notify-items{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.notify-item {
+  padding: 10px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.notify-item p{
+  font-size: 14px;
+  font-weight: 500;
+  color: #000;
+  margin-bottom: 10px;
+}
+
 .notify-item p a{
   color: #000;
   text-decoration: none;
