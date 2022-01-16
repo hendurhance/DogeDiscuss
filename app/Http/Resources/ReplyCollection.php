@@ -20,7 +20,7 @@ class ReplyCollection extends JsonResource
             'user' => $this->user->name,
             'properties' => [
                 'like_count' => $this->likes->count(),
-                '
+                'is_liked' => $this->likes->where('user_id', auth()->id())->count() > 0,
             ],
             'created_at' => $this->created_at->diffForHumans(),
         ];
