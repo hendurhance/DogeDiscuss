@@ -69,7 +69,7 @@ button.notification {
 }
 
 .notification span{
-    font-size: 14px;
+    font-size: 16px;
     font-weight: 700;
     color: #000;
 }

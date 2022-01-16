@@ -17,7 +17,7 @@
             <router-link to="/login" class="filled" v-if="notLoggedIn">Login</router-link>
             <app-notification v-else></app-notification>
             <button @click="logout" class="filled" v-if="!notLoggedIn"> Logout</button>
-          </div>
+          </div>  
           <div class="nav-item no-desktop">
             <router-link to="/login" class="a-flex" v-if="notLoggedIn"><img :src="user" alt="" /> Login</router-link>
             <app-notification></app-notification>
