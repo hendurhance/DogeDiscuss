@@ -21,8 +21,8 @@
     </button>
     <div class="notify-content" v-if="notify">
       <div class="notify-items" v-if="unreadCount > 0">
-        <div class="notify-item" v-for="unread
-          <p>Hello</p>
+        <div class="notify-item" v-for="unre in unread" :key="unre.id">
+          <p> A new reply 
         </div>
       </div>
       <div class="notify-items" v-else>
