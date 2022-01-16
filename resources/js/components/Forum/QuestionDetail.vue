@@ -196,6 +196,13 @@ export default {
           const likeRequest = Question.likeReply(id);
           likeRequest.then(response => {
             console.log(response);
+            // update that exact reply count and like properties
+            this.replies.forEach(reply => {
+              if(reply.id === id){
+                reply.properties.like_count += 1;
+                reply.properties.is_liked = true;
+              }
+            });
           }).catch(error => {
             console.log(error);
           });
