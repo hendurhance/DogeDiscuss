@@ -481,7 +481,8 @@ main {
 }
 
 .reply-body{
-  disp
+  display: grid;
+  /* make  */
 }
 
 .reply-body p {
