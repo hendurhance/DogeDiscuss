@@ -83,7 +83,13 @@ export default {
     },
   },
   mounted() {
-    this.getNotification();
+    // if user is logged in
+    if (User.checkIfLoggedIn()) {
+      this.getNotification();
+      setInterval(() => {
+        this.getNotification();
+      }, 5000);
+    }
   },
 };
 </script>
@@ -121,7 +127,7 @@ button.notification {
   z-index: 9999;
 }
 
-.notify-items{
+.notify-items {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -133,15 +139,15 @@ button.notification {
   border-bottom: 1px solid #eee;
 }
 
-.notify-item p{
+.notify-item p {
   font-size: 14px;
   font-weight: 500;
   color: #000;
-  opacity: .7;
+  opacity: 0.7;
   margin-bottom: 10px;
 }
 
-.notify-item p a{
+.notify-item p a {
   color: #000;
   opacity: 1;
   text-decoration: underline;
@@ -153,7 +159,7 @@ button.notification {
   }
 }
 
-@media (max-width: 359px){
+@media (max-width: 359px) {
   .notification svg {
     width: 20px;
     height: 20px;
