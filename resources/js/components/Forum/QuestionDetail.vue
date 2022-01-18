@@ -124,7 +124,9 @@
                     >
                       <path
                         d="M16.44 3.10156C14.63 3.10156 13.01 3.98156 12 5.33156C10.99 3.98156 9.37 3.10156 7.56 3.10156C4.49 3.10156 2 5.60156 2 8.69156C2 9.88156 2.19 10.9816 2.52 12.0016C4.1 17.0016 8.97 19.9916 11.38 20.8116C11.72 20.9316 12.28 20.9316 12.62 20.8116C15.03 19.9916 19.9 17.0016 21.48 12.0016C21.81 10.9816 22 9.88156 22 8.69156C22 5.60156 19.51 3.10156 16.44 3.10156Z"
-                        :fill="reply.properties.is_liked ? '#FF3838' : '#979797'"
+                        :fill="
+                          reply.properties.is_liked ? '#FF3838' : '#979797'
+                        "
                       />
                     </svg>
 
@@ -175,40 +177,92 @@ export default {
     },
   },
   methods: {
-    likeAction(id, action){
-      if(this.isAuthenticated){
+    // fetch question by slug using prop from router
+    fetchQuestionBySlug() {
+      const slug = this.slug;
+      // use Forum class to get forum
+      const forum = Question.getQuestionBySlug(slug);
+      forum
+        .then((response) => {
+          this.question = response.data;
+          // user vote type
+          this.userVoteType = this.question.user_vote;
+          this.upVoteCount = this.question.properties.up_votes;
+          // set vote color
+          if (this.userVoteType === "up") {
+            this.upVoteColor = "#00C853";
+            this.downVoteColor = "#9E9E9E";
+          } else if (this.userVoteType === "down") {
+            this.upVoteColor = "#9E9E9E";
+            this.downVoteColor = "#D50000";
+          } else {
+            this.upVoteColor = "#9E9E9E";
+            this.downVoteColor = "#9E9E9E";
+          }
+
+          // count length of replies array
+          this.viewsCount = this.question.properties.views;
+          this.replyCount = this.question.replies.length;
+          this.replies = this.question.replies;
+          // calc upvote percent and round to 2 decimal places
+          const percent =
+            (this.question.properties.up_votes /
+              (this.question.properties.up_votes +
+                this.question.properties.down_votes)) *
+            100;
+          // if percent is NaN, set to 0
+          if (isNaN(percent)) {
+            this.upVotedPercent = 0;
+          } else {
+            this.upVotedPercent = Math.round(percent * 100) / 100;
+          }
+          console.log(response);
+          this.userOwnsQuestion();
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+        .finally(() => {
+          this.isLoading = false;
+        });
+    },
+    likeAction(id, action) {
+      if (this.isAuthenticated) {
         // if action is true, then we are unliking
-        if(action){
+        if (action) {
           const unlikeRequest = Question.unlikeReply(id);
-          unlikeRequest.then(response => {
-            console.log(response);
-            // update that exact reply count and like properties
-            this.replies.forEach(reply => {
-              if(reply.id === id){
-                reply.properties.like_count -= 1;
-                reply.properties.is_liked = false;
-              }
+          unlikeRequest
+            .then((response) => {
+              console.log(response);
+              // update that exact reply count and like properties
+              this.replies.forEach((reply) => {
+                if (reply.id === id) {
+                  reply.properties.like_count -= 1;
+                  reply.properties.is_liked = false;
+                }
+              });
+            })
+            .catch((error) => {
+              console.log(error);
             });
-          }).catch(error => {
-            console.log(error);
-          });
         } else {
           const likeRequest = Question.likeReply(id);
-          likeRequest.then(response => {
-            console.log(response);
-            // update that exact reply count and like properties
-            this.replies.forEach(reply => {
-              if(reply.id === id){
-                reply.properties.like_count += 1;
-                reply.properties.is_liked = true;
-              }
+          likeRequest
+            .then((response) => {
+              console.log(response);
+              // update that exact reply count and like properties
+              this.replies.forEach((reply) => {
+                if (reply.id === id) {
+                  reply.properties.like_count += 1;
+                  reply.properties.is_liked = true;
+                }
+              });
+            })
+            .catch((error) => {
+              console.log(error);
             });
-          }).catch(error => {
-            console.log(error);
-          });
         }
-      }
-      else{
+      } else {
         alert("You must be logged in to like a reply");
       }
     },
@@ -331,53 +385,7 @@ export default {
     // this.userOwnsQuestion();
   },
   created() {
-    // get slug from props
-    const slug = this.slug;
-    // use Forum class to get forum
-    const forum = Question.getQuestionBySlug(slug);
-    forum
-      .then((response) => {
-        this.question = response.data;
-        // user vote type
-        this.userVoteType = this.question.user_vote;
-        this.upVoteCount = this.question.properties.up_votes;
-        // set vote color
-        if (this.userVoteType === "up") {
-          this.upVoteColor = "#00C853";
-          this.downVoteColor = "#9E9E9E";
-        } else if (this.userVoteType === "down") {
-          this.upVoteColor = "#9E9E9E";
-          this.downVoteColor = "#D50000";
-        } else {
-          this.upVoteColor = "#9E9E9E";
-          this.downVoteColor = "#9E9E9E";
-        }
-
-        // count length of replies array
-        this.viewsCount = this.question.properties.views;
-        this.replyCount = this.question.replies.length;
-        this.replies = this.question.replies;
-        // calc upvote percent and round to 2 decimal places
-        const percent =
-          (this.question.properties.up_votes /
-            (this.question.properties.up_votes +
-              this.question.properties.down_votes)) *
-          100;
-        // if percent is NaN, set to 0
-        if (isNaN(percent)) {
-          this.upVotedPercent = 0;
-        } else {
-          this.upVotedPercent = Math.round(percent * 100) / 100;
-        }
-        console.log(response);
-        this.userOwnsQuestion();
-      })
-      .catch((error) => {
-        console.log(error);
-      })
-      .finally(() => {
-        this.isLoading = false;
-      });
+    this.fetchQuestionBySlug();
     // check if user is authenticated
     // if user is authenticated
     if (User.checkIfLoggedIn()) {
@@ -385,11 +393,29 @@ export default {
       this.userName = User.getUsersName();
     }
 
-    // Echo Setup
-    Echo.channel('likeChannel')
-      .listen('LikeEvent', (e) => {
-        console.log(e)
-      })
+    // Event listener for Like
+    Echo.channel('likeChannel').listen('LikeEvent', (e) => {
+      console.log(e);
+      // check replies array for the reply that was liked
+      this.replies.forEach((reply) => {
+        if (reply.id === e.id) {
+          e.type == 1
+            ? (reply.properties.like_count += 1)
+            : (reply.properties.like_count -= 1);
+        }
+      });
+      // if the reply id is in the replies array, then update the like count
+      if (this.replies.find((reply) => reply.id === e.reply_id)) {
+        this.replies.forEach((reply) => {
+          if (reply.id === e.reply_id) {
+            e.type === 1
+              ? (reply.properties.like_count += 1)
+              : (reply.properties.like_count -= 1);
+              
+          }
+        });
+      }
+    });
   },
 };
 </script>
@@ -544,14 +570,14 @@ main {
   grid-template-columns: 90% 1fr;
 }
 
-.reply-body div{
+.reply-body div {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
 }
 
-.reply-body div p{
+.reply-body div p {
   font-size: 1em;
   font-weight: 600;
   text-align: center;
