@@ -356,6 +356,17 @@ export default {
             .catch((error) => {
               console.error(error);
               this.replyError = "Error creating reply";
+            })
+            .finally(() => {
+              // Echo Event
+              Echo.private("App.Models.User." + User.getUsersId()).notification(
+                (notification) => {
+                  console.log(notification.type);
+                  // if (notification.type == "reply") {
+                  //   this.replies.unshift(notification.reply);
+                  // }
+                }
+              );
             });
         }
       }
@@ -394,7 +405,7 @@ export default {
     }
 
     // Event listener for Like
-    Echo.channel('likeChannel').listen('LikeEvent', (e) => {
+    Echo.channel("likeChannel").listen("LikeEvent", (e) => {
       console.log(e);
       // check replies array for the reply that was liked
       this.replies.forEach((reply) => {
@@ -411,7 +422,6 @@ export default {
             e.type === 1
               ? (reply.properties.like_count += 1)
               : (reply.properties.like_count -= 1);
-              
           }
         });
       }
