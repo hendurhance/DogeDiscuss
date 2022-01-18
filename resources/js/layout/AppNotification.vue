@@ -86,9 +86,6 @@ export default {
     // if user is logged in
     if (User.checkIfLoggedIn()) {
       this.getNotification();
-      setInterval(() => {
-        this.getNotification();
-      }, 5000);
     }
   },
 };

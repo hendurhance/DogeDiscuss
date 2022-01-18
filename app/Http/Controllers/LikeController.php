@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\LikeEvent;
 use App\Exceptions\ReplyLiked;
 use App\Models\Like;
 use App\Models\Reply;
@@ -30,6 +31,8 @@ class LikeController extends Controller
                 'user_id' => auth()->id()
             ]);
 
+            broadcast(new LikeEvent($reply->id, 1))->toOthers();
+
             return response([
                 'message' => 'Reply liked.',
                 'properties' => [
@@ -50,6 +53,9 @@ class LikeController extends Controller
         $hasLiked = $this->hasLiked($reply);
         if($hasLiked) {
             $reply->likes()->where('user_id', auth()->id())->delete();
+
+            broadcast(new LikeEvent($reply->id, 0))->toOthers();
+
             return response([
                 'message' => 'You have unliked this reply.',
                 'properties' => [

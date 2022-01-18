@@ -384,6 +384,12 @@ export default {
       this.isAuthenticated = true;
       this.userName = User.getUsersName();
     }
+
+    // Echo Setup
+    Echo.channel('likeChannel')
+      .listen('LikeEvent', (e) => {
+        console.log(e)
+      })
   },
 };
 </script>

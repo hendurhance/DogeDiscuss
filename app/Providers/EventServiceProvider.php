@@ -14,9 +14,13 @@ class EventServiceProvider extends ServiceProvider
      *
      * @var array
      */
+    /**
+     * Create like event listeners for the application.
+     * @return void
+     */
     protected $listen = [
-        Registered::class => [
-            SendEmailVerificationNotification::class,
+        'App\Events\LikeEvent' => [
+            'App\Listeners\LikeEventListener',
         ],
     ];
 
