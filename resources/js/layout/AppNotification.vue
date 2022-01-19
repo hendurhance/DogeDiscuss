@@ -64,7 +64,7 @@ export default {
           this.unreadCount = Object.keys(this.unread).length;
         })
         .catch((error) => {
-          console.log(error);
+          Exception.handle(error);
         });
     },
     markAsRead(id) {

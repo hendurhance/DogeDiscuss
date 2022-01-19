@@ -20,7 +20,7 @@
           </div>  
           <div class="nav-item no-desktop">
             <router-link to="/login" class="a-flex" v-if="notLoggedIn"><img :src="user" alt="" /> Login</router-link>
-            <app-notification></app-notification>
+            <app-notification v-else></app-notification>
             <button @click="logout" class="a-flex" v-if="!notLoggedIn"><img class="logout" :src="logoutIcon" alt=""> Logout</button>
             <button><img @click="openSidebar" :src="hamburger" alt="" /></button>
           </div>

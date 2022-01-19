@@ -96,6 +96,7 @@ class User{
     logout(){
         this.logoutRequest();
         AppStorage.clear();
+        window.location = '/forum'
     }
     
 

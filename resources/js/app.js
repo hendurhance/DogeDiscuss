@@ -17,6 +17,7 @@ import User from './Helpers/User'
 import CryptoReq from './Helpers/CryptoReq'
 import Question from './Helpers/Question'
 import Category from './Helpers/Category'
+import Exception from './Helpers/Exception'
 
 Vue.use(vuetify);
 Vue.use(VueAxios, axios)
@@ -44,6 +45,10 @@ window.CryptoReq = CryptoReq;
 window.Question = Question;
 // use Category class
 window.Category = Category;
+// use Exception class
+window.Exception = Exception;
+
+
 
 
 import router from './router/router.js';
