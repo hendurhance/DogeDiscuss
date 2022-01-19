@@ -352,21 +352,11 @@ export default {
               this.replyError = "";
               // push new reply to the top of the replies array
               this.replies.unshift(response.data);
-
-              // Echo Event
-              Echo.private("App.Models.User." + User.getUsersId()).notification(
-                (notification) => {
-                  console.log(notification);
-                  // if (notification.type == "reply") {
-                  //   this.replies.unshift(notification.reply);
-                  // }
-                }
-              );
             })
             .catch((error) => {
               console.error(error);
               this.replyError = "Error creating reply";
-            })
+            });
         }
       }
     },
@@ -425,6 +415,9 @@ export default {
         });
       }
     });
+
+
+
   },
 };
 </script>

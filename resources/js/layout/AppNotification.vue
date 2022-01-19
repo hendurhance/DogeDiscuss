@@ -88,6 +88,26 @@ export default {
       this.getNotification();
     }
   },
+  created() {
+    // Event listener for Notification for new reply
+    Echo.private("App.Models.User." + User.getUsersId()).notification(
+      (notification) => {
+        if (notification.type == "App\\Notifications\\NewReplyNotification") {
+          // create a new notification to unread array
+          const newNotification = {
+            id: notification.id,
+            data: {
+              reply_by: notification.reply_by,
+              slug: notification.slug,
+              question: notification.reply.question,
+            },
+          }
+          this.unread.unshift(newNotification);
+          this.unreadCount++;
+        }
+      }
+    );
+  },
 };
 </script>
 
@@ -134,6 +154,10 @@ button.notification {
 .notify-item {
   padding: 10px 0;
   border-bottom: 1px solid #eee;
+}
+
+.notify-item:last-child {
+  border-bottom: none;
 }
 
 .notify-item p {
