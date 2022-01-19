@@ -163,7 +163,7 @@ button.notification {
 .notify-item p {
   font-size: 14px;
   font-weight: 500;
-  color: #000;
+  color: rgb(27, 27, 27);
   opacity: 0.7;
   margin-bottom: 10px;
 }
@@ -171,7 +171,6 @@ button.notification {
 .notify-item p a {
   color: #000;
   opacity: 1;
-  text-decoration: underline;
 }
 
 @media (max-width: 480px) {
