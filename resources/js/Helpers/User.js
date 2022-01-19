@@ -54,7 +54,7 @@ class User{
         const storedToken = AppStorage.getToken();
 
         if(storedToken){
-            return Token.checkIfValid(storedToken) ? true : false;
+            return Token.checkIfValid(storedToken) ? true : this.logout();
         }
         return false;
     }
@@ -94,9 +94,16 @@ class User{
      * Clear token and user from Local Storage
      */
     logout(){
-        this.logoutRequest();
-        AppStorage.clear();
-        window.location = '/forum'
+        // if token is valid
+        const isValid = Token.checkIfValid(AppStorage.getToken());
+        if(isValid){
+            this.logoutRequest();
+            AppStorage.clear();
+            window.location = '/forum'
+        }else{
+            AppStorage.clear();
+            window.location.reload();
+        }
     }
     
 
