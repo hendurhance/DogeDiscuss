@@ -423,7 +423,24 @@ export default {
       this.replies = this.replies.filter((reply) => reply.id !== e.id);
     });
 
-
+    // Event listener for Vote question
+    Echo.channel("voteChannel").listen("VoteEvent", (e) => {
+      console.log(e);
+      // check if the question was voted on
+      if (e.slug === this.question.slug) {
+        // check if the vote type is up or down
+        if (e.type === "up") {
+          this.upVoteCount += 1;
+          this.upVotedPercent = (this.upVoteCount / e.vote_count) * 100;
+        } else if (e.type === "down") {
+          this.upVoteCount -= 1;
+          this.upVotedPercent = (this.upVoteCount / e.vote_count) * 100;
+        } else {
+          this.upVoteCount = e.up_votes;
+          this.upVotedPercent = Math.round((this.upVoteCount / e.vote_count) * 100) / 100;
+        }
+      }
+    });
   },
 };
 </script>

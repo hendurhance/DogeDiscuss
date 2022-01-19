@@ -137,7 +137,7 @@ class QuestionController extends Controller
         }
 
         $question->upVote();
-        broadcast(new VoteEvent($question->slug, 'up'))->toOthers();
+        broadcast(new VoteEvent($question->slug, 'up', $question->votes()->count(), $question->votes()->where('vote', 'up')->count()))->toOthers();
         return response([
             'success' => 'You have up voted this question',
             'properties' => [
@@ -167,7 +167,7 @@ class QuestionController extends Controller
         }
 
         $question->downVote();
-        broadcast(new VoteEvent($question->slug, 'down'))->toOthers();
+        broadcast(new VoteEvent($question->slug, 'down', $question->votes()->count(), $question->votes()->where('vote', 'up')->count()))->toOthers();
         return response([
             'success' => 'You have down voted this question',
             'properties' => [
@@ -192,7 +192,7 @@ class QuestionController extends Controller
         // if votes exits delete vote
         if ($vote) {
             $question->resetVote();
-            broadcast(new VoteEvent($question->slug, 'reset'))->toOthers();
+            broadcast(new VoteEvent($question->slug, 'reset', $question->votes()->count(), $question->votes()->where('vote', 'up')->count()))->toOthers();
             return response([
                 'success' => 'You have reset your vote',
                 'properties' => [

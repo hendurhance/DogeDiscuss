@@ -158,8 +158,7 @@ export default {
           } else if (e.type === "down") {
             this.question.properties.up_votes -= 1;
           }else{
-            this.question.properties.up_votes -= 1;
-            this.question.properties.down_votes -= 1;
+            this.question.properties.up_votes = e.up_votes;
           }
         }
       });

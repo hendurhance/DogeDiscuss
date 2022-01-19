@@ -14,6 +14,8 @@ class VoteEvent implements ShouldBroadcast
 {
     public $slug;
     public $type;
+    public $vote_count;
+    public $up_votes;
 
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
@@ -22,10 +24,12 @@ class VoteEvent implements ShouldBroadcast
      *
      * @return void
      */
-    public function __construct($slug, $type)
+    public function __construct($slug, $type, $vote_count, $up_votes)
     {
         $this->slug = $slug;
         $this->type = $type;
+        $this->vote_count = $vote_count;
+        $this->up_votes = $up_votes;
     }
 
     /**
