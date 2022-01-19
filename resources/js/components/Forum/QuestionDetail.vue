@@ -431,10 +431,10 @@ export default {
         // check if the vote type is up or down
         if (e.type === "up") {
           this.upVoteCount += 1;
-          this.upVotedPercent = (this.upVoteCount / e.vote_count) * 100;
+          this.upVotedPercent = Math.round((this.upVoteCount / e.vote_count) * 100) / 100;
         } else if (e.type === "down") {
           this.upVoteCount -= 1;
-          this.upVotedPercent = (this.upVoteCount / e.vote_count) * 100;
+          this.upVotedPercent = Math.round((this.upVoteCount / e.vote_count) * 100) / 100;
         } else {
           this.upVoteCount = e.up_votes;
           this.upVotedPercent = Math.round((this.upVoteCount / e.vote_count) * 100) / 100;
