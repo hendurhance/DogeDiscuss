@@ -35,6 +35,6 @@ class DeleteReplyEvent implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return new Channel('DeleteReplyChannel');
+        return new Channel('deleteReplyChannel');
     }
 }

@@ -417,7 +417,7 @@ export default {
     });
 
     // Event listener for Deleted Reply
-    Echo.channel("DeleteReplyChannel").listen("DeleteReplyEvent", (e) => {
+    Echo.channel("deleteReplyChannel").listen("DeleteReplyEvent", (e) => {
       console.log(e);
       // remove reply from the replies array
       this.replies = this.replies.filter((reply) => reply.id !== e.id);

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\VoteEvent;
 use App\Http\Requests\QuestionRequest;
 use App\Http\Requests\QuestionUpdate;
 use App\Models\Question;
@@ -136,6 +137,7 @@ class QuestionController extends Controller
         }
 
         $question->upVote();
+        broadcast(new VoteEvent($question->slug, 'up'))->toOthers();
         return response([
             'success' => 'You have up voted this question',
             'properties' => [
@@ -165,6 +167,7 @@ class QuestionController extends Controller
         }
 
         $question->downVote();
+        broadcast(new VoteEvent($question->slug, 'down'))->toOthers();
         return response([
             'success' => 'You have down voted this question',
             'properties' => [
@@ -189,6 +192,7 @@ class QuestionController extends Controller
         // if votes exits delete vote
         if ($vote) {
             $question->resetVote();
+            broadcast(new VoteEvent($question->slug, 'reset'))->toOthers();
             return response([
                 'success' => 'You have reset your vote',
                 'properties' => [

@@ -10,8 +10,11 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class VoteEvent
+class VoteEvent implements ShouldBroadcast
 {
+    public $slug;
+    public $type;
+
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     /**
@@ -19,9 +22,10 @@ class VoteEvent
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($slug, $type)
     {
-        //
+        $this->slug = $slug;
+        $this->type = $type;
     }
 
     /**
@@ -31,6 +35,6 @@ class VoteEvent
      */
     public function broadcastOn()
     {
-        return new PrivateChannel('channel-name');
+        return new PrivateChannel('voteChannel');
     }
 }
