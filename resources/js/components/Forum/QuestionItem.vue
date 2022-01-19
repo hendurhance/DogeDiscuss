@@ -146,6 +146,24 @@ export default {
       this.isAuthenticated = true;
     }
   },
+  created() {
+    // Echo for real time vote
+    Echo.channel("voteChannel")
+      .listen("VoteEvent", (e) => {
+        console.log(e);
+        if (e.slug === this.question.slug) {
+          // if type is 'up' then increment upVoteCount
+          if (e.type === "up") {
+            this.question.properties.up_votes += 1;
+          } else if (e.type === "down") {
+            this.question.properties.up_votes -= 1;
+          }else{
+            this.question.properties.up_votes -= 1;
+            this.question.properties.down_votes -= 1;
+          }
+        }
+      });
+  }
 };
 </script>
 

@@ -135,8 +135,8 @@ class Question extends Model
      */
     public function resetVote()
     {
-        $vote = $this->vote();
-
+        // delete vote of the user
+        $vote = $this->vote()->where('user_id', auth()->id());
         if ($vote) {
             $vote->delete();
         }

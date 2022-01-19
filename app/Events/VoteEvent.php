@@ -35,6 +35,6 @@ class VoteEvent implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return new PrivateChannel('voteChannel');
+        return new Channel('voteChannel');
     }
 }
