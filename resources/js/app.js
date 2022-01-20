@@ -20,7 +20,7 @@ import Category from './Helpers/Category'
 import Exception from './Helpers/Exception'
 
 Vue.use(vuetify);
-Vue.use(VueAxios, axios)
+Vue.use(VueAxios, axios);
 
 /**
  * The following block of code may be used to automatically register your

@@ -28,6 +28,7 @@
         "vue-template-compiler": "^2.6.12"
     },
     "dependencies": {
+        "axios-cache-adapter": "^2.7.3",
         "dotenv": "^14.1.0",
         "vue-axios": "^3.4.0",
         "vue-router": "^3.5.3",

@@ -49,6 +49,7 @@ export default {
       read: {},
       unread: {},
       unreadCount: 0,
+      audio: "https://soundbible.com/mp3/glass_ping-Go445-1207030150.mp3",
     };
   },
   methods: {
@@ -102,6 +103,9 @@ export default {
               question: notification.reply.question,
             },
           }
+          // use audio to notify user
+          const audio = new Audio(this.audio);
+          audio.play();
           this.unread.unshift(newNotification);
           this.unreadCount++;
         }
