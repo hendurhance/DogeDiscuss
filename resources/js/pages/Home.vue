@@ -13,7 +13,7 @@
                   empower teams, communities with new insight into the web3
                   world as we approach the post-pandemic era.
                 </p>
-                <base-button link mode="outline"> Get Started </base-button>
+                <base-button link mode="outline" :to="{ name: 'register' }"> Get Started </base-button>
               </div>
             </div>
             <div class="hero-item">

@@ -10,9 +10,9 @@
             </p>
           </div>
           <div class="right-footer">
-            <a href="" class="links">Report a Bug</a>
+            <a href="https://github.com/hendurhance/DogeDiscuss/issues" class="links">Report a Bug</a>
             <a href="" class="links">Privacy Policy</a>
-            <a href="" class="links">Github</a>
+            <a href="https://github.com/hendurhance/DogeDiscuss" class="links">Github</a>
           </div>
         </div>
       </div>
