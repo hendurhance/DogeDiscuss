@@ -49,7 +49,7 @@ export default {
       read: {},
       unread: {},
       unreadCount: 0,
-      audio: "https://soundbible.com/mp3/glass_ping-Go445-1207030150.mp3",
+      sound: "https://soundbible.com/mp3/glass_ping-Go445-1207030150.mp3",
     };
   },
   methods: {
@@ -82,6 +82,10 @@ export default {
           console.log(error);
         });
     },
+    playSound() {
+      let alert = new Audio(this.sound);
+      alert.play();
+    },
   },
   mounted() {
     // if user is logged in
@@ -104,8 +108,7 @@ export default {
             },
           }
           // use audio to notify user
-          const audio = new Audio(this.audio);
-          audio.play();
+          this.playSound();
           this.unread.unshift(newNotification);
           this.unreadCount++;
         }
