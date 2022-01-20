@@ -450,5 +450,8 @@ section.feature-section{
     font-size: 1.2rem;
   }
 
+  .asset-grid{
+    word-break: break-word;
+  }
 }
 </style>
