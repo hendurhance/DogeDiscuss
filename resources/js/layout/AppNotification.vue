@@ -115,6 +115,12 @@ export default {
       }
     );
   },
+  watch: {
+    // if route change close notify
+    $route() {
+      this.notify = false;
+    },
+  }
 };
 </script>
 
