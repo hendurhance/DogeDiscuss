@@ -441,6 +441,15 @@ export default {
         }
       }
     });
+
+    // Event listener for Added Reply
+    Echo.channel("addReplyChannel").listen("ReplyAddedEvent", (e) => {
+      console.log(e);
+      // if this reply is the question push it to the top of the replies array
+      if (e.reply.question_slug === this.question.slug) {
+        this.replies.unshift(e.reply);
+      }
+    })
   },
 };
 </script>

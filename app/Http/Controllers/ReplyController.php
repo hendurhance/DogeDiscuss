@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Events\DeleteReplyEvent;
+use App\Events\ReplyAddedEvent;
 use App\Exceptions\ReplyNotBelongToQuestion;
 use App\Http\Requests\ReplyRequest;
 use App\Http\Requests\ReplyUpdate;
@@ -61,6 +62,10 @@ class ReplyController extends Controller
         if ($reply->user_id !== $question->user_id) {
             $question->user->notify(new NewReplyNotification($reply));
         }
+
+        // broadcast the reply added event
+        broadcast(new ReplyAddedEvent(new ReplyResource($reply)))->toOthers();
+
 
         return response([
             'data' => new ReplyResource($reply)
